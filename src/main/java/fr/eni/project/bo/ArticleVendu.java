@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 public class ArticleVendu {
 
-	private String noArticle;
+	private long noArticle;
 	private String nomArticle;
 	private String description;
 	private LocalDate dateDebutEncheres;
 	private LocalDate dateFinEncheres;
-	private String miseAPrix;
+	private int miseAPrix;
 	private int prixVente;
 	private String etatVente;
 	
-	public ArticleVendu(String noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, String miseAPrix, int prixVente, String etatVente) {
+	public ArticleVendu(long noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
+			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
 		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -26,11 +26,11 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
-	public String getNoArticle() {
+	public long getNoArticle() {
 		return noArticle;
 	}
 
-	public void setNoArticle(String noArticle) {
+	public void setNoArticle(long noArticle) {
 		this.noArticle = noArticle;
 	}
 
@@ -66,11 +66,11 @@ public class ArticleVendu {
 		this.dateFinEncheres = dateFinEncheres;
 	}
 
-	public String getMiseAPrix() {
+	public int getMiseAPrix() {
 		return miseAPrix;
 	}
 
-	public void setMiseAPrix(String miseAPrix) {
+	public void setMiseAPrix(int miseAPrix) {
 		this.miseAPrix = miseAPrix;
 	}
 

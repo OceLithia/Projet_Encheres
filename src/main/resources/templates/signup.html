@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Inscription</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+	<form th:action="@{/signup}" method="post" th:object="${utilisateur}">
+
+		<h2>S'inscrire</h2>
+		<ul>
+			<li><label for="">Pseudo : </label><input type="text"
+				th:field="*{pseudo}" /></li>
+				<li><label for="">Nom : </label><input type="text"
+				th:field="*{nom}" /></li>
+				<li><label for="">Prénom : </label><input type="text"
+				th:field="*{prenom}" /></li>
+				<li><label for="">Email : </label><input type="email"
+				th:field="*{email}" /></li>
+				<li><label for="">Téléphone : </label><input type="text"
+				th:field="*{telephone}" /></li>
+				<li><label for="">Rue : </label><input type="text"
+				th:field="*{rue}" /></li>
+				<li><label for="">Code postal : </label><input type="text"
+				th:field="*{codePostal}" /></li>
+				<li><label for="">Ville : </label><input type="text"
+				th:field="*{ville}" /></li>
+				<li><label for="">Mot de passe : </label><input type="password"
+				th:field="*{motDePasse}" /></li>
+			<li><label for="">Confirmation : </label><input type="password"
+				th:field="*{motDePasse}" /></li>
+			<li><button type="submit">Créer</button></li>
+			<li><button type="submit">Annuler</button></li>
+		</ul>
+	</form>
+</body>
+</html>

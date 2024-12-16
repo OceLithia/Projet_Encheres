@@ -2,20 +2,20 @@ package fr.eni.project.bo;
 
 public class Categorie {
 
-	private String noCategorie;
+	private long noCategorie;
 	private String libelle;
 	
-	public Categorie(String noCategorie, String libelle) {
+	public Categorie(long noCategorie, String libelle) {
 		super();
 		this.noCategorie = noCategorie;
 		this.libelle = libelle;
 	}
 
-	public String getNoCategorie() {
+	public long getNoCategorie() {
 		return noCategorie;
 	}
 
-	public void setNoCategorie(String noCategorie) {
+	public void setNoCategorie(long noCategorie) {
 		this.noCategorie = noCategorie;
 	}
 
