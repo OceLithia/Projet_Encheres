@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Connexion</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+	<form th:action="@{/login}" method="post">
+		<ul th:if="${param.error}">
+			<li>Veuillez renseigner un login / mot de passe correct</li>
+		</ul>
+		<h2>Se connecter</h2>
+		<ul>
+			<li><label for="">Identifiant : </label><input type="text"
+				name="username" /></li>
+			<li><label for="">Mot de passe : </label><input type="password"
+				name="password" /></li>
+			<li><button type="submit">Connexion</button></li>
+			<li><button type="submit">Créer un compte</button></li>
+		</ul>
+	</form>
+</body>
+</html>

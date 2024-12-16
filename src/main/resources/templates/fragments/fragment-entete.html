@@ -1,0 +1,10 @@
+<nav th:fragment="entete">
+	<!-- <a th:href="@{/}"><img src="/img/logoFilmotheque.png" alt="logo filmotheque" /></a> -->
+	<a th:href="@{/}">ENI-Enchères</a>
+	<a sec:authorize="!isAuthenticated()" th:href="@{/logout}">S'inscrire</a>
+	<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/}">Enchères</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Vendre un article</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Mon profil</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
+</nav>
