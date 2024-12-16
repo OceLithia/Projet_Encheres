@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Profil utilisateur</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Pseudo :</th>
+				<th>Nom :</th>
+				<th>Prénom :</th>
+				<th>Email :</th>
+				<th>Téléphone :</th>
+				<th>Rue :</th>
+				<th>Code postal :</th>
+				<th>Ville :</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="u : ${utilisateurs}">
+				<td th:text="${u.pseudo}"></td>
+				<td th:text="${u.nom}"></td>
+				<td th:text="${u.prenom}"></td>
+				<td th:text="${u.email}"></td>
+				<td th:text="${u.telephone}"></td>
+				<td th:text="${u.rue}"></td>
+				<td th:text="${u.codePostal}"></td>
+				<td th:text="${u.ville}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

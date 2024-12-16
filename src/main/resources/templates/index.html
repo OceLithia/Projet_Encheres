@@ -7,7 +7,23 @@
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-	<h1>ENI Enchères</h1>
+	<h1>Liste des enchères</h1>
+	<div>
+	<form action="/" method="post">
+	<label for="search">Filtres : <input id="serachArticle"
+				type="text" th:field="*{}" />
+	</label>
+	<label for="categorie">Catégorie : </label> <select
+				th:field="*{categories}" id="noCategorie" >
+					<option th:each="c : ${categorieSession}" th:value="${c.noCategorie}"
+						th:text="${c.libelle}"></option>
+			</select>
+			<button type="submit">Rechercher</button>
+	</form>
+	</div>
+	<!-- <div>
+	Liste des enchères (encours) via une liste encheres ou article vendu ?
+	</div> -->
 </body>
 <footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </html>
