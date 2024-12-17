@@ -1,5 +1,6 @@
 package fr.eni.project.bll;
 
+
 import java.util.List;
 
 import fr.eni.project.bo.Utilisateur;
@@ -11,5 +12,6 @@ public interface UtilisateurService {
 	List<Utilisateur> afficherUtilisateurs();
 
 	Utilisateur afficherUtilisateurParPseudo(String pseudo);
+
 	
 }

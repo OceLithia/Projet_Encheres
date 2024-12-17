@@ -14,6 +14,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Autowired
 	private UtilisateurDAO utilisateurDAO;
 
+
 	@Override
 	public void creerUtilisateur(Utilisateur utilisateur) {
 		String motDePasseEncode = "password";
@@ -32,3 +33,5 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 }
+
+
