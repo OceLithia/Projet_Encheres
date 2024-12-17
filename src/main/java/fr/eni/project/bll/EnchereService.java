@@ -1,0 +1,10 @@
+package fr.eni.project.bll;
+
+import java.util.List;
+
+import fr.eni.project.bo.Enchere;
+
+public interface EnchereService {
+
+	List<Enchere> listeEncheres();
+}

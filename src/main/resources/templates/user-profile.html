@@ -7,31 +7,39 @@
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-	<table>
-		<thead>
-			<tr>
-				<th>Pseudo :</th>
-				<th>Nom :</th>
-				<th>Prénom :</th>
-				<th>Email :</th>
-				<th>Téléphone :</th>
-				<th>Rue :</th>
-				<th>Code postal :</th>
-				<th>Ville :</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="u : ${utilisateurs}">
-				<td th:text="${u.pseudo}"></td>
-				<td th:text="${u.nom}"></td>
-				<td th:text="${u.prenom}"></td>
-				<td th:text="${u.email}"></td>
-				<td th:text="${u.telephone}"></td>
-				<td th:text="${u.rue}"></td>
-				<td th:text="${u.codePostal}"></td>
-				<td th:text="${u.ville}"></td>
-			</tr>
-		</tbody>
-	</table>
+    <table>
+        <tr>
+            <th>Pseudo :</th>
+            <td th:text="${utilisateur.pseudo}"></td>
+        </tr>
+        <tr>
+            <th>Nom :</th>
+            <td th:text="${utilisateur.nom}"></td>
+        </tr>
+        <tr>
+            <th>Prénom :</th>
+            <td th:text="${utilisateur.prenom}"></td>
+        </tr>
+        <tr>
+            <th>Email :</th>
+            <td th:text="${utilisateur.email}"></td>
+        </tr>
+        <tr>
+            <th>Téléphone :</th>
+            <td th:text="${utilisateur.telephone}"></td>
+        </tr>
+        <tr>
+            <th>Rue :</th>
+            <td th:text="${utilisateur.rue}"></td>
+        </tr>
+        <tr>
+            <th>Code postal :</th>
+            <td th:text="${utilisateur.codePostal}"></td>
+        </tr>
+        <tr>
+            <th>Ville :</th>
+            <td th:text="${utilisateur.ville}"></td>
+        </tr>
+    </table>
 </body>
 </html>
