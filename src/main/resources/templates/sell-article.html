@@ -9,13 +9,13 @@
 <body>
 	<h2>Nouvelle vente</h2>
 	<form th:action="@{/sell-article}" method="post"
-		enctype="multipart/form-data">
+		enctype="multipart/form-data" th:object="${artcileVendu}">
 		<ul>
-			<li><label for="noArticle">Artcile : </label> <input type="text"
-				id="noArticle" /></li>
-			<li><label for="noArticle">Description : </label> <textarea
-					name="description" id="description" cols="30" rows="10"></textarea></li>
-			<li><label for="noArticle">Catégorie : </label> <select
+			<li><label for="nomArticle">Article : </label> <input type="text"
+				th:field="*{nomArticle}" /></li>
+			<li><label for="description">Description : </label> <textarea
+					name="description" id="description" cols="30" rows="10" th:field="*{description}"></textarea></li>
+			<li><label for="categorie">Catégorie : </label> <select
 				name="categorie" id=""><option
 						th:each="c : ${categoriesSession}" th:value="${c.noCategorie}"
 						th:text="${c.libelle}"></option>

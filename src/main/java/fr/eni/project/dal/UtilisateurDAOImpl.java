@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Utilisateur;
 
 @Repository
