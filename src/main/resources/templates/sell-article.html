@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vendre un article</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
+<body>
+	<h2>Nouvelle vente</h2>
+	<form th:action="@{/sell-article}" method="post"
+		enctype="multipart/form-data">
+		<ul>
+			<li><label for="noArticle">Artcile : </label> <input type="text"
+				id="noArticle" /></li>
+			<li><label for="noArticle">Description : </label> <textarea
+					name="description" id="description" cols="30" rows="10"></textarea></li>
+			<li><label for="noArticle">Catégorie : </label> <select
+				name="categorie" id=""><option
+						th:each="c : ${categoriesSession}" th:value="${c.noCategorie}"
+						th:text="${c.libelle}"></option>
+			</select></li>
+			<li><label for="photo">Photo de l'article </label><input
+				type="file" accept="image/*" /></li>
+			<li><label for="miseAPrix">Mise à prix : </label><input
+				type="number" id="miseAPrix" /></li>
+			<li><label for="dateDebutEncheres">Début de l'enchère </label><input
+				type="date" id="dateDebutEncheres" /></li>
+			<li><label for="dateFinEncheres">Fin de l'enchère </label><input
+				type="date" id="dateFinEncheres" /></li>
+			<!-- <form action="">
+				<h3>Retrait</h3>
+				<label for="rue">Rue : </label><input type="text" /><label
+					for="codePostal">Code postal : </label> <input type="text" /><label
+					for="ville">Ville : </label><input type="text" />
+			</form> -->
+			<button type="submit">Enregistrer</button><button type="reset">Annuler</button>
+		</ul>
+	</form>
+</body>
+</html>
