@@ -25,11 +25,9 @@ public class Utilisateur {
 	public Utilisateur() {
 	}
 
-	public Utilisateur(long noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
-			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur,
-			List<Enchere> encheres, List<ArticleVendu> articlesVendus) {
-		super();
-		this.noUtilisateur = noUtilisateur;
+
+	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String codePostal, String ville, String motDePasse, int credit, boolean administrateur) {
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
