@@ -1,19 +1,23 @@
 package fr.eni.project.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+
+import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bo.Enchere;
+import fr.eni.project.dal.EnchereDAO;
 
 @Controller
 @RequestMapping
-@SessionAttributes({"utilisateur-profile"})
+//@SessionAttributes({"utilisateur-profile"})
 public class EnchereController {
 
-	private Enchere enchere;
+	@Autowired
+	private EnchereService enchereService;
 
-	public EnchereController(Enchere enchere) {
-		this.enchere = enchere;
+	public EnchereController(EnchereService enchereService) {
+		this.enchereService = enchereService;
 	}
 	
 }

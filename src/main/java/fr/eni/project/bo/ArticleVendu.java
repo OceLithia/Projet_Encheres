@@ -1,6 +1,9 @@
 package fr.eni.project.bo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ArticleVendu {
 
@@ -13,9 +16,21 @@ public class ArticleVendu {
 	private int prixVente;
 	private String etatVente;
 	
+	//relations 
+	//vendeur de l'article
+	private Utilisateur vendeur;
+	//encheres sur l'article
+	private List<Enchere> encheres = new ArrayList<Enchere>();
+	//categorie article
+	private Categorie categoryArticle;
+	//vers retrait (1 lieu max)
+	private Retrait lieuRetrait;
+	
+	public ArticleVendu() {
+	}
+
 	public ArticleVendu(long noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
-		super();
+			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente, Utilisateur vendeur, List<Enchere> encheres, Categorie categoryArticle, Retrait lieuRetrait) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -24,6 +39,10 @@ public class ArticleVendu {
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.vendeur = vendeur;
+		this.encheres = encheres;
+		this.categoryArticle = categoryArticle;
+		this.lieuRetrait = lieuRetrait;
 	}
 
 	public long getNoArticle() {
@@ -90,13 +109,63 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
+	public Utilisateur getVendeur() {
+		return vendeur;
+	}
+
+	public void setVendeur(Utilisateur vendeur) {
+		this.vendeur = vendeur;
+	}
+
+	public List<Enchere> getEncheres() {
+		return encheres;
+	}
+
+	public void setEncheres(List<Enchere> encheres) {
+		this.encheres = encheres;
+	}
+
+	public Categorie getCategoryArticle() {
+		return categoryArticle;
+	}
+
+	public void setCategoryArticle(Categorie categoryArticle) {
+		this.categoryArticle = categoryArticle;
+	}
+
+	public Retrait getLieuRetrait() {
+		return lieuRetrait;
+	}
+
+	public void setLieuRetrait(Retrait lieuRetrait) {
+		this.lieuRetrait = lieuRetrait;
+	}
+
 	@Override
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", vendeur=" + vendeur
+				+ ", acheteur=" + ", encheres=" + encheres + ", categoryArticle=" + categoryArticle
+				+ ", lieuRetrait=" + lieuRetrait + "]";
 	}
 
-	
+	@Override
+	public int hashCode() {
+		return Objects.hash(lieuRetrait, noArticle, vendeur);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArticleVendu other = (ArticleVendu) obj;
+		return Objects.equals(lieuRetrait, other.lieuRetrait) && noArticle == other.noArticle
+				&& Objects.equals(vendeur, other.vendeur);
+	}
 	
 }
