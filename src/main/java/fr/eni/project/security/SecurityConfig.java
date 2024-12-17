@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -28,13 +29,14 @@ public class SecurityConfig {
 	
 		http.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers("/", "/signup", "/css/**").permitAll()
+				.requestMatchers("/user-profile").permitAll()
 				.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				//personnalise la connexion 
 				.formLogin(form -> form
 					    .loginPage("/login")
-					    .defaultSuccessUrl("/user-profile", true)  // Redirection après une connexion réussie
-					    .failureUrl("/login?error=true")  // URL en cas d'erreur
+					    .defaultSuccessUrl("/user-profile")  // Redirection après une connexion réussie
+					    //.failureUrl("/login?error=true")  // URL en cas d'erreur
 					    .permitAll())
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //définit l'url permettant de se déconnecter
@@ -45,10 +47,9 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	public String passwordEncoder(String motDePasseSaisi) {
-	    return PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(motDePasseSaisi);
-	}
+	
+	
+  
 	
     @Bean
     public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
