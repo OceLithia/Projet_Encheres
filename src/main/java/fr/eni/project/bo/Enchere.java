@@ -2,6 +2,7 @@ package fr.eni.project.bo;
 
 import java.time.LocalDate;
 
+
 public class Enchere {
 
 	private LocalDate dateEncheres;
@@ -9,12 +10,23 @@ public class Enchere {
 	private long noUtilisateur;
 	private long noArticle;
 	
-	public Enchere(LocalDate dateEncheres, int montant_enchere, long noUtilisateur, long noArticle) {
-		super();
+	//relations
+	//user qui fait l'enchere
+	private Utilisateur acheteur;
+	//article sur lequel l'enchere est faite
+	private ArticleVendu articleVendu;
+	
+	public Enchere() {
+	}
+
+	public Enchere(LocalDate dateEncheres, int montant_enchere, Utilisateur acheteur, ArticleVendu articleVendu, long noUtilisateur, long noArticle) {
 		this.dateEncheres = dateEncheres;
 		this.montant_enchere = montant_enchere;
+		this.acheteur = acheteur;
+		this.articleVendu = articleVendu;
 		this.noUtilisateur = noUtilisateur;
 		this.noArticle = noArticle;
+
 	}
 
 	public LocalDate getDateEncheres() {
@@ -48,16 +60,30 @@ public class Enchere {
 	public void setNoArticle(long noArticle) {
 		this.noArticle = noArticle;
 	}
+	
+	public Utilisateur getUtilisateur() {
+		return acheteur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.acheteur = utilisateur;
+	}
+
+	public ArticleVendu getArticleVendu() {
+		return articleVendu;
+	}
+
+	public void setArticleVendu(ArticleVendu articleVendu) {
+		this.articleVendu = articleVendu;
+
+	}
 
 	@Override
 	public String toString() {
 		return "Enchere [dateEncheres=" + dateEncheres + ", montant_enchere=" + montant_enchere + ", noUtilisateur="
-				+ noUtilisateur + ", noArticle=" + noArticle + "]";
+				+ noUtilisateur + ", noArticle=" + noArticle + ", acheteur=" + acheteur + ", articleVendu="
+				+ articleVendu + "]";
 	}
-	
-	
 
-	
-	
-	
 }
+	

@@ -1,9 +1,7 @@
 package fr.eni.project.dal;
 
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
-
 import fr.eni.project.bo.Enchere;
 
 @Repository

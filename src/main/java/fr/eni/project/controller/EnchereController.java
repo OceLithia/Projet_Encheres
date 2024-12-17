@@ -13,6 +13,7 @@ import fr.eni.project.bo.Enchere;
 //@SessionAttributes({"utilisateur-profile"})
 public class EnchereController {
 
+
 	private EnchereService enchereService;
 
 	public EnchereController(EnchereService enchereService) {
