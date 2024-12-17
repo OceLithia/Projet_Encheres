@@ -1,8 +1,12 @@
 package fr.eni.project.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bo.Enchere;
 
 @Controller
@@ -10,10 +14,21 @@ import fr.eni.project.bo.Enchere;
 @SessionAttributes({"utilisateur-profile"})
 public class EnchereController {
 
-	private Enchere enchere;
-
-	public EnchereController(Enchere enchere) {
-		this.enchere = enchere;
+	private EnchereService enchereService;
+	
+	public EnchereController(EnchereService enchereService) {
+		this.enchereService = enchereService;
 	}
+
+	@GetMapping
+	public String afficherEncheres(Model model) {
+		List<Enchere> encheres = this.enchereService.afficherEncheres();
+		model.addAttribute("encheres", encheres);
+		return "index";
+		}
+	
+	
+	
+	
 	
 }

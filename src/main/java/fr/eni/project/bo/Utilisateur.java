@@ -25,11 +25,11 @@ public class Utilisateur {
 	public Utilisateur() {
 	}
 
-
-	
-
-	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String codePostal, String ville, String motDePasse, int credit, boolean administrateur) {
+	public Utilisateur(long noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone,
+			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur,
+			List<Enchere> encheres, List<ArticleVendu> articlesVendus) {
+		super();
+		this.noUtilisateur = noUtilisateur;
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -41,10 +41,9 @@ public class Utilisateur {
 		this.motDePasse = motDePasse;
 		this.credit = credit;
 		this.administrateur = administrateur;
+		this.encheres = encheres;
+		this.articlesVendus = articlesVendus;
 	}
-
-
-
 
 	public long getNoUtilisateur() {
 		return noUtilisateur;

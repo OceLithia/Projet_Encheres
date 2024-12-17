@@ -1,14 +1,12 @@
 package fr.eni.project.dal;
 
 import java.util.List;
-
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import fr.eni.project.bo.Categorie;
 
 @Repository
@@ -38,5 +36,19 @@ public class CategorieDAOImpl implements CategorieDAO {
 	public List<Categorie> findAll() {
 		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Categorie.class));
 	}
+/*
+	@Override
+	public Categorie afficherCategories(long noCategorie) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noCategorie", noCategorie);
+		
+		return this.jdbcTemplate.queryForObject(noCategorie, map, new BeanPropertyRowMapper<>(Categorie.class));
+	}
+*/
 
+	@Override
+	public Categorie afficherCategories(long noCategorie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

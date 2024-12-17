@@ -12,9 +12,12 @@ public class ArticleVendu {
 	private int miseAPrix;
 	private int prixVente;
 	private String etatVente;
+	private long noUtilisateur;
+	private long noCategorie;
 	
 	public ArticleVendu(long noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente) {
+			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente, long noUtilisateur,
+			long noCategorie) {
 		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -24,6 +27,8 @@ public class ArticleVendu {
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.noUtilisateur = noUtilisateur;
+		this.noCategorie = noCategorie;
 	}
 
 	public long getNoArticle() {
@@ -90,13 +95,31 @@ public class ArticleVendu {
 		this.etatVente = etatVente;
 	}
 
+	public long getNoUtilisateur() {
+		return noUtilisateur;
+	}
+
+	public void setNoUtilisateur(long noUtilisateur) {
+		this.noUtilisateur = noUtilisateur;
+	}
+
+	public long getNoCategorie() {
+		return noCategorie;
+	}
+
+	public void setNoCategorie(long noCategorie) {
+		this.noCategorie = noCategorie;
+	}
+
 	@Override
 	public String toString() {
 		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", noUtilisateur="
+				+ noUtilisateur + ", noCategorie=" + noCategorie + "]";
 	}
-
 	
+	
+
 	
 }
