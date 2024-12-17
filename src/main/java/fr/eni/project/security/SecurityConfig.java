@@ -48,7 +48,10 @@ public class SecurityConfig {
 	}
 
 	
-	
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new CustomBCryptPasswordEncoder(); // Utilisation du Custom BCrypt
+    }
   
 	
     @Bean
@@ -63,8 +66,9 @@ public class SecurityConfig {
 
         // Requête pour mapper les rôles en fonction du booléen administrateur
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-            "SELECT pseudo AS username, CASE WHEN administrateur = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END AS authority FROM UTILISATEURS WHERE pseudo = ?"
-        );
+        	    "SELECT pseudo AS username, COALESCE(CASE WHEN administrateur = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END, 'ROLE_USER') AS authority FROM UTILISATEURS WHERE pseudo = ?"
+        	);
+
 
         return jdbcUserDetailsManager;
     }

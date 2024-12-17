@@ -54,13 +54,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	public Utilisateur read(String pseudo) {
 	    MapSqlParameterSource map = new MapSqlParameterSource();
 	    map.addValue("pseudo", pseudo);
-
-	    List<Utilisateur> utilisateurs = jdbcTemplate.query(FIND_BY_PSEUDO, map, new BeanPropertyRowMapper<>(Utilisateur.class));
-	    
-	    if (utilisateurs.isEmpty()) {
-	        return null; // Aucun utilisateur trouvé
-	    }
-	    return utilisateurs.get(0); // Retourne le premier utilisateur
+	    return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, map, new BeanPropertyRowMapper<>(Utilisateur.class)); 
 	}
 
 	

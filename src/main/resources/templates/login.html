@@ -7,7 +7,7 @@
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/login}" method="post" class="login-form">
     <ul th:if="${param.error}">
         <li>Identifiant ou mot de passe incorrect</li>
     </ul>
