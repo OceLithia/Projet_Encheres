@@ -1,10 +1,9 @@
 package fr.eni.project.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.Utilisateur;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController {
 
+	@Autowired
 	private UtilisateurService utilisateurService;
 
 	public LoginController(UtilisateurService utilisateurService) {
