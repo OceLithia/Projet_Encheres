@@ -1,9 +1,13 @@
 package fr.eni.project.dal;
 
+import java.util.List;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.project.bo.Utilisateur;
@@ -12,6 +16,8 @@ import fr.eni.project.bo.Utilisateur;
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	private static final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :code_postal, :ville, :mot_de_passe, :credit, :administrateur)";
+	private static final String FIND_ALL = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS";
+	private static final String FIND_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = :pseudo";
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -21,6 +27,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	
 	@Override
 	public void createUser(Utilisateur utilisateur) {
+	    
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		// Préparation des paramètres pour l'insertion
@@ -36,16 +43,35 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("credit", utilisateur.getCredit());
 		map.addValue("administrateur", utilisateur.isAdministrateur());
 		
-		// TODO Auto-generated method stub
-		
 		// Exécution de l'insertion
 		jdbcTemplate.update(INSERT, map, keyHolder);
 
-		// Mise à jour de l'ID du film avec la clé générée
+		// Mise à jour de l'ID de l'utilisateur avec la clé générée
 		if (keyHolder.getKey() != null) {
 			utilisateur.setNoUtilisateur(keyHolder.getKey().longValue());
 		}
 		
 	}
+	
+	@Override
+	public Utilisateur read(String pseudo) {
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("pseudo", pseudo);
+
+	    List<Utilisateur> utilisateurs = jdbcTemplate.query(FIND_BY_PSEUDO, map, new BeanPropertyRowMapper<>(Utilisateur.class));
+	    
+	    if (utilisateurs.isEmpty()) {
+	        return null; // Aucun utilisateur trouvé
+	    }
+	    return utilisateurs.get(0); // Retourne le premier utilisateur
+	}
+
+	
+	@Override
+	public List<Utilisateur> findAll() {
+		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Utilisateur.class));
+	}
+	
+	
 
 }
