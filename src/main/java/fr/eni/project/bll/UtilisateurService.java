@@ -17,6 +17,8 @@ public interface UtilisateurService {
 
 	void supprimerUtilisateur(Utilisateur utilisateur);
 
+	void mettreAJourUtilisateur(Utilisateur utilisateur);
+
 
 	
 }

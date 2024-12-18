@@ -18,7 +18,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String FIND_BY_PSEUDO = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE pseudo = :pseudo";
 	private static final String FIND_BY_ID = "SELECT no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur FROM UTILISATEURS WHERE no_utilisateur = :id";
 	private static final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE no_utilisateur = :id";
-	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, code_postal = :code_postal, ville = :ville, mot_de_passe = :mot_de_passe WHERE pseudo = :pseudo";
+	private static final String UPDATE = "UPDATE UTILISATEURS SET pseudo = :pseudo, nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, code_postal = :code_postal, ville = :ville, mot_de_passe = :mot_de_passe WHERE no_utilisateur = :id";
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -84,7 +84,18 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	@Override
 	public void update(Utilisateur utilisateur) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("id", utilisateur.getNoUtilisateur());
+		map.addValue("pseudo", utilisateur.getPseudo());
 		map.addValue("nom", utilisateur.getNom());
+		map.addValue("prenom", utilisateur.getPrenom());
+		map.addValue("email", utilisateur.getEmail());
+		map.addValue("telephone", utilisateur.getTelephone());
+		map.addValue("rue", utilisateur.getRue());
+		map.addValue("code_postal", utilisateur.getCodePostal());
+		map.addValue("ville", utilisateur.getVille());
+		map.addValue("mot_de_passe", utilisateur.getMotDePasse());
+		map.addValue("credit", utilisateur.getCredit());
+		map.addValue("administrateur", utilisateur.isAdministrateur());
 		this.jdbcTemplate.update(UPDATE, map);
 	}
 	
