@@ -1,6 +1,7 @@
 package fr.eni.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,16 +19,11 @@ public class UtilisateurController {
 	@Autowired
 	private UtilisateurService utilisateurService;
 
-
-	
-	
 	@GetMapping("/login")
 	public String afficherSeConnecter() {
 		return "login";
 	}
 	
-	
-
 	@GetMapping("/signup")
 	public String afficherSinscrire(Model model) {
 		model.addAttribute("utilisateur", new Utilisateur());
@@ -43,12 +39,10 @@ public class UtilisateurController {
 		return "redirect:/user-profile";
 	}
 	
-	
 	@GetMapping("/user-profile")
-	public String afficherProfilUtilisateur(/*Authentication authentication, */Model model) {
+	public String afficherProfilUtilisateur(Authentication authentication, Model model) {
 		System.out.println("afficherProfilUtilisateur ");
-		//String pseudoUtilisateur = authentication.getName();
-		String pseudoUtilisateur = "pseudo6";
+		String pseudoUtilisateur = authentication.getName();
 		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
 	    if (utilisateur == null) {
 	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
