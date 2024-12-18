@@ -2,26 +2,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Accueil</title>
+<title>encheres</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-    <form action="#" method="get">
-        <label for="categorie">Choisir une catégorie:</label>
-        <select id="categorie" name="categorie" th:field="*{categorie}">
-            <option th:each="categorie : ${categories}" 
-                    th:value="${categorie.noCategorie}" 
-                    th:text="${categorie.libelle}">Catégorie</option>
-        </select>
-        <button type="submit">Filtrer</button>
-    </form>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
 
-    <!-- Affichage des objets en fonction de la catégorie -->
-    <div>
-        <h2>Articles</h2>
-        <!-- Afficher les articles selon la catégorie sélectionnée ici -->
-    </div>
-</body>
+	<h1>Liste des enchères</h1>
+		
+	<table>
+		<!-- entête -->
+			<thead>
+				<th>Article</th>
+				<th>Etat de la vente</th>
+				<th>Mise à prix</th>
+				<th>Se termine</th>
+				<th>Voir plus</th>
+			</thead>
+	<tr th:each="e : ${article}">
+				<td th:text="${e.nomArticle}"></td>
+				<td th:text="${e.etatVente}"></td>
+				<td th:text="${e.miseAPrix}"></td>
+				<td th:text="${e.dateFinEncheres}"></td>
+				<td><a th:href="@{/article/details(id=${e.id})}">Détails</a></td>
+			</tr>
+	</table>
+
 <footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+</body>
 </html>
+
+	

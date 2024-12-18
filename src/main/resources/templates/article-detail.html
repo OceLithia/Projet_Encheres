@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>encheres</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
+
+<form action="" >
+		<h1>Détail de l'article</h1>
+		<ul>
+			<label for="">Categorie :</label>
+			<input type="text" th:value="${article.categorie}" />
+		</ul>
+		<ul>
+			<label for="">noArticle :</label>
+			<input type="text" th:value="${article.noArticle}" />
+		</ul>
+		<ul>
+			<label for="">dateDebutEncheres :</label>
+			<input type="date" th:value="${article.dateDebutEncheres}" />
+		</ul>
+		<ul>
+			<label for="">dateFinEncheres :</label>
+			<input type="text" th:value="${article.dateFinEncheres}" />
+		</ul>
+		<ul>
+			<label for="">miseAPrix :</label>
+			<input type="text" th:value="${article.miseAPrix}" />
+		</ul>
+				<ul>
+			<label for="">vendeur :</label>
+			<input type="text" th:value="${article.vendeur}" />
+		</ul>
+				<ul>
+			<label for="">lieuRetrait :</label>
+			<input type="text" th:value="${article.lieuRetrait}" />
+		</ul>
+
+	</form>
+	
+<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+</body>
+</html>

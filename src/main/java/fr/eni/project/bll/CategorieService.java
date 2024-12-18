@@ -8,5 +8,9 @@ public interface CategorieService {
 	void addCategory(Categorie category);
 	List<Categorie> readCategory();
 	List<Categorie> getAllCategories();
+	static Object getArticlesByCategorie(Integer categorieId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

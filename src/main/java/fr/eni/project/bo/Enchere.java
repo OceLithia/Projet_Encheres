@@ -16,9 +16,27 @@ public class Enchere {
 	//article sur lequel l'enchere est faite
 	private ArticleVendu articleVendu;
 	
+
+	
+	private Categorie categorie;
+	
+	public Enchere(Categorie categorie) {
+		super();
+		this.categorie = categorie;
+	}
+	public Categorie getCategorie() {
+		return categorie;
+	}
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
+
+
 	public Enchere() {
 	}
 
+	
 	public Enchere(LocalDate dateEncheres, int montant_enchere, Utilisateur acheteur, ArticleVendu articleVendu, long noUtilisateur, long noArticle) {
 		this.dateEncheres = dateEncheres;
 		this.montant_enchere = montant_enchere;

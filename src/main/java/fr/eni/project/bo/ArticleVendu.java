@@ -35,7 +35,6 @@ public class ArticleVendu {
 			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente, long noUtilisateur,
 			long noCategorie, Utilisateur vendeur, List<Enchere> encheres, Categorie categoryArticle,
 			Retrait lieuRetrait) {
-		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;

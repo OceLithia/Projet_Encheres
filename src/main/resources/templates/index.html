@@ -5,27 +5,31 @@
 <title>Accueil</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
-<body>
-	<h1>Liste des enchères</h1>
-	<div>
 
-<!-- 	<form action="/" method="post">
-	<label for="search">Filtres : <input id="searchArticle"
-				type="text" />
-	</label>
-	<label for="categorie">Catégorie : </label> <select
-				th:field="*{categories}" id="noCategorie" >
-					<option th:each="c : ${categorieSession}" th:value="${c.noCategorie}"
-						th:text="${c.libelle}"></option>
-			</select>
-			<button type="submit">Rechercher</button>
-	</form> -->
+<body>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
+
+	<h1>Welcome</h1>
+	
+	<form action="@{/encheres}" method="post">
+	 <label for="categorie">Choisir une catégorie :</label>
+        <select id="categorie" name="categorie" th:field="*{categorie}">
+            <option th:each="categorie : ${categories}" 
+                    th:value="${categorie.noCategorie}" 
+                    th:text="${categorie.libelle}">Catégories</option>
+        </select>
+        <button type="submit">Filtrer</button>
+	</form>
 
 	</div>
 	<!-- <div>
 	Liste des enchères (encours) via une liste encheres ou article vendu ?
-	</div> -->
+	</div>-->
+
+<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>	
 </body>
-<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+
 </html>
+
+
+
