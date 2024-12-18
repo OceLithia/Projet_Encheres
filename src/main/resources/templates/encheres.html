@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Accueil</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
+<body>
+    <form action="#" method="get">
+        <label for="categorie">Choisir une catégorie:</label>
+        <select id="categorie" name="categorie" th:field="*{categorie}">
+            <option th:each="categorie : ${categories}" 
+                    th:value="${categorie.noCategorie}" 
+                    th:text="${categorie.libelle}">Catégorie</option>
+        </select>
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <!-- Affichage des objets en fonction de la catégorie -->
+    <div>
+        <h2>Articles</h2>
+        <!-- Afficher les articles selon la catégorie sélectionnée ici -->
+    </div>
+</body>
+<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+</html>

@@ -7,5 +7,6 @@ public interface CategorieService {
 
 	void addCategory(Categorie category);
 	List<Categorie> readCategory();
+	List<Categorie> getAllCategories();
 	
 }

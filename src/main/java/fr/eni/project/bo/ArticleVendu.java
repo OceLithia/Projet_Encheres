@@ -193,5 +193,7 @@ public class ArticleVendu {
 		return Objects.equals(lieuRetrait, other.lieuRetrait) && noArticle == other.noArticle
 				&& Objects.equals(vendeur, other.vendeur);
 	}
+
+
 	
 }
