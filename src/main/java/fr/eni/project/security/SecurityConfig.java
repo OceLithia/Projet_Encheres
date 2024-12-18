@@ -2,7 +2,6 @@ package fr.eni.project.security;
 
 
 import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -72,5 +71,6 @@ public class SecurityConfig {
 
         return jdbcUserDetailsManager;
     }
-
+    
+    
 }

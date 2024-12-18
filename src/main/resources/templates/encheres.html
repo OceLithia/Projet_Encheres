@@ -2,17 +2,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Accueil</title>
+<title>Encheres</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-    <form action="#" method="get">
+    <form action="@{/encheres}" method="get">
         <label for="categorie">Choisir une catégorie:</label>
         <select id="categorie" name="categorie" th:field="*{categorie}">
             <option th:each="categorie : ${categories}" 
                     th:value="${categorie.noCategorie}" 
-                    th:text="${categorie.libelle}">Catégorie</option>
+                    th:text="${categorie.libelle}">CatégorieS</option>
         </select>
         <button type="submit">Filtrer</button>
     </form>
