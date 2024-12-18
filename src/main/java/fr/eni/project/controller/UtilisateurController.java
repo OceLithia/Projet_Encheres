@@ -42,11 +42,10 @@ public class UtilisateurController {
 	@GetMapping("/user-profile")
 	public String afficherProfilUtilisateur(Authentication authentication, Model model) {
 		System.out.println("afficherProfilUtilisateur ");
-		String pseudoUtilisateur = authentication.getName();
 		System.out.println(authentication);
-		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 	    if (utilisateur == null) {
-	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
+	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
 	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 	    }
 		model.addAttribute("utilisateur", utilisateur);
@@ -56,32 +55,16 @@ public class UtilisateurController {
 	@GetMapping("/details")
 	public String afficherModifierProfil(Authentication authentication, Model model) {
 		System.out.println("afficherModifierProfil");
-		String pseudoUtilisateur = authentication.getName();
-		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
-	    if (utilisateur == null) {
-	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
-	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		// Si le champ motDePasse est vide, conservez l'ancien mot de passe
+	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
+	        utilisateur.setMotDePasse(utilisateur.getMotDePasse());
 	    }
+
+	   
 		model.addAttribute("utilisateur", utilisateur);
 		return "user-profile-details";
 	}
-	
-	/*
-	@PostMapping("/update-user")
-	public String modifierProfil(Authentication authentication, Model model) {
-		System.out.println("modifierProfil");
-		String pseudoUtilisateur = authentication.getName();
-		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
-	    if (utilisateur == null) {
-	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
-	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
-	    }
-	    utilisateurService.mettreAJourUtilisateur(utilisateur);
-		model.addAttribute("utilisateur", utilisateur);
-		model.addAttribute("message", "Votre profil a été mis à jour avec succès.");
-		return "redirect:/user-profile";
-	}
-	*/
 	
 	@PostMapping("/update-user")
 	public String modifierProfil(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, Model model) {

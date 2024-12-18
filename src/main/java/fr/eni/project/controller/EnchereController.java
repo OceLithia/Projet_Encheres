@@ -22,14 +22,11 @@ public class EnchereController {
 
     @Autowired
     private CategorieService categorieService;
+    @Autowired
 	private EnchereService enchereService;
 	@Autowired
 	private UtilisateurService addressUser;
 	
-
-	public EnchereController(EnchereService enchereService) {
-		this.enchereService = enchereService;
-	}
 /*
 	@GetMapping
 	public String afficherEncheres(Model model) {

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Profil utilisateur</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
+<!-- <link rel="stylesheet" th:href="@{/css/style.css}" /> -->
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
@@ -39,6 +39,10 @@
         <tr>
             <th>Ville :</th>
             <td th:text="${utilisateur.ville}"></td>
+        </tr>
+        <tr>
+            <th>Crédits :</th>
+            <td th:text="${utilisateur.credit}"></td>
         </tr>
     </table>
     <a href="/details">Modifier mon profil</a>

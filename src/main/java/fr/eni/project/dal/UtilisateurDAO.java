@@ -17,5 +17,7 @@ public interface UtilisateurDAO {
 	void delete(Utilisateur utilisateur);
 
 	void update(Utilisateur utilisateur);
+
+	String getMotDePasseEncode(Utilisateur utilisateur);
 	
 }
