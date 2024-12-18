@@ -11,17 +11,18 @@
 
 	<h1>Welcome</h1>
 	
-	<form action="@{/encheres}" method="post">
+	<form action="@{/encheres}" method="get" th:object="${filtre}">
 	 <label for="categorie">Choisir une catégorie :</label>
-        <select id="categorie" name="categorie" th:field="*{categorie}">
-            <option th:each="categorie : ${categories}" 
-                    th:value="${categorie.noCategorie}" 
-                    th:text="${categorie.libelle}">Catégories</option>
+	
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option th:each="cat : ${categories}" 
+                    th:value="${cat}" 
+                    th:text="${cat}" 
+                    th:selected="${cat == selectedCategory}"></option>
         </select>
-        <button type="submit">Filtrer</button>
-	</form>
-
-	</div>
+    </form>
+    
+ 
 	<!-- <div>
 	Liste des enchères (encours) via une liste encheres ou article vendu ?
 	</div>-->
@@ -30,6 +31,3 @@
 </body>
 
 </html>
-
-
-
