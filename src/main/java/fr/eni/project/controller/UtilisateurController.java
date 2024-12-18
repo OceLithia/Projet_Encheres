@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.Utilisateur;
 import jakarta.validation.Valid;

@@ -1,13 +1,13 @@
 package fr.eni.project.bll;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import fr.eni.project.bo.Categorie;
+import fr.eni.project.bo.Filtre;
 import fr.eni.project.dal.CategorieDAO;
+import fr.eni.project.exception.BusinessException;
 
 @Service
 public class CategorieServiceImpl implements CategorieService {
@@ -40,9 +40,15 @@ public class CategorieServiceImpl implements CategorieService {
 	public void addCategory(Categorie category) {
 		categorieDAO.createCategory(category);
 	}
+	
+	public void rechercherParFiltre(Filtre filtre) throws BusinessException {
+		BusinessException be = new BusinessException();
+
+	}
 
 	@Override
 	public Categorie consulterCategorieParId(long id) {
-		return categorieDAO.afficherCategorie(id);
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

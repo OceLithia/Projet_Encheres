@@ -1,41 +1,47 @@
 package fr.eni.project.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Enchere;
+import fr.eni.project.bo.Filtre;
 import fr.eni.project.bo.Utilisateur;
+import fr.eni.project.dal.CategorieDAO;
+import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping
 //@SessionAttributes({"utilisateur-profile"})
 public class EnchereController {
 
 	@Autowired
 	private CategorieService categorieService;
+	@Autowired
 	private EnchereService enchereService;
 	@Autowired
 	private UtilisateurService addressUser;
-
-	public EnchereController(EnchereService enchereService) {
-		this.enchereService = enchereService;
-	}
+	@Autowired
+	private CategorieDAO categorieDAO;
 
 	/*
 	 * @GetMapping public String afficherEncheres(Model model) { List<Enchere>
 	 * encheres = this.enchereService.afficherEncheres();
 	 * model.addAttribute("encheres", encheres); return "index"; }
 	 */
+
 	@GetMapping("/sell-article")
 	public String afficherVendreArticle(Authentication authentication, Model model) {
 		// Création d'un nouvel article à vendre
@@ -94,7 +100,38 @@ public class EnchereController {
 		return "encheres";
 	}
 
-	/**
-	 * 
-	 */
+	@GetMapping("/article-details")
+	public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
+		Enchere e = this.enchereService.consulterEnchereParId(id);
+		System.out.println(e);
+		model.addAttribute("encheres", e);
+		return "article-details";
+	}
+
+	@PostMapping("/filtrer")
+	public String rechercheParFiltre(@Valid @ModelAttribute Filtre filtre, BindingResult bindingResult) {
+		return "encheres";
+	}
+
+	@GetMapping("/")
+	public String index(@RequestParam(value = "categorie", required = false) String category, Model model) {
+		// Récupérer les catégories depuis la base de données
+		List<Categorie> categories = categorieDAO.findAll();
+
+		// Liste simulée des objets
+		List<String> objets = List.of("Objet 1 - Catégorie 1", "Objet 2 - Catégorie 2", "Objet 3 - Catégorie 1",
+				"Objet 4 - Catégorie 3");
+
+		// Si une catégorie est sélectionnée, filtrer les objets
+		if (categories != null) {
+			objets = objets.stream().filter(obj -> obj.contains(obj)).toList();
+		}
+
+		// Ajouter les données au modèle
+		model.addAttribute("categories", categories);
+		model.addAttribute("objets", objets);
+		model.addAttribute("selectedCategory", category); // Conserve la catégorie sélectionnée
+		return "index";
+	}
+
 }
