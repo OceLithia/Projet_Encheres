@@ -14,6 +14,12 @@ public class Categorie {
 		this.article = article;
 	}
 
+
+	public Categorie() {
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public long getNoCategorie() {
 		return noCategorie;
 	}

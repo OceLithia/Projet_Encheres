@@ -12,6 +12,11 @@ public interface UtilisateurService {
 	List<Utilisateur> afficherUtilisateurs();
 
 	Utilisateur afficherUtilisateurParPseudo(String pseudo);
+	
+	Utilisateur afficherUtilisateurParId(long idUtilisateur);
+
+	void supprimerUtilisateur(Utilisateur utilisateur);
+
 
 	
 }
