@@ -1,73 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Vendre un article</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link rel="stylesheet" th:href="@{/css/form-sell-article.css}" />
+<meta charset="UTF-8">
+<title>Vendre un article</title>
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/form-sell-article.css}" />
 </head>
 <body>
-    <div th:replace="~{fragments/fragment-entete::entete}"></div>
-    <h2>Nouvelle vente</h2>
+	<div th:replace="~{fragments/fragment-entete::entete}"></div>
+	<h2>Nouvelle vente</h2>
 
-    <!-- Formulaire de vente d'article -->
-    <form th:action="@{/sell-article}" method="post" enctype="multipart/form-data" th:object="${articleVendu}">
-        <ul>
-            <li>
-                <label for="nomArticle">Article : </label>
-                <input type="text" id="nomArticle" th:field="*{nomArticle}" required />
-            </li>
-            <li>
-                <label for="description">Description : </label>
-                <textarea name="description" id="description" cols="30" rows="10" th:field="*{description}" required></textarea>
-            </li>
-            <li>
-                <label for="categorie">Catégorie : </label>
-                <select name="categorie" id="categorie" th:field="*{categorie}">
-                    <option value="">Sélectionner une catégorie</option>
-                    <!-- Liste des catégories -->
-                    <option value="1">Catégorie 1</option>
-                    <option value="2">Catégorie 2</option>
-                </select>
-            </li>
-            <li>
-                <label for="photo">Photo de l'article : </label>
-                <input type="file" accept="image/*" id="photo" th:field="*{photo}" />
-            </li>
-            <li>
-                <label for="miseAPrix">Mise à prix : </label>
-                <input type="number" id="miseAPrix" th:field="*{miseAPrix}" required />
-            </li>
-            <li>
-                <label for="dateDebutEncheres">Début de l'enchère : </label>
-                <input type="date" id="dateDebutEncheres" th:field="*{dateDebutEncheres}" required />
-            </li>
-            <li>
-                <label for="dateFinEncheres">Fin de l'enchère : </label>
-                <input type="date" id="dateFinEncheres" th:field="*{dateFinEncheres}" required />
-            </li>
-        </ul>
+	<!-- Formulaire de vente d'article -->
+	<form th:action="@{/sell-article}" method="post"
+		enctype="multipart/form-data" th:object="${articleVendu}">
+		<ul>
+			<li><label for="nomArticle">Article : </label> <input
+				type="text" id="nomArticle" th:field="*{nomArticle}" required /></li>
+			<li><label for="description">Description : </label> <textarea
+					id="description" cols="30" rows="10" th:field="*{description}"
+					required></textarea></li>
+			<li><label for="idCategorie">Catégorie : </label> <select
+				id="categorie" th:field="*{noCategorie}">
+					<option th:each="category : ${categories}"
+						th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
+			</select></li>
+			<li><label for="photo">Photo de l'article : </label> <input
+				type="file" accept="image/*" id="photo"  /></li>
+			<li><label for="miseAPrix">Mise à prix : </label> <input
+				type="number" id="miseAPrix" th:field="*{miseAPrix}" required /></li>
+			<li><label for="dateDebutEncheres">Début de l'enchère :
+			</label> <input type="date" id="dateDebutEncheres"
+				th:field="*{dateDebutEncheres}" required /></li>
+			<li><label for="dateFinEncheres">Fin de l'enchère : </label> <input
+				type="date" id="dateFinEncheres" th:field="*{dateFinEncheres}"
+				required /></li>
+		</ul>
 
-        <!-- Formulaire de retrait de l'utilisateur -->
-        <h3>Retrait</h3>
-        <ul>
-            <li>
-                <label for="idRue">Rue : </label>
-                <input type="text" id="idRue" name="rue" th:value="${utilisateur.rue}" required />
-            </li>
-            <li>
-                <label for="idCodePostal">Code Postal : </label>
-                <input type="text" id="idCodePostal" name="codePostal" th:value="${utilisateur.codePostal}" required />
-            </li>
-            <li>
-                <label for="idVille">Ville : </label>
-                <input type="text" id="idVille" name="ville" th:value="${utilisateur.ville}" required />
-            </li>
-        </ul>
+		<h3>Retrait</h3>
+		<ul>
+			<li><label for="idRue">Rue : </label> <input type="text"
+				id="idRue" th:field="*{vendeur.rue}" required /></li>
+			<li><label for="idCodePostal">Code Postal : </label> <input
+				type="text" id="idCodePostal" th:field="*{vendeur.codePostal}"
+				required /></li>
+			<li><label for="idVille">Ville : </label> <input type="text"
+				id="idVille" th:field="*{vendeur.ville}" required /></li>
+		</ul>
 
-        <!-- Boutons de soumission et d'annulation -->
-        <button type="submit">Enregistrer</button>
-        <button type="reset">Annuler</button>
-    </form>
+		<button type="submit">Enregistrer</button>
+		<button type="reset">Annuler</button>
+	</form>
 </body>
 </html>

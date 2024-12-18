@@ -40,4 +40,9 @@ public class CategorieServiceImpl implements CategorieService {
 	public void addCategory(Categorie category) {
 		categorieDAO.createCategory(category);
 	}
+
+	@Override
+	public Categorie consulterCategorieParId(long id) {
+		return categorieDAO.afficherCategorie(id);
+	}
 }

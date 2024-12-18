@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bll.UtilisateurService;
+import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Enchere;
+import fr.eni.project.bo.Utilisateur;
 
 @Controller
 @RequestMapping
@@ -23,6 +25,7 @@ public class EnchereController {
 	private EnchereService enchereService;
 	@Autowired
 	private UtilisateurService addressUser;
+	
 
 	public EnchereController(EnchereService enchereService) {
 		this.enchereService = enchereService;
@@ -37,7 +40,13 @@ public class EnchereController {
 */
 	@GetMapping("/sell-article")
 	public String afficherVendreArticle(Model model) {
-		model.addAttribute("enchere", new Enchere());
+		ArticleVendu articleVendu = new ArticleVendu();
+		articleVendu.setVendeur(new Utilisateur());
+		// Récupérer la liste des catégories depuis le service
+		List<Categorie> categories = this.categorieService.readCategory();
+		// Ajouter la liste des catégories au modèle
+	    model.addAttribute("categories", categories);
+		model.addAttribute("articleVendu", articleVendu);
 		return "sell-article";
 	}
 
@@ -68,5 +77,9 @@ public class EnchereController {
 	    model.addAttribute("categories", categorieService.getAllCategories());
 	    return "encheres";
 	}
+	
+	/**
+	 * 
+	 */
 }
 

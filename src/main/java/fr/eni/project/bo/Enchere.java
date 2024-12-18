@@ -16,7 +16,6 @@ public class Enchere {
 	//article sur lequel l'enchere est faite
 	private ArticleVendu articleVendu;
 	
-
 	
 	private Categorie categorie;
 	
