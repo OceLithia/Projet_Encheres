@@ -27,7 +27,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    String rawPassword = utilisateur.getMotDePasse(); // Le mot de passe clair
 	    String motDePasseEncode = encoder.encode(rawPassword);*/
 		
-		String motDePasseEncode = "{bcrypt}"+passwordEncoder.encode(utilisateur.getMotDePasse());
+		String motDePasseEncode = passwordEncoder.encode(utilisateur.getMotDePasse());
 		System.out.println(motDePasseEncode);
 		utilisateur.setMotDePasse(motDePasseEncode); // Mettre à jour le mot de passe avec la version encodée
 		utilisateurDAO.createUser(utilisateur);

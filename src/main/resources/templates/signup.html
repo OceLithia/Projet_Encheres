@@ -5,6 +5,7 @@
 <title>Inscription</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
+<div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
 	<form th:action="@{/signup}" method="post" th:object="${utilisateur}">
 

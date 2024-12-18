@@ -6,5 +6,6 @@ import fr.eni.project.bo.Enchere;
 public interface EnchereDAO {
 
 	void createEnchere (Enchere newEnchere);
+	
 	List<Enchere> findAll();
 }

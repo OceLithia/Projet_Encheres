@@ -36,4 +36,15 @@ public class EnchereController {
         model.addAttribute("categories", categorieService.getAllCategories());
         return "encheres";
     }
+
+	
+	@GetMapping("/sell-article")
+	public String afficherVendreArticle(Model model) {
+		model.addAttribute("enchere", new Enchere());
+		return "sell-article";
+	}
+	
+	
+	
 }
+

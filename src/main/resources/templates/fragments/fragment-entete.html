@@ -4,7 +4,7 @@
 	<a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
 	<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
 	<a th:href="@{/encheres}">Encheres</a>
-	<a th:href="@{/sell-article}">Vendre un article</a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
 	<a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
 	<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
 </nav>
