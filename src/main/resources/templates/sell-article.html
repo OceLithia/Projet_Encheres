@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <title>Vendre un article</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/form-sell-article.css}" />
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
 	<h2>Nouvelle vente</h2>
 	<form th:action="@{/sell-article}" method="post"
-		enctype="multipart/form-data" th:object="${artcileVendu}">
+		enctype="multipart/form-data" th:object="${articleVendu}">
 		<ul>
 			<li><label for="nomArticle">Article : </label> <input type="text"
-				th:field="*{nomArticle}" /></li>
+				 /></li>
 			<li><label for="description">Description : </label> <textarea
-					name="description" id="description" cols="30" rows="10" th:field="*{description}"></textarea></li>
+					name="description" id="description" cols="30" rows="10" ></textarea></li>
 			<li><label for="categorie">Catégorie : </label> <select
 				name="categorie" id=""><option
-						th:each="c : ${categoriesSession}" th:value="${c.noCategorie}"
-						th:text="${c.libelle}"></option>
+						></option>
 			</select></li>
 			<li><label for="photo">Photo de l'article </label><input
 				type="file" accept="image/*" /></li>

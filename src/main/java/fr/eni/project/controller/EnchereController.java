@@ -1,10 +1,12 @@
 package fr.eni.project.controller;
 
 import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bo.Enchere;
 
@@ -27,7 +29,11 @@ public class EnchereController {
 		return "index";
 		}
 	
-	
+	@GetMapping("/sell-article")
+	public String afficherVendreArticle(Model model) {
+		model.addAttribute("enchere", new Enchere());
+		return "sell-article";
+	}
 	
 	
 	

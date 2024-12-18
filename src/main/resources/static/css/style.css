@@ -1,6 +1,72 @@
 @charset "ISO-8859-1";
 
+:root {
+    --forest-green: #2C5F2D;
+    --natural-beige: #F5F5DC;
+    --earth-brown: #8B4513;
+    --sage-green: #9DC183;
+    --stone-gray: #7D7D7D;
+    --warm-yellow: #E3B23C;
+    --brick-red: #A42A04;
+}
 
-* {
-	background-color: #fff4f4;
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--natural-beige);
+    color: var(--earth-brown);
+    margin: 0;
+    padding: 0;
+    background-image: url("/img/fond-page-web.jpg");
+    background-size: cover; /* L'image couvre tout l'écran */
+    background-position: center; /* Centrer l'image */
+    background-attachment: fixed; /* L'image reste fixe lorsque tu fais défiler la page */
+    background-repeat: no-repeat; /* Évite que l'image se répète */
+    height: 100vh; /* Utilise 100% de la hauteur de la fenêtre */
+}
+
+/* Navigation */
+nav {
+    background-color: var(--forest-green);
+    color: var(--natural-beige);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: var(--natural-beige);
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--warm-yellow);
+}
+
+/* Conteneur pour les liens de navigation */
+nav a:first-child {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Adaptation mobile */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav a {
+        margin: 5px 0;
+    }
+
+    form {
+        padding: 15px;
+        margin: 20px auto;
+    }
 }
