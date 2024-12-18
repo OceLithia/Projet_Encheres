@@ -15,10 +15,10 @@
 		enctype="multipart/form-data" th:object="${articleVendu}">
 		<ul>
 			<li><label for="nomArticle">Article : </label> <input
-				type="text" id="nomArticle" th:field="*{nomArticle}" required /></li>
+				type="text" id="nomArticle" th:field="*{nomArticle}" required placeholder="Nom de l'article"/></li>
 			<li><label for="description">Description : </label> <textarea
 					id="description" cols="30" rows="10" th:field="*{description}"
-					required></textarea></li>
+					required placeholder="Décrivez en quelques lignes votre article..."></textarea></li>
 			<li><label for="idCategorie">Catégorie : </label> <select
 				id="categorie" th:field="*{noCategorie}">
 					<option th:each="category : ${categories}"
@@ -29,10 +29,10 @@
 			<li><label for="miseAPrix">Mise à prix : </label> <input
 				type="number" id="miseAPrix" th:field="*{miseAPrix}" required /></li>
 			<li><label for="dateDebutEncheres">Début de l'enchère :
-			</label> <input type="date" id="dateDebutEncheres"
+			</label> <input type="datetime-local" id="dateDebutEncheres"
 				th:field="*{dateDebutEncheres}" required /></li>
 			<li><label for="dateFinEncheres">Fin de l'enchère : </label> <input
-				type="date" id="dateFinEncheres" th:field="*{dateFinEncheres}"
+				type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}"
 				required /></li>
 		</ul>
 

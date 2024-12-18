@@ -49,7 +49,7 @@ label {
 }
 
 /* Champs de texte et select */
-input[type="text"], input[type="number"], input[type="date"], textarea, select {
+input[type="text"], input[type="number"], input[type="datetime-local"], textarea, select {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--stone-gray);
