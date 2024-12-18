@@ -1,7 +1,6 @@
 package fr.eni.project.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +16,10 @@ import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Filtre;
 import fr.eni.project.dal.CategorieDAO;
 import jakarta.validation.Valid;
+import fr.eni.project.bll.UtilisateurService;
+import fr.eni.project.bo.ArticleVendu;
+import fr.eni.project.bo.Utilisateur;
+
 
 @Controller
 //@SessionAttributes({"utilisateur-profile"})
@@ -26,13 +29,23 @@ public class EnchereController {
     private CategorieService categorieService;
     
 	private EnchereService enchereService;
+
 	
 	private final CategorieDAO categorieDAO = null;
+
+	@Autowired
+	private UtilisateurService addressUser;
 	
 
 	@GetMapping("/sell-article")
 	public String afficherVendreArticle(Model model) {
-		model.addAttribute("enchere", new Enchere());
+		ArticleVendu articleVendu = new ArticleVendu();
+		articleVendu.setVendeur(new Utilisateur());
+		// Récupérer la liste des catégories depuis le service
+		List<Categorie> categories = this.categorieService.readCategory();
+		// Ajouter la liste des catégories au modèle
+	    model.addAttribute("categories", categories);
+		model.addAttribute("articleVendu", articleVendu);
 		return "sell-article";
 	}
 

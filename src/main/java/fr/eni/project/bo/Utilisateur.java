@@ -1,5 +1,6 @@
 package fr.eni.project.bo;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,10 +24,30 @@ public class Utilisateur {
 	private List<ArticleVendu> articlesVendus = new ArrayList<>();
 
 	public Utilisateur() {
+		
 	}
-
+	
+	
+	
 	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
 			String codePostal, String ville, String motDePasse, int credit, boolean administrateur) {
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.motDePasse = motDePasse;
+		this.credit = credit;
+		this.administrateur = administrateur;
+	}
+
+
+	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone,
+			String rue, String codePostal, String ville, String motDePasse, int credit, boolean administrateur,
+			List<Enchere> encheres, List<ArticleVendu> articlesVendus) {
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -41,6 +62,8 @@ public class Utilisateur {
 		this.encheres = encheres;
 		this.articlesVendus = articlesVendus;
 	}
+
+
 
 	public long getNoUtilisateur() {
 		return noUtilisateur;

@@ -9,9 +9,10 @@
 <body>
 <form th:action="@{/update-user}" th:object="${utilisateur}" method="post">
     <table>
+    <input th:field="*{noUtilisateur}" type="hidden" />
         <tr>
             <th>Pseudo :</th>
-            <td><input th:field="*{pseudo}" type="text" disabled="disabled" /></td>
+            <td><input th:field="*{pseudo}" type="text" /></td>
         </tr>
         <tr>
             <th>Nom :</th>
@@ -41,14 +42,22 @@
             <th>Ville :</th>
             <td><input th:field="*{ville}" type="text" /></td>
         </tr>
+         <tr>
+            <th>Mot de passe actuel :</th>
+            <td><input th:field="*{motDePasse}" type="password" disabled="disabled"/></td>
+        </tr>
         <tr>
-            <th>Mot de passe :</th>
+            <th>Nouveau mot de passe :</th>
             <td><input th:field="*{motDePasse}" type="password" /></td>
+        </tr>
+        <tr>
+            <th>Confirmation :</th>
+            <td><input type="password" /></td>
         </tr>
         <tr>
             <th>Crédit :</th>
             <td><input th:field="*{credit}" type="number" disabled="disabled" /></td>
-        </tr>
+        </tr> 
     </table>
     <button type="submit">Mettre à jour</button>
 </form>

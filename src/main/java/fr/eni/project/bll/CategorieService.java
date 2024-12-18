@@ -8,12 +8,17 @@ import fr.eni.project.exception.BusinessException;
 public interface CategorieService {
 
 	void addCategory(Categorie category);
+	
 	List<Categorie> readCategory();
+	
 	List<Categorie> getAllCategories();
+
 	void rechercherParFiltre(Filtre filtre) throws BusinessException;
+
 	static Object getArticlesByCategorie(Integer categorieId) {
 		// TODO Auto-generated method stub
 		return categorieId;
 	}
 	
+	Categorie consulterCategorieParId(long id);
 }

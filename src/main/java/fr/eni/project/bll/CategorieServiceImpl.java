@@ -43,5 +43,12 @@ public class CategorieServiceImpl implements CategorieService {
 	
 	public void rechercherParFiltre(Filtre filtre) throws BusinessException {
 		BusinessException be = new BusinessException();
+
+	}
+
+	@Override
+	public Categorie consulterCategorieParId(long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

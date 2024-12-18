@@ -9,6 +9,6 @@ public interface CategorieDAO {
 	
 	List<Categorie> findAll();
 	
-	Categorie afficherCategories(long noCategorie);
+	Categorie afficherCategorie(long noCategorie);
 
 }

@@ -62,7 +62,7 @@ public class UtilisateurController {
 	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 	    }
 		model.addAttribute("utilisateur", utilisateur);
-		return "update-user";
+		return "user-profile-details";
 	}
 	
 	/*
@@ -75,10 +75,32 @@ public class UtilisateurController {
 	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
 	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 	    }
+	    utilisateurService.mettreAJourUtilisateur(utilisateur);
 		model.addAttribute("utilisateur", utilisateur);
-		return "update-user";
+		model.addAttribute("message", "Votre profil a été mis à jour avec succès.");
+		return "redirect:/user-profile";
 	}
 	*/
+	
+	@PostMapping("/update-user")
+	public String modifierProfil(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, Model model) {
+	    // Validation des erreurs (si des annotations @Valid sont présentes dans l'entité)
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("utilisateur", utilisateur);
+	        return "user-profile-details"; // Retourne la page avec les erreurs
+	    }
+
+	    // Met à jour l'utilisateur dans la base de données
+	    utilisateurService.mettreAJourUtilisateur(utilisateur);
+
+	    // Ajoute un message de confirmation pour la vue
+	    model.addAttribute("message", "Profil mis à jour avec succès.");
+	    System.out.println(utilisateur);
+
+		return "redirect:/user-profile";
+	}
+	
+	
 	@GetMapping("/delete-profile")
 	public String supprimerProfilUtilisateur(Authentication authentication, Model model) {
 		String pseudoUtilisateur = authentication.getName();
