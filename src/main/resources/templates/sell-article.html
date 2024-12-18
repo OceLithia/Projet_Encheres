@@ -9,7 +9,7 @@
 <body>
 	<h2>Nouvelle vente</h2>
 	<form th:action="@{/sell-article}" method="post"
-		enctype="multipart/form-data" th:object="${artcileVendu}">
+		enctype="multipart/form-data" th:object="${articleVendu}">
 		<ul>
 			<li><label for="nomArticle">Article : </label> <input type="text"
 				th:field="*{nomArticle}" /></li>
