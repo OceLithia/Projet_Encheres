@@ -8,8 +8,14 @@ public interface UtilisateurDAO {
 
 	void createUser(Utilisateur utilisateur);
 
-	Utilisateur read(String pseudo);
+	Utilisateur readByPseudo(String pseudo);
+	
+	Utilisateur readById(long id);
 
 	List<Utilisateur> findAll();
+
+	void delete(Utilisateur utilisateur);
+
+	void update(Utilisateur utilisateur);
 	
 }

@@ -42,7 +42,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur afficherUtilisateurParPseudo(String pseudoUtilisateur) {
-		return utilisateurDAO.read(pseudoUtilisateur);
+		return utilisateurDAO.readByPseudo(pseudoUtilisateur);
+	}
+	
+	@Override
+	public Utilisateur afficherUtilisateurParId(long idUtilisateur) {
+		return utilisateurDAO.readById(idUtilisateur);
+	}
+	
+	@Override
+	public void supprimerUtilisateur(Utilisateur utilisateur) {
+		utilisateurDAO.delete(utilisateur);
 	}
 
 }

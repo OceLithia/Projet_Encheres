@@ -43,6 +43,7 @@ public class UtilisateurController {
 	public String afficherProfilUtilisateur(Authentication authentication, Model model) {
 		System.out.println("afficherProfilUtilisateur ");
 		String pseudoUtilisateur = authentication.getName();
+		System.out.println(authentication);
 		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
 	    if (utilisateur == null) {
 	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
@@ -51,5 +52,52 @@ public class UtilisateurController {
 		model.addAttribute("utilisateur", utilisateur);
 		return "user-profile";
 	}
+	
+	@GetMapping("/details")
+	public String afficherModifierProfil(Authentication authentication, Model model) {
+		System.out.println("afficherModifierProfil");
+		String pseudoUtilisateur = authentication.getName();
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+	    if (utilisateur == null) {
+	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
+	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+	    }
+		model.addAttribute("utilisateur", utilisateur);
+		return "update-user";
+	}
+	
+	/*
+	@PostMapping("/update-user")
+	public String modifierProfil(Authentication authentication, Model model) {
+		System.out.println("modifierProfil");
+		String pseudoUtilisateur = authentication.getName();
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+	    if (utilisateur == null) {
+	        model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + pseudoUtilisateur);
+	        return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+	    }
+		model.addAttribute("utilisateur", utilisateur);
+		return "update-user";
+	}
+	*/
+	@GetMapping("/delete-profile")
+	public String supprimerProfilUtilisateur(Authentication authentication, Model model) {
+		String pseudoUtilisateur = authentication.getName();
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+	    // Vérifier si l'utilisateur existe
+	    if (utilisateur == null) {
+	        model.addAttribute("erreur", "Utilisateur non trouvé.");
+	        return "error-page"; // page d'erreur personnalisée avec Thymeleaf
+	    }
+		utilisateurService.supprimerUtilisateur(utilisateur);
+		
+		System.out.println("utilisateur "+utilisateur.getPseudo()+" supprimé");
+		model.addAttribute("message", "Votre profil a été supprimé avec succès.");
+		authentication.setAuthenticated(false);
+		return "redirect:/";
+	}
+	
+	
+	
 
 }
