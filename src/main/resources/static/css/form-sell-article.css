@@ -1,103 +1,76 @@
 @charset "UTF-8";
+
 :root {
-    --forest-green: #2C5F2D;
-    --natural-beige: #F5F5DC;
-    --earth-brown: #8B4513;
-    --sage-green: #9DC183;
-    --stone-gray: #7D7D7D;
-    --warm-yellow: #E3B23C;
-    --brick-red: #A42A04;
+    --green-leaf: #6B8E23; /* Vert végétal */
+    --earth-brown: #8B4513; /* Marron terreux */
+    --sand-beige: #F5F5DC; /* Beige sable */
+    --sunny-yellow: #E3B23C; /* Jaune doux */
+    --light-wood: #D3B69B; /* Bois clair */
+    --sky-blue: #87CEEB; /* Bleu ciel clair */
 }
 
-/* Conteneur du formulaire */
 form {
-    background-color: var(--natural-beige);
-    color: var(--earth-brown);
-    padding: 20px 30px;
+    background-color: var(--sand-beige);
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    gap: 15px;
     max-width: 500px;
-    width: 90%;
-    margin: 30px auto;
+    margin: 20px auto;
 }
 
-/* Titre du formulaire */
-h2 {
-    text-align: center;
-    color: var(--forest-green);
-    margin-bottom: 20px;
-}
-
-/* Liste des champs */
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Items de la liste */
-ul li {
-    margin-bottom: 15px;
-}
-
-/* Labels */
-label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
+/* Champs de saisie */
+input[type="text"], input[type="email"], input[type="password"], textarea, select {
+    padding: 12px;
+    border: 1px solid var(--earth-brown);
+    border-radius: 5px;
+    background-color: #fff;
     color: var(--earth-brown);
-}
-
-/* Champs de texte et select */
-input[type="text"], input[type="number"], input[type="datetime-local"], textarea, select {
+    font-size: 16px;
     width: 100%;
-    padding: 10px;
-    border: 1px solid var(--stone-gray);
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: #f9f9f9;
-    color: var(--earth-brown);
-    transition: border-color 0.3s;
-}
-
-/* Champs de fichier */
-input[type="file"] {
-    display: block;
-    margin-top: 5px;
 }
 
 /* Focus sur les champs */
 input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: var(--forest-green);
-    background-color: #fff;
+    border-color: var(--green-leaf);
 }
 
 /* Boutons */
 button {
-    background-color: var(--forest-green);
-    color: var(--natural-beige);
-    padding: 10px 15px;
+    background-color: var(--green-leaf); /* Vert végétal pour les boutons */
+    color: white;
+    padding: 12px 20px;
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-right: 10px;
+    font-size: 16px;
 }
 
-/* Bouton au survol */
 button:hover {
-    background-color: var(--sage-green);
+    background-color: var(--sunny-yellow); /* Jaune doux au survol */
 }
 
-/* Bouton de réinitialisation */
-button[type="reset"] {
-    background-color: var(--brick-red);
-    color: var(--natural-beige);
+/* Liens */
+a {
+    color: var(--green-leaf);
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
-button[type="reset"]:hover {
-    background-color: #7A1E03; /* Version plus foncée de brick-red */
+a:hover {
+    color: var(--sunny-yellow); /* Jaune doux au survol */
 }
 
+/* Pied de page */
+footer {
+    background-color: var(--earth-brown);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

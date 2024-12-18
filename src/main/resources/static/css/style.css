@@ -1,72 +1,87 @@
-@charset "ISO-8859-1";
+@charset "UTF-8";
 
 :root {
-    --forest-green: #2C5F2D;
-    --natural-beige: #F5F5DC;
-    --earth-brown: #8B4513;
-    --sage-green: #9DC183;
-    --stone-gray: #7D7D7D;
-    --warm-yellow: #E3B23C;
-    --brick-red: #A42A04;
+	--green-leaf: #6B8E23; /* Vert vÃ©gÃ©tal */
+	--earth-brown: #8B4513; /* Marron terreux */
+	--sand-beige: #F5F5DC; /* Beige sable */
+	--sunny-yellow: #E3B23C; /* Jaune doux */
+	--light-wood: #D3B69B; /* Bois clair */
+	--sky-blue: #87CEEB; /* Bleu ciel clair */
 }
 
-/* Style général */
+/* Style gÃ©nÃ©ral */
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--natural-beige);
-    color: var(--earth-brown);
-    margin: 0;
-    padding: 0;
-    background-image: url("/img/fond-page-web.jpg");
-    background-size: cover; /* L'image couvre tout l'écran */
-    background-position: center; /* Centrer l'image */
-    background-attachment: fixed; /* L'image reste fixe lorsque tu fais défiler la page */
-    background-repeat: no-repeat; /* Évite que l'image se répète */
-    height: 100vh; /* Utilise 100% de la hauteur de la fenêtre */
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: var(--sand-beige); /* Fond beige sable */
+	color: var(--earth-brown); /* Texte marron terre */
+	line-height: 1.6;
+	background-image: url('/img/fond-motif.png');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	height: 100vh;
 }
 
-/* Navigation */
+/* En-tÃªte du site (navigation) */
 nav {
-    background-color: var(--forest-green);
-    color: var(--natural-beige);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	background-color: var(--green-leaf);
+	/* Vert vÃ©gÃ©tal pour la navigation */
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
 }
 
 nav a {
-    color: var(--natural-beige);
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-    transition: color 0.3s;
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
+	margin: 0 15px;
+	font-weight: bold;
+	transition: color 0.3s;
 }
 
 nav a:hover {
-    color: var(--warm-yellow);
+	color: var(--sunny-yellow); /* Jaune doux au survol */
 }
 
-/* Conteneur pour les liens de navigation */
-nav a:first-child {
-    font-size: 20px;
-    font-weight: bold;
+/* Conteneur principal */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
 }
 
-/* Adaptation mobile */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+/* Titres */
+h1, h2, h3 {
+	color: var(--earth-brown);
+	font-family: 'Georgia', serif;
+	text-align: center;
+}
 
-    nav a {
-        margin: 5px 0;
-    }
+/* Section */
+section {
+	padding: 40px 0;
+	background-color: var(--light-wood); /* Bois clair pour les sections */
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
 
-    form {
-        padding: 15px;
-        margin: 20px auto;
-    }
+/* Style mobile - petite taille d'Ã©cran */
+@media ( max-width : 768px) {
+	body {
+		padding: 0 10px;
+	}
+	nav {
+		padding: 15px;
+	}
+	.container {
+		padding: 10px;
+	}
+	form {
+		padding: 15px;
+	}
 }
