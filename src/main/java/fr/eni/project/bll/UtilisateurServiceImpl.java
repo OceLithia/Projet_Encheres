@@ -18,13 +18,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	private UtilisateurDAO utilisateurDAO;
 
 	@Override
-	public void creerUtilisateur(Utilisateur utilisateur) {
-		String motDePasseEncode = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-				.encode(utilisateur.getMotDePasse());
+	public void creerUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		
+	    BusinessException be = new BusinessException();
+	    validerPseudoUnique(utilisateur.getPseudo(), be);
+	    validerEmailUnique(utilisateur.getEmail(), be);
 
-		System.out.println(motDePasseEncode);
-		utilisateur.setMotDePasse(motDePasseEncode); // Mettre à jour le mot de passe avec la version encodée
-		utilisateurDAO.createUser(utilisateur);
+	   
+
+	    utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
+	    utilisateurDAO.createUser(utilisateur);
 	}
 
 	@Override
@@ -35,6 +38,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public Utilisateur afficherUtilisateurParPseudo(String pseudoUtilisateur) {
 		System.out.println(pseudoUtilisateur);
+		System.out.println(utilisateurDAO.readByPseudo(pseudoUtilisateur).getMotDePasse());
 		return utilisateurDAO.readByPseudo(pseudoUtilisateur);
 	}
 
@@ -48,14 +52,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    // Récupérer l'utilisateur en session pour conserver l'ancien mot de passe si nécessaire
 	    Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
 
+	    
 	    // Si le mot de passe est vide, conserver l'ancien mot de passe
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
 	        utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse()); // Conserver le mot de passe actuel
 	    } else {
 	        // Si le mot de passe est non vide, l'encoder et mettre à jour
-	        String motDePasseEncode = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-	                .encode(utilisateur.getMotDePasse());
-	        utilisateur.setMotDePasse(motDePasseEncode); // Mettre à jour le mot de passe avec la version encodée
+	    	utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
 	    }
 
 	    // Mise à jour de l'utilisateur dans la base de données
@@ -73,6 +76,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void supprimerUtilisateur(Utilisateur utilisateur) {
 		utilisateurDAO.delete(utilisateur);
 	}
+	
+	private String encodeMotDePasse(String motDePasse) {
+	    return PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(motDePasse);
+	}
+
 	
 	private boolean validerPseudoUnique(String pseudo, BusinessException be) {
 		boolean pseudoExiste = this.utilisateurDAO.existePseudo(pseudo);

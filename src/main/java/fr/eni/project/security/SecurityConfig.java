@@ -30,15 +30,11 @@ public class SecurityConfig {
 						.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				// personnalise la connexion
-				.formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/user-profile") // Redirection après une
-																								// connexion réussie
+				.formLogin(form -> form.loginPage("/login")
+						.defaultSuccessUrl("/user-profile") // Redirection après une connexion réussie															
 						.failureUrl("/login?error=true") // URL en cas d'erreur
 						.permitAll())
-				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // définit
-																											// l'url
-																											// permettant
-																											// de se
-																											// déconnecter
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 						.addLogoutHandler(clearSiteData) // vide les données de l'utilisateur
 				);
 

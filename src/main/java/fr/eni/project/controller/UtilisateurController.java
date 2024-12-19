@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.Utilisateur;
+import fr.eni.project.exception.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -45,7 +46,12 @@ public class UtilisateurController {
 		 * model.addAttribute("emailErreur", "Cette adresse email est déjà utilisée.");
 		 * return "signup"; }
 		 */
-		this.utilisateurService.creerUtilisateur(utilisateur);
+		try {
+			this.utilisateurService.creerUtilisateur(utilisateur);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		authentication.setAuthenticated(true);
 		return "redirect:/";
 	}
@@ -89,7 +95,12 @@ public class UtilisateurController {
 		}
 
 		// Met à jour l'utilisateur dans la base de données
-		utilisateurService.mettreAJourUtilisateur(utilisateur);
+		try {
+			utilisateurService.mettreAJourUtilisateur(utilisateur);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Ajoute un message de confirmation pour la vue
 		model.addAttribute("message", "Profil mis à jour avec succès.");
