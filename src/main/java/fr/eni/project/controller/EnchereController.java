@@ -82,11 +82,18 @@ public class EnchereController {
 	}
 	
 	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult, Model model) {
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult, Model model, Authentication authentication) {
 		if (bindingResult.hasErrors()) {
+			// Si des erreurs existent, retourner à la page du formulaire avec les erreurs
+	        model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
 			return "sell-article";
 		} else {
-			this.articleVenduService.addNewArticle(articleVendu, addressUser);
+			// Récupérer l'utilisateur authentifié
+	        String pseudoUtilisateur = authentication.getName();
+	        Utilisateur vendeur = addressUser.afficherUtilisateurParPseudo(pseudoUtilisateur);  
+	        // Associer l'utilisateur au nouvel article
+	        articleVendu.setVendeur(vendeur);
+			this.articleVenduService.addNewArticle(articleVendu, vendeur);
 			return "redirect:/encheres";
 		}
 	}
