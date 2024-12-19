@@ -1,3 +1,4 @@
-<div th:if="${#fields.hasErrors(fieldName)}" class="error">
-    <span th:each="error : ${#fields.errors(fieldName)}" th:text="${error}"></span>
-</div>
+<ul th:fragment="frag-error(inputName)"
+	th:if="${#fields.hasErrors(inputName)}">
+	<li th:each="e : ${#fields.errors(inputName)}" th:text="${e}"></li>
+</ul>
