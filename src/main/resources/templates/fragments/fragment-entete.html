@@ -1,9 +1,8 @@
 <nav th:fragment="entete">
-	<!-- <a th:href="@{/}"><img src="/img/logo.png" alt="logo" /></a> -->
 	<a href="/encheres">ENI-Enchères</a>
 	<p sec:authorize="isAuthenticated()" 
-   		th:if="${utilisateur.pseudo != null and !#strings.isEmpty(utilisateur.pseudo)}" 
-   		th:text="${utilisateur.pseudo}">
+   		th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
+   		th:text="'Bonjour, ' + ${utilisateur.pseudo} + ' !'">
 	</p>
 	<a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
 	<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>

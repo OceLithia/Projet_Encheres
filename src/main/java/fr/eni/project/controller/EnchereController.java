@@ -57,18 +57,11 @@ public class EnchereController {
 		String currentDateTime = dateFormat.format(now);
 		// Récupération de l'utilisateur authentifié via Spring Security
 		String pseudoUtilisateur = authentication.getName(); // Récupère le pseudo ou nom d'utilisateur
-		Utilisateur vendeur = addressUser.afficherUtilisateurParPseudo(pseudoUtilisateur);
-		// Vérification que l'utilisateur existe et initialisation des valeurs par
-		// défaut
-		if (vendeur != null) {
-			articleVendu.setVendeur(vendeur);
-		} else {
-			// Gestion du cas où l'utilisateur n'est pas trouvé
-			vendeur = new Utilisateur();
-			vendeur.setRue("Adresse par défaut");
-			vendeur.setCodePostal("00000");
-			vendeur.setVille("Ville par défaut");
-			articleVendu.setVendeur(vendeur);
+		Utilisateur vendeur = this.addressUser.afficherUtilisateurParPseudo(authentication.getName());
+		// Vérification que l'utilisateur existe et est co
+		if (vendeur == null) {
+			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
+			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 		}
 		// Récupérer la liste des catégories depuis le service
 		List<Categorie> categories = categorieService.readCategory();
@@ -99,11 +92,18 @@ public class EnchereController {
 	}
 
 	@GetMapping("/index")
-	public String showForm(Model model) {
+	public String showForm(Model model, Authentication authentication) {
 		Enchere enchere = new Enchere(); // L'objet qui contient le champ categorie
 		model.addAttribute("enchere", enchere); // L'ajouter au modèle
 		List<Categorie> categories = categorieService.getAllCategories();
 		model.addAttribute("categories", categories);
+		Utilisateur vendeur = this.addressUser.afficherUtilisateurParPseudo(authentication.getName());
+		// Vérification que l'utilisateur existe et est co
+		if (vendeur == null) {
+			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
+			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+		}
+		model.addAttribute("utilisateur", vendeur);
 		return "index";
 	}
 
@@ -116,12 +116,19 @@ public class EnchereController {
 	 */
 
 	@GetMapping("/encheres")
-	public String showCategories(@RequestParam(name = "categorie", required = false) Integer categorieId, Model model) {
+	public String showCategories(@RequestParam(name = "categorie", required = false) Integer categorieId, Model model, Authentication authentication) {
 		if (categorieId != null) {
 			// Récupérer les articles pour cette catégorie
 			model.addAttribute("articles", CategorieService.getArticlesByCategorie(categorieId));
 		}
-		model.addAttribute("categories", categorieService.getAllCategories());
+		model.addAttribute("categories", categorieService.getAllCategories());	
+		Utilisateur vendeur = this.addressUser.afficherUtilisateurParPseudo(authentication.getName());
+		// Vérification que l'utilisateur existe et est co
+		if (vendeur == null) {
+			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
+			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+		}
+		model.addAttribute("utilisateur", vendeur);
 		return "encheres";
 	}
 
