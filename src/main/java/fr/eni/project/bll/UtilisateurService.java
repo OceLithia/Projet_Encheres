@@ -4,7 +4,6 @@ package fr.eni.project.bll;
 import java.util.List;
 
 import fr.eni.project.bo.Utilisateur;
-import fr.eni.project.exception.BusinessException;
 
 public interface UtilisateurService {
 
@@ -19,5 +18,7 @@ public interface UtilisateurService {
 	void supprimerUtilisateur(Utilisateur utilisateur);
 
 	void mettreAJourUtilisateur(Utilisateur utilisateur);
+
+	String getMotDePasseEncode(Utilisateur utilisateur);
 	
 }

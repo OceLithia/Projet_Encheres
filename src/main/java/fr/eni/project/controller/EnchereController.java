@@ -3,7 +3,7 @@ package fr.eni.project.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
@@ -26,11 +25,11 @@ import fr.eni.project.bo.Filtre;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dal.CategorieDAO;
 import jakarta.validation.Valid;
- 
+
 @Controller
 //@SessionAttributes({"utilisateur-profile"})
 public class EnchereController {
- 
+
 	@Autowired
 	private CategorieService categorieService;
 	@Autowired
@@ -41,13 +40,13 @@ public class EnchereController {
 	private CategorieDAO categorieDAO;
 	@Autowired
 	private ArticleVenduService articleVenduService;
- 
+
 	/*
 	 * @GetMapping public String afficherEncheres(Model model) { List<Enchere>
 	 * encheres = this.enchereService.afficherEncheres();
 	 * model.addAttribute("encheres", encheres); return "index"; }
 	 */
- 
+
 	@GetMapping("/sell-article")
 	public String afficherVendreArticle(Authentication authentication, Model model) {
 		// Création d'un nouvel article à vendre
@@ -76,14 +75,14 @@ public class EnchereController {
 		// Ajouter les données au modèle pour le formulaire
 		model.addAttribute("categories", categories);
 		model.addAttribute("articleVendu", articleVendu);
+		model.addAttribute("utilisateur", vendeur);
 		//ajouter la date  l'heure
 		model.addAttribute("currentDateTime", currentDateTime);
 		return "sell-article";
 	}
 	
 	@PostMapping("/sell-article")
-	@ResponseBody
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult) {
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "sell-article";
 		} else {
@@ -91,7 +90,7 @@ public class EnchereController {
 			return "redirect:/encheres";
 		}
 	}
- 
+
 	@GetMapping("/index")
 	public String showForm(Model model) {
 		Enchere enchere = new Enchere(); // L'objet qui contient le champ categorie
@@ -100,7 +99,7 @@ public class EnchereController {
 		model.addAttribute("categories", categories);
 		return "index";
 	}
- 
+
 	/*
 	 * @GetMapping("/sell-article") public String afficherVendreArticle(Model model)
 	 * { String pseudoUser = addressUser.afficherUtilisateurParPseudo(); Utilisateur
@@ -108,7 +107,7 @@ public class EnchereController {
 	 * user.getRue(); user.getCodePostal(); user.getVille();
 	 * model.addAttribute("utilisateur", user); return "sell-article"; }
 	 */
- 
+
 	@GetMapping("/encheres")
 	public String showCategories(@RequestParam(name = "categorie", required = false) Integer categorieId, Model model) {
 		if (categorieId != null) {
@@ -118,7 +117,7 @@ public class EnchereController {
 		model.addAttribute("categories", categorieService.getAllCategories());
 		return "encheres";
 	}
- 
+
 	@GetMapping("/article-details")
 	public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
 		Enchere e = this.enchereService.consulterEnchereParId(id);
@@ -126,31 +125,31 @@ public class EnchereController {
 		model.addAttribute("encheres", e);
 		return "article-details";
 	}
- 
+
 	@PostMapping("/filtrer")
 	public String rechercheParFiltre(@Valid @ModelAttribute Filtre filtre, BindingResult bindingResult) {
 		return "encheres";
 	}
- 
+
 	@GetMapping("/")
 	public String index(@RequestParam(value = "categorie", required = false) String category, Model model) {
 		// Récupérer les catégories depuis la base de données
 		List<Categorie> categories = categorieDAO.findAll();
- 
+
 		// Liste simulée des objets
 		List<String> objets = List.of("Objet 1 - Catégorie 1", "Objet 2 - Catégorie 2", "Objet 3 - Catégorie 1",
 				"Objet 4 - Catégorie 3");
- 
+
 		// Si une catégorie est sélectionnée, filtrer les objets
 		if (categories != null) {
 			objets = objets.stream().filter(obj -> obj.contains(obj)).toList();
 		}
- 
+
 		// Ajouter les données au modèle
 		model.addAttribute("categories", categories);
 		model.addAttribute("objets", objets);
 		model.addAttribute("selectedCategory", category); // Conserve la catégorie sélectionnée
 		return "index";
 	}
- 
+
 }

@@ -1,6 +1,7 @@
 <nav th:fragment="entete">
 	<!-- <a th:href="@{/}"><img src="/img/logo.png" alt="logo" /></a> -->
 	<a href="/encheres">ENI-Enchères</a>
+	<p sec:authorize="isAuthenticated()" th:text="${utilisateur.pseudo}"></p>
 	<a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
 	<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
 	<a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>

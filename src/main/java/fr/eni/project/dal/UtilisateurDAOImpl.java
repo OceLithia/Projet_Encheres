@@ -85,21 +85,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public void update(Utilisateur utilisateur) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("id", utilisateur.getNoUtilisateur());
-		map.addValue("pseudo", utilisateur.getPseudo());
-		map.addValue("nom", utilisateur.getNom());
-		map.addValue("prenom", utilisateur.getPrenom());
-		map.addValue("email", utilisateur.getEmail());
-		map.addValue("telephone", utilisateur.getTelephone());
-		map.addValue("rue", utilisateur.getRue());
-		map.addValue("code_postal", utilisateur.getCodePostal());
-		map.addValue("ville", utilisateur.getVille());
-		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-			map.addValue("mot_de_passe", utilisateur.getMotDePasse());
-		}
-		this.jdbcTemplate.update(UPDATE, map);
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("id", utilisateur.getNoUtilisateur());
+	    map.addValue("pseudo", utilisateur.getPseudo());
+	    map.addValue("nom", utilisateur.getNom());
+	    map.addValue("prenom", utilisateur.getPrenom());
+	    map.addValue("email", utilisateur.getEmail());
+	    map.addValue("telephone", utilisateur.getTelephone());
+	    map.addValue("rue", utilisateur.getRue());
+	    map.addValue("code_postal", utilisateur.getCodePostal());
+	    map.addValue("ville", utilisateur.getVille());
+	    map.addValue("mot_de_passe", utilisateur.getMotDePasse());
+	    this.jdbcTemplate.update(UPDATE, map);
 	}
+
 
 	@Override
 	public String getMotDePasseEncode(Utilisateur utilisateur) {
