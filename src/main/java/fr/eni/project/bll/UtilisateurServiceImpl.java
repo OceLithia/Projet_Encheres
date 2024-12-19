@@ -3,6 +3,7 @@ package fr.eni.project.bll;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public Utilisateur afficherUtilisateurParPseudo(String pseudoUtilisateur) {
+		System.out.println(pseudoUtilisateur);
 		return utilisateurDAO.readByPseudo(pseudoUtilisateur);
 	}
 
@@ -43,14 +45,29 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	@Override
 	public void mettreAJourUtilisateur(Utilisateur utilisateur) {
-		String motDePasseEncode = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-				.encode(utilisateur.getMotDePasse());
-		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
+	    // Récupérer l'utilisateur en session pour conserver l'ancien mot de passe si nécessaire
+	    Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
 
-			utilisateur.setMotDePasse(motDePasseEncode);
-		}
-		utilisateurDAO.update(utilisateur);
+	    // Si le mot de passe est vide, conserver l'ancien mot de passe
+	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
+	        utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse()); // Conserver le mot de passe actuel
+	    } else {
+	        // Si le mot de passe est non vide, l'encoder et mettre à jour
+	        String motDePasseEncode = PasswordEncoderFactories.createDelegatingPasswordEncoder()
+	                .encode(utilisateur.getMotDePasse());
+	        utilisateur.setMotDePasse(motDePasseEncode); // Mettre à jour le mot de passe avec la version encodée
+	    }
+
+	    // Mise à jour de l'utilisateur dans la base de données
+	    utilisateurDAO.update(utilisateur);
 	}
+
+	
+	@Override
+	public String getMotDePasseEncode(Utilisateur utilisateur) {
+		return utilisateurDAO.getMotDePasseEncode(utilisateur);
+	}
+
 
 	@Override
 	public void supprimerUtilisateur(Utilisateur utilisateur) {
