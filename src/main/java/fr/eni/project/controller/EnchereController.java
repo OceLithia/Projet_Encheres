@@ -63,6 +63,7 @@ public class EnchereController {
 			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
 			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 		}
+		articleVendu.setVendeur(vendeur);
 		// Récupérer la liste des catégories depuis le service
 		List<Categorie> categories = categorieService.readCategory();
 		// Ajouter les données au modèle pour le formulaire

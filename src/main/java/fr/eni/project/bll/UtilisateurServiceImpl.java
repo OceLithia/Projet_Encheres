@@ -51,8 +51,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void mettreAJourUtilisateur(Utilisateur utilisateur) {
 	    // Récupérer l'utilisateur en session pour conserver l'ancien mot de passe si nécessaire
 	    Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
-
-	    
 	    // Si le mot de passe est vide, conserver l'ancien mot de passe
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
 	        utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse()); // Conserver le mot de passe actuel
@@ -60,7 +58,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        // Si le mot de passe est non vide, l'encoder et mettre à jour
 	    	utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
 	    }
-
 	    // Mise à jour de l'utilisateur dans la base de données
 	    utilisateurDAO.update(utilisateur);
 	}

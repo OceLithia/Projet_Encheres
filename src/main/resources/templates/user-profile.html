@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <title>Profil utilisateur</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
+<header>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
+</header>
 <body>
+<main id="main-user-profile">
+<section class="section-profil"><h2>Mon profil</h2>
     <table>
         <tr>
             <th>Pseudo :</th>
@@ -45,6 +50,14 @@
             <td th:text="${utilisateur.credit}"></td>
         </tr>
     </table>
-    <a href="/details">Modifier mon profil</a>
+    <a class="button" href="/details">Modifier mon profil</a>
+    </section>
+    <section class="section-articles">
+    <h2>Mes articles actuellement en vente</h2>
+    <h3>Aucun article trouvé</h3>
+    <a class="button" href="/sell-article">Mettre un article en vente</a>
+    <table></table>
+    </section>
+    </main>
 </body>
 </html>

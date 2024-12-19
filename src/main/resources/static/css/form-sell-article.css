@@ -9,6 +9,11 @@
     --sky-blue: #87CEEB; /* Bleu ciel clair */
 }
 
+body {
+	margin:0px;
+	padding:0px;
+}
+
 form {
     background-color: var(--sand-beige);
     padding: 20px;
@@ -28,7 +33,7 @@ input[type="text"], input[type="email"], input[type="password"], textarea, selec
     background-color: #fff;
     color: var(--earth-brown);
     font-size: 16px;
-    width: 100%;
+    width: 95%;
 }
 
 /* Focus sur les champs */
@@ -73,4 +78,13 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
+}
+
+ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+li {
+	list-style-type: none;
 }
