@@ -1,5 +1,7 @@
 package fr.eni.project.controller;
  
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
  
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
@@ -49,10 +52,13 @@ public class EnchereController {
 	public String afficherVendreArticle(Authentication authentication, Model model) {
 		// Création d'un nouvel article à vendre
 		ArticleVendu articleVendu = new ArticleVendu();
+		//récupérer date et heure actuelle
+		Date now = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		String currentDateTime = dateFormat.format(now);
 		// Récupération de l'utilisateur authentifié via Spring Security
 		String pseudoUtilisateur = authentication.getName(); // Récupère le pseudo ou nom d'utilisateur
 		Utilisateur vendeur = addressUser.afficherUtilisateurParPseudo(pseudoUtilisateur);
- 
 		// Vérification que l'utilisateur existe et initialisation des valeurs par
 		// défaut
 		if (vendeur != null) {
@@ -65,15 +71,25 @@ public class EnchereController {
 			vendeur.setVille("Ville par défaut");
 			articleVendu.setVendeur(vendeur);
 		}
- 
 		// Récupérer la liste des catégories depuis le service
 		List<Categorie> categories = categorieService.readCategory();
- 
 		// Ajouter les données au modèle pour le formulaire
 		model.addAttribute("categories", categories);
 		model.addAttribute("articleVendu", articleVendu);
- 
+		//ajouter la date  l'heure
+		model.addAttribute("currentDateTime", currentDateTime);
 		return "sell-article";
+	}
+	
+	@PostMapping("/sell-article")
+	@ResponseBody
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "sell-article";
+		} else {
+			this.articleVenduService.addNewArticle(articleVendu, addressUser);
+			return "redirect:/encheres";
+		}
 	}
  
 	@GetMapping("/index")
@@ -135,16 +151,6 @@ public class EnchereController {
 		model.addAttribute("objets", objets);
 		model.addAttribute("selectedCategory", category); // Conserve la catégorie sélectionnée
 		return "index";
-	}
-	
-	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "sell-article";
-		} else {
-			this.articleVenduService.addNewArticle(articleVendu, addressUser);
-			return "redirect:/encheres";
-		}
 	}
  
 }
