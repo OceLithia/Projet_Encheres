@@ -129,15 +129,17 @@ public class EnchereController {
 			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 		}
 		model.addAttribute("utilisateur", vendeur);
+		List<Enchere> encheres = this.enchereService.afficherEncheres();
+		System.out.println("recupere liste encheres" +encheres);
 		return "encheres";
 	}
 
-	@GetMapping("/article-details")
+	@GetMapping("/article-detail")
 	public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
 		Enchere e = this.enchereService.consulterEnchereParId(id);
 		System.out.println(e);
 		model.addAttribute("encheres", e);
-		return "article-details";
+		return "article-detail";
 	}
 
 	@PostMapping("/filtrer")
