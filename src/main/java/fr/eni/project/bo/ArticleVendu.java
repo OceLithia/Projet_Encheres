@@ -52,8 +52,6 @@ public class ArticleVendu {
 		this.lieuRetrait = lieuRetrait;
 	}
 
-
-
 	public long getNoArticle() {
 		return noArticle;
 	}

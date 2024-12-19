@@ -6,5 +6,7 @@ import fr.eni.project.bo.Utilisateur;
 public interface ArticleVenduDAO {
 	
 	void createSellArticle(Utilisateur utilisateur, ArticleVendu newArticle);
+	
+	boolean checkCategory(long noCategorie);
 
 }

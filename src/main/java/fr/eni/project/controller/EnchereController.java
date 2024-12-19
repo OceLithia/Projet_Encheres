@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
- 
+
+import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
 import fr.eni.project.bll.UtilisateurService;
@@ -35,6 +36,8 @@ public class EnchereController {
 	private UtilisateurService addressUser;
 	@Autowired
 	private CategorieDAO categorieDAO;
+	@Autowired
+	private ArticleVenduService articleVenduService;
  
 	/*
 	 * @GetMapping public String afficherEncheres(Model model) { List<Enchere>
@@ -132,6 +135,16 @@ public class EnchereController {
 		model.addAttribute("objets", objets);
 		model.addAttribute("selectedCategory", category); // Conserve la catégorie sélectionnée
 		return "index";
+	}
+	
+	@PostMapping("/sell-article")
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, Utilisateur addressUser, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "sell-article";
+		} else {
+			this.articleVenduService.addNewArticle(articleVendu, addressUser);
+			return "redirect:/encheres";
+		}
 	}
  
 }
