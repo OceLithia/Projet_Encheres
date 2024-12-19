@@ -107,4 +107,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("id", utilisateur.getNoUtilisateur());
 		return jdbcTemplate.queryForObject(SELECT_PASSWORD, map, String.class);
 	}
+
+	@Override
+	public boolean existePseudo(String pseudo) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("pseudo", pseudo);
+		int nbPseudo = jdbcTemplate.queryForObject(COUNT_PSEUDO, map, Integer.class);
+		return nbPseudo > 0 ? true : false;
+	}
+
+	@Override
+	public boolean existeEmail(String email) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("email", email);
+		int nbEmail = jdbcTemplate.queryForObject(COUNT_EMAIL, map, Integer.class);
+		return nbEmail > 0 ? true : false;
+	}
+
 }

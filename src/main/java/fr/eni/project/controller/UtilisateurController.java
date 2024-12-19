@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.Utilisateur;
 import jakarta.validation.Valid;
@@ -30,12 +31,24 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/signup")
-	public String inscrireUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult) {
+	public String inscrireUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, Authentication authentication, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "signup";
 		}
+	    // Vérification si le pseudo ou l'email existe déjà
+		/*
+	    if (utilisateurService.ex(utilisateur.getPseudo())) {
+	        model.addAttribute("pseudoErreur", "Ce pseudo est déjà utilisé.");
+	        return "signup";
+	    }
+	    if (utilisateurService.validerEmailUnique(utilisateur.getEmail())) {
+	        model.addAttribute("emailErreur", "Cette adresse email est déjà utilisée.");
+	        return "signup";
+	    }
+	    */
 		this.utilisateurService.creerUtilisateur(utilisateur);
-		return "redirect:/user-profile";
+		authentication.setAuthenticated(true);
+		return "redirect:/";
 	}
 	
 	@GetMapping("/user-profile")
