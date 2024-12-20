@@ -15,7 +15,6 @@ public class EnchereServiceImpl implements EnchereService{
 
 	
 		public EnchereServiceImpl(EnchereDAO enchereDAO, UtilisateurDAO utilisateurDAO) {
-		super();
 		this.enchereDAO = enchereDAO;
 		this.utilisateurDAO = utilisateurDAO;
 	}
@@ -35,9 +34,8 @@ public class EnchereServiceImpl implements EnchereService{
 
 
 		@Override
-		public List<Categorie> afficherCategories() {
-			// TODO Auto-generated method stub
-			return null;
+		public void addEnchere(Enchere enchere) {
+			enchereDAO.createEnchere(enchere);
 		}
 		
 

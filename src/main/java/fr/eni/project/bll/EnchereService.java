@@ -10,6 +10,7 @@ public interface EnchereService {
 	
 	Enchere consulterEnchereParId(long id);
 	
-	List<Categorie> afficherCategories();
+	void addEnchere(Enchere	enchere);
+	
 	
 }

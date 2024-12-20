@@ -8,4 +8,7 @@ public interface EnchereDAO {
 	void createEnchere (Enchere newEnchere);
 	
 	List<Enchere> findAll();
+	
+	void updateEnchere(Enchere enchere);
+	
 }
