@@ -1,11 +1,16 @@
 package fr.eni.project.dal;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.tree.RowMapper;
+
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Utilisateur;
 
@@ -50,5 +55,20 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			newArticle.setNoArticle(keyHolder.getKey().longValue());
 		}
 	}
+/*
+	@Override
+	public void findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArticleVendu read(long noArticle) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noArticle", noArticle);		
+		return this.jdbcTemplate.queryForObject(FIND_BY_ID, map, new FilmRowMapper());
+	}
+*/
 
 }
+
