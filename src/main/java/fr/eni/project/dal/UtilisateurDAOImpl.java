@@ -85,21 +85,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public void update(Utilisateur utilisateur) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("id", utilisateur.getNoUtilisateur());
-		map.addValue("pseudo", utilisateur.getPseudo());
-		map.addValue("nom", utilisateur.getNom());
-		map.addValue("prenom", utilisateur.getPrenom());
-		map.addValue("email", utilisateur.getEmail());
-		map.addValue("telephone", utilisateur.getTelephone());
-		map.addValue("rue", utilisateur.getRue());
-		map.addValue("code_postal", utilisateur.getCodePostal());
-		map.addValue("ville", utilisateur.getVille());
-		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-			map.addValue("mot_de_passe", utilisateur.getMotDePasse());
-		}
-		this.jdbcTemplate.update(UPDATE, map);
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("id", utilisateur.getNoUtilisateur());
+	    map.addValue("pseudo", utilisateur.getPseudo());
+	    map.addValue("nom", utilisateur.getNom());
+	    map.addValue("prenom", utilisateur.getPrenom());
+	    map.addValue("email", utilisateur.getEmail());
+	    map.addValue("telephone", utilisateur.getTelephone());
+	    map.addValue("rue", utilisateur.getRue());
+	    map.addValue("code_postal", utilisateur.getCodePostal());
+	    map.addValue("ville", utilisateur.getVille());
+	    map.addValue("mot_de_passe", utilisateur.getMotDePasse());
+	    this.jdbcTemplate.update(UPDATE, map);
 	}
+
 
 	@Override
 	public String getMotDePasseEncode(Utilisateur utilisateur) {
@@ -107,4 +106,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("id", utilisateur.getNoUtilisateur());
 		return jdbcTemplate.queryForObject(SELECT_PASSWORD, map, String.class);
 	}
+
+	@Override
+	public boolean existePseudo(String pseudo) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("pseudo", pseudo);
+		int nbPseudo = jdbcTemplate.queryForObject(COUNT_PSEUDO, map, Integer.class);
+		return nbPseudo > 0 ? true : false;
+	}
+
+	@Override
+	public boolean existeEmail(String email) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("email", email);
+		int nbEmail = jdbcTemplate.queryForObject(COUNT_EMAIL, map, Integer.class);
+		return nbEmail > 0 ? true : false;
+	}
+
 }

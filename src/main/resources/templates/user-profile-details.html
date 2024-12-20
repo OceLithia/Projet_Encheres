@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Profil utilisateur</title>
-<!-- <link rel="stylesheet" th:href="@{/css/style.css}" /> -->
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
+<main id="main-user-profile-details">
+<section class="section-profil">
 <form th:action="@{/update-user}" th:object="${utilisateur}" method="post">
     <table>
     <input th:field="*{noUtilisateur}" type="hidden" />
@@ -60,5 +63,13 @@
 
    	<a href="/user-profile">Retour</a>
     <a href="/delete-profile">Supprimer mon profil</a>
+    </section>
+        <section class="section-articles">
+    <h2>Mes articles actuellement en vente</h2>
+    <h3>Aucun article trouvé</h3>
+    <a class="button" href="/sell-article">Mettre un article en vente</a>
+    <table></table>
+    </section>
+    </main>
 </body>
 </html>

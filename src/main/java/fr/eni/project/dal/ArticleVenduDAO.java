@@ -8,7 +8,11 @@ import fr.eni.project.bo.Utilisateur;
 public interface ArticleVenduDAO {
 	
 	void createSellArticle(Utilisateur utilisateur, ArticleVendu newArticle);
-	List<ArticleVendu> findAll();
+/*	
+	List<ArticleVendu> void findAll();
 	ArticleVendu read(long noArticle);
-	
+	*/
+
+	boolean checkCategory(long noCategorie);
+
 }

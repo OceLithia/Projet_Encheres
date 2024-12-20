@@ -19,5 +19,9 @@ public interface UtilisateurDAO {
 	void update(Utilisateur utilisateur);
 
 	String getMotDePasseEncode(Utilisateur utilisateur);
+
+	boolean existeEmail(String email);
+
+	boolean existePseudo(String pseudo);
 	
 }

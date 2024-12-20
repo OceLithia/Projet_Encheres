@@ -7,8 +7,9 @@ import fr.eni.project.bo.Enchere;
 public interface EnchereService {
 
 	List<Enchere> afficherEncheres();
-	Enchere consulterEnchereParId(long id);
-	List<Categorie> afficherCategories();
 	
+	Enchere consulterEnchereParId(long id);
+	
+	List<Categorie> afficherCategories();
 	
 }

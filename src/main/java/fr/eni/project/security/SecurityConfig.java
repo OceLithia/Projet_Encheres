@@ -1,15 +1,12 @@
 package fr.eni.project.security;
 
-
 import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
@@ -23,54 +20,38 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		
-		HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(Directive.ALL));
-	
-		http.authorizeHttpRequests((authorize) -> authorize
-				.requestMatchers("/", "/signup", "/sell-article", "/css/**").permitAll()
-				.requestMatchers("/user-profile").permitAll()
-				.anyRequest().authenticated())
+
+		HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(
+				new ClearSiteDataHeaderWriter(Directive.ALL));
+
+		http.authorizeHttpRequests(
+				(authorize) -> authorize.requestMatchers("/", "/signup", "/img/**", "/css/**").permitAll()
+						// .requestMatchers("/user-profile").permitAll()
+						.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
-				//personnalise la connexion 
-				.formLogin(form -> form
-					    .loginPage("/login")
-					    .defaultSuccessUrl("/user-profile")  // Redirection après une connexion réussie
-					    //.failureUrl("/login?error=true")  // URL en cas d'erreur
-					    .permitAll())
-				.logout(logout -> logout
-						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //définit l'url permettant de se déconnecter
-						.addLogoutHandler(clearSiteData) //vide les données de l'utilisateur
-						)
-				;
-		
+				// personnalise la connexion
+				.formLogin(form -> form.loginPage("/login")
+						.defaultSuccessUrl("/user-profile") // Redirection après une connexion réussie															
+						.failureUrl("/login?error=true") // URL en cas d'erreur
+						.permitAll())
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+						.addLogoutHandler(clearSiteData) // vide les données de l'utilisateur
+				);
+
 		return http.build();
 	}
 
-	
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new CustomBCryptPasswordEncoder(); // Utilisation du Custom BCrypt
-    }
-  
-	
-    @Bean
-    public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+	@Bean
+	public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
+		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+		// Requête pour récupérer l'utilisateur (username = pseudo)
+		jdbcUserDetailsManager.setUsersByUsernameQuery(
+				"SELECT pseudo AS username, mot_de_passe AS password, 1 AS enabled FROM UTILISATEURS WHERE pseudo = ?");
 
-        // Requête pour récupérer l'utilisateur (username = email)
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-        	    "SELECT pseudo AS username, mot_de_passe AS password, 1 AS enabled FROM UTILISATEURS WHERE pseudo = ?"
-        	);
+		// Requête pour mapper les rôles en fonction du booléen administrateur
+		jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+				"SELECT pseudo AS username, COALESCE(CASE WHEN administrateur = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END, 'ROLE_USER') AS authority FROM UTILISATEURS WHERE pseudo = ?");
+		return jdbcUserDetailsManager;
+	}
 
-
-        // Requête pour mapper les rôles en fonction du booléen administrateur
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-        	    "SELECT pseudo AS username, COALESCE(CASE WHEN administrateur = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END, 'ROLE_USER') AS authority FROM UTILISATEURS WHERE pseudo = ?"
-        	);
-
-
-        return jdbcUserDetailsManager;
-    }
-    
-    
 }

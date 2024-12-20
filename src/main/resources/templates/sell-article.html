@@ -13,27 +13,52 @@
 	<!-- Formulaire de vente d'article -->
 	<form th:action="@{/sell-article}" method="post"
 		enctype="multipart/form-data" th:object="${articleVendu}">
+		<div th:if="${#fields.hasErrors('*')}" class="error-global">
+			<h2 class="error-gen">Veuillez vérifier vos données</h2>
+			<ul th:if="${#fields.hasGlobalErrors()}">
+				<li th:each="e: ${#fields.globalErrors()}" th:text="${e}"></li>
+			</ul>
+		</div>
 		<ul>
 			<li><label for="nomArticle">Article : </label> <input
-				type="text" id="nomArticle" th:field="*{nomArticle}" required placeholder="Nom de l'article"/></li>
+				type="text" id="nomArticle" th:field="*{nomArticle}" 
+				placeholder="Nom de l'article" />
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('nomArticle')}"></div>
+			</li>
 			<li><label for="description">Description : </label> <textarea
 					id="description" cols="30" rows="10" th:field="*{description}"
-					required placeholder="Décrivez en quelques lignes votre article..."></textarea></li>
+				 placeholder="Décrivez en quelques lignes votre article..."></textarea>
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
+			</li>
 			<li><label for="idCategorie">Catégorie : </label> <select
 				id="categorie" th:field="*{noCategorie}">
 					<option th:each="category : ${categories}"
 						th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
-			</select></li>
+			</select>
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('noCategorie')}"></div>
+			</li>
 			<li><label for="photo">Photo de l'article : </label> <input
-				type="file" accept="image/*" id="photo"  /></li>
+				type="file" accept="image/*" id="photo" /></li>
 			<li><label for="miseAPrix">Mise à prix : </label> <input
-				type="number" id="miseAPrix" th:field="*{miseAPrix}" required /></li>
-			<li><label for="dateDebutEncheres">Début de l'enchère :
-			</label> <input type="datetime-local" id="dateDebutEncheres"
-				th:field="*{dateDebutEncheres}" required /></li>
-			<li><label for="dateFinEncheres">Fin de l'enchère : </label> <input
-				type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}"
-				required /></li>
+				type="number" min="0" id="miseAPrix" th:field="*{miseAPrix}" />
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('miseAPrix')}"></div>
+			</li>
+			<li><label for="dateDebutEncheres">Début de l'enchère :</label>
+				<input type="datetime-local" id="dateDebutEncheres"
+				th:field="*{dateDebutEncheres}" min="${currentDateTime}"  />
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('dateDebutEncheres')}"></div>
+			</li>
+			<li><label for="dateFinEncheres">Fin de l'enchère :</label> <input
+				type="datetime-local" id="dateFinEncheres"
+				th:field="*{dateFinEncheres}" min="${currentDateTime}"  />
+				<div
+					th:replace="~{fragments/fragment-error :: frag-error('dateFinEncheres')}"></div>
+			</li>
 		</ul>
 
 		<h3>Retrait</h3>
@@ -50,5 +75,6 @@
 		<button type="submit">Enregistrer</button>
 		<button type="reset">Annuler</button>
 	</form>
+
 </body>
 </html>

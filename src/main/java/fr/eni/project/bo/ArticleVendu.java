@@ -5,13 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ArticleVendu {
 
 	private long noArticle;
+	@NotBlank(message = "Le nom de l''article est obligatoire.")
 	private String nomArticle;
+	@NotBlank(message = "La description de l''article est obligatoire.")
 	private String description;
+	@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.")
 	private LocalDateTime dateDebutEncheres;
+	@NotNull(message = "La date et l''heure de fin de l''enchère sont obligatoires.")
 	private LocalDateTime dateFinEncheres;
+	@NotNull(message = "Le prix de départ de l''enchère est obligatoire.")
+	@Min(0)
 	private int miseAPrix;
 	private int prixVente;
 	private String etatVente;
@@ -50,8 +60,6 @@ public class ArticleVendu {
 		this.categoryArticle = categoryArticle;
 		this.lieuRetrait = lieuRetrait;
 	}
-
-
 
 	public long getNoArticle() {
 		return noArticle;
