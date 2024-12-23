@@ -1,5 +1,7 @@
 package fr.eni.project.bll;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,26 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	private ArticleVenduDAO enchereDao;
 
 	@Override
-	public void addNewArticle(ArticleVendu articleVendu, Utilisateur utilisateur) {
+	public void addNewArticle(Utilisateur utilisateur, ArticleVendu articleVendu) {
 		enchereDao.createSellArticle(utilisateur, articleVendu);		
 	}
+	
+	@Override
+	public List<ArticleVendu> afficherArticles() {
+		return enchereDao.findAll();
+	}
+	
+	@Override
+	public ArticleVendu afficherArticleParNoArticle(long noArticle) {
+		return enchereDao.readById(noArticle);
+	}
+	
+	@Override
+	public ArticleVendu afficherArticleParNoVendeur(long noVendeur) {
+		return enchereDao.readById(noVendeur);
+	}
+	
+	
+	
 
 }

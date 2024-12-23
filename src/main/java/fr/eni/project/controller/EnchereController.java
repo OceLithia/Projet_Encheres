@@ -84,10 +84,10 @@ public class EnchereController {
 		} else {
 			// Récupérer l'utilisateur authentifié
 	        String pseudoUtilisateur = authentication.getName();
-	        Utilisateur vendeur = addressUser.afficherUtilisateurParPseudo(pseudoUtilisateur);  
+	        Utilisateur vendeur = addressUser.afficherUtilisateurParPseudo(pseudoUtilisateur);
 	        // Associer l'utilisateur au nouvel article
 	        articleVendu.setVendeur(vendeur);
-			this.articleVenduService.addNewArticle(articleVendu, vendeur);
+			this.articleVenduService.addNewArticle(vendeur, articleVendu);
 			return "redirect:/encheres";
 		}
 	}
@@ -136,12 +136,15 @@ public class EnchereController {
 	}
 
 	@GetMapping("/article-detail")
-	public String afficherDetailArticle(@RequestParam("id") long id, Model model) {
-		Enchere e = this.enchereService.consulterEnchereParId(id);
-		System.out.println(e);
-		model.addAttribute("encheres", e);
+	public String afficherDetailArticle(Authentication authentication, Model model, @ModelAttribute ArticleVendu article) {
+		System.out.println("afficherDetailArticle");
+		this.articleVenduService.afficherArticleParNoArticle(article.getNoArticle());
+		
+		System.out.println(article);
+		model.addAttribute("articleVendu", article);
 		return "article-detail";
 	}
+
 
 	@PostMapping("/filtrer")
 	public String rechercheParFiltre(@Valid @ModelAttribute Filtre filtre, BindingResult bindingResult) {

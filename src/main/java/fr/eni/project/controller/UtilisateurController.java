@@ -19,6 +19,11 @@ public class UtilisateurController {
 
 	@Autowired
 	private UtilisateurService utilisateurService;
+	
+    @GetMapping({"/", "/index"})
+    public String index() {
+        return "index"; 
+    }
 
 	@GetMapping("/login")
 	public String afficherSeConnecter() {

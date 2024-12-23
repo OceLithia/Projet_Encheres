@@ -1,5 +1,6 @@
 <nav th:fragment="entete">
-	<a href="/encheres">ENI-Enchères</a>
+	<a sec:authorize="!isAuthenticated()" href="/">Les enchères</a>
+	<a sec:authorize="isAuthenticated()" href="/encheres">Les enchères</a>
 	<p sec:authorize="isAuthenticated()" 
    		th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
    		th:text="'Bonjour, ' + ${utilisateur.pseudo} + ' !'">

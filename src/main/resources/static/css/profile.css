@@ -172,3 +172,7 @@ a[href="/user-profile"]:hover,
 a[href="/delete-profile"]:hover {
     background-color: #f8f9fa;
 }
+
+li {
+	list-style-type: none;
+}

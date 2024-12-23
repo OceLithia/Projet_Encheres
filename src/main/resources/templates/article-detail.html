@@ -8,7 +8,7 @@
 <body>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 
-<form action="" >
+<!-- <form action="" >
 		<h1>Détail de l'article</h1>
 		<ul>
 			<label for="">Categorie :</label>
@@ -39,7 +39,50 @@
 			<input type="text" th:value="${article.lieuRetrait}" />
 		</ul>
 
-	</form>
+	</form> -->
+	
+	
+	<form th:action="@{/article-detail}" th:object="${articleVendu}" method="post">
+    <table>
+    <input th:field="*{noArticle}" type="hidden" />
+        <tr>
+            <td><input th:field="*{nomArticle}" type="text" /></td>
+        </tr>
+        <tr>
+            <th>Description :</th>
+            <td><input th:field="*{description}" type="text" /></td>
+        </tr>
+        <tr>
+            <th>Catégorie :</th>
+            <td><input th:field="*{categorie}" type="text" /></td>
+        </tr>
+        <tr>
+            <th>Meilleure offre :</th>
+            <td><input th:field="*{enchere.montant_enchere}" type="date"/></td>
+        </tr>
+        <tr>
+            <th>Date de fin des enchères  :</th>
+            <td><input th:field="*{dateFinEncheres}" type="email" /></td>
+        </tr>
+        <tr>
+            <th>Téléphone :</th>
+            <td><input th:field="*{telephone}" type="tel" /></td>
+        </tr>
+        <tr>
+            <th>Retrait :</th>
+            <td><input th:field="*{vendeur.ville" type="text" /></td>
+        </tr>
+        <tr>
+            <th>Vendeur :</th>
+            <td><input th:field="*{vendeur.pseudo}" type="text" /></td>
+        </tr>
+        <tr>
+            <th>Ma proposition :</th>
+            <td><select th:field="*{enchere.montant_enchere}" type="number"></select></td>
+        </tr> 
+    </table>
+    <button type="submit">Enchérir</button>
+</form>
 	
 <footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
