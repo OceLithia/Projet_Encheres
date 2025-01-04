@@ -38,7 +38,7 @@ public class CategorieDAOImpl implements CategorieDAO {
 	}
 
 	@Override
-	public Categorie afficherCategorie(long noCategorie) {
+	public Categorie readById(long noCategorie) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("id", noCategorie);
 		return jdbcTemplate.queryForObject(FIND_BY_ID, map, new BeanPropertyRowMapper<>(Categorie.class));

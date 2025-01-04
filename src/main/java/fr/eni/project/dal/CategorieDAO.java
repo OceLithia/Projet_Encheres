@@ -8,7 +8,7 @@ public interface CategorieDAO {
 	void createCategory(Categorie newCategory);
 	
 	List<Categorie> findAll();
-	
-	Categorie afficherCategorie(long noCategorie);
+
+	Categorie readById(long noCategorie);
 
 }
