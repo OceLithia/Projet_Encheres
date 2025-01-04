@@ -34,14 +34,14 @@
 			</li>
 			<li><label for="idCategorie">Catégorie : </label> <select
 				id="categorie" th:field="*{noCategorie}">
-					<option th:each="category : ${categories}"
-						th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
+					<option th:each="categorie : ${categories}"
+						th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
 			</select>
 				<div
 					th:replace="~{fragments/fragment-error :: frag-error('noCategorie')}"></div>
 			</li>
 			<li><label for="photo">Photo de l'article : </label> <input
-				type="file" accept="image/*" id="photo" /></li>
+				type="file" accept="image/*" name="image" id="photo" /></li>
 			<li><label for="miseAPrix">Mise à prix : </label> <input
 				type="number" min="0" id="miseAPrix" th:field="*{miseAPrix}" />
 				<div

@@ -7,57 +7,66 @@
 <link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <header>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
+	<div th:replace="~{fragments/fragment-entete::entete}"></div>
 </header>
 <body>
-<main id="main-user-profile">
-<section class="section-profil"><h2>Mon profil</h2>
-    <table>
-        <tr>
-            <th>Pseudo :</th>
-            <td th:text="${utilisateur.pseudo}"></td>
-        </tr>
-        <tr>
-            <th>Nom :</th>
-            <td th:text="${utilisateur.nom}"></td>
-        </tr>
-        <tr>
-            <th>Prénom :</th>
-            <td th:text="${utilisateur.prenom}"></td>
-        </tr>
-        <tr>
-            <th>Email :</th>
-            <td th:text="${utilisateur.email}"></td>
-        </tr>
-        <tr>
-            <th>Téléphone :</th>
-            <td th:text="${utilisateur.telephone}"></td>
-        </tr>
-        <tr>
-            <th>Rue :</th>
-            <td th:text="${utilisateur.rue}"></td>
-        </tr>
-        <tr>
-            <th>Code postal :</th>
-            <td th:text="${utilisateur.codePostal}"></td>
-        </tr>
-        <tr>
-            <th>Ville :</th>
-            <td th:text="${utilisateur.ville}"></td>
-        </tr>
-        <tr>
-            <th>Crédits :</th>
-            <td th:text="${utilisateur.credit}"></td>
-        </tr>
-    </table>
-    <a class="button" href="/details">Modifier mon profil</a>
-    </section>
-    <section class="section-articles">
-    <h2>Mes articles actuellement en vente</h2>
-    <h3>Aucun article trouvé</h3>
-    <a class="button" href="/sell-article">Mettre un article en vente</a>
-    <table></table>
-    </section>
-    </main>
+	<main id="main-user-profile">
+		<section class="section-profil">
+			<h2>Mon profil</h2>
+			<table>
+				<tr>
+					<th>Pseudo</th>
+					<td th:text="${utilisateur.pseudo}"></td>
+				</tr>
+				<tr>
+					<th>Nom</th>
+					<td th:text="${utilisateur.nom}"></td>
+				</tr>
+				<tr>
+					<th>Prénom</th>
+					<td th:text="${utilisateur.prenom}"></td>
+				</tr>
+				<tr>
+					<th>Email</th>
+					<td th:text="${utilisateur.email}"></td>
+				</tr>
+				<tr>
+					<th>Téléphone</th>
+					<td th:text="${utilisateur.telephone}"></td>
+				</tr>
+				<tr>
+					<th>Rue</th>
+					<td th:text="${utilisateur.rue}"></td>
+				</tr>
+				<tr>
+					<th>Code postal</th>
+					<td th:text="${utilisateur.codePostal}"></td>
+				</tr>
+				<tr>
+					<th>Ville</th>
+					<td th:text="${utilisateur.ville}"></td>
+				</tr>
+				<tr>
+					<th>Crédits</th>
+					<td th:text="${utilisateur.credit}"></td>
+				</tr>
+			</table>
+			<a class="button" href="/details">Modifier mon profil</a>
+		</section>
+		<section class="section-articles">
+			<h2>Mes articles actuellement en vente</h2>
+			<table th:if="${articles != null and articles.size() > 0}">
+				<tr th:each="a : ${articles}">
+					<th th:text="${a.nomArticle}"></th>
+					<td th:text="'Date de fin d\'enchères : '+ ${a.dateFinEncheres}"></td>
+					<th><a th:href="@{/article-detail(noArticle=${a.noArticle})}">Voir
+						plus</a></th>
+				</tr>
+			</table>
+			<h3 th:if="${articles == null or articles.size() == 0}" >Aucun article trouvé</h3>
+			<a class="button" href="/sell-article">Mettre un article en vente</a>
+			<table></table>
+		</section>
+	</main>
 </body>
 </html>

@@ -7,5 +7,7 @@
 <body>
 <h1>ERREUR</h1>
 <a href="/">Retour à l'accueil</a>
+<p th:if="${erreur != null}" th:text="${erreur}"></p>
+<p th:if="${message != null}"th:text="${message}"></p>
 </body>
 </html>

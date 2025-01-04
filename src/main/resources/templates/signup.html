@@ -4,34 +4,57 @@
 <meta charset="UTF-8">
 <title>Inscription</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
 	<form th:action="@{/signup}" method="post" th:object="${utilisateur}">
-
+		<div th:if="${#fields.hasErrors('*')}" class="error-global">
+			<h2>Veuillez vérifier vos données</h2>
+			<ul th:if="${#fields.hasGlobalErrors()}">
+				<li th:each="e: ${#fields.globalErrors()}" th:text="${e}"></li>
+			</ul>
+		</div>
 		<h2>S'inscrire</h2>
 		<ul>
-			<li><label for="">Pseudo : </label><input type="text"
-				th:field="*{pseudo}" /></li>
-				<li><label for="">Nom : </label><input type="text"
-				th:field="*{nom}" /></li>
-				<li><label for="">Prénom : </label><input type="text"
-				th:field="*{prenom}" /></li>
-				<li><label for="">Email : </label><input type="email"
-				th:field="*{email}" /></li>
-				<li><label for="">Téléphone : </label><input type="text"
-				th:field="*{telephone}" /></li>
-				<li><label for="">Rue : </label><input type="text"
-				th:field="*{rue}" /></li>
-				<li><label for="">Code postal : </label><input type="text"
-				th:field="*{codePostal}" /></li>
-				<li><label for="">Ville : </label><input type="text"
-				th:field="*{ville}" /></li>
-				<li><label for="">Mot de passe : </label><input type="password"
-				th:field="*{motDePasse}" /></li>
-			<li><label for="">Confirmation : </label><input type="password"
-				 /></li>
-			<li><button type="submit">Créer</button></li>
+			<li>
+				<label for="">Pseudo : </label>
+				<input type="text" th:field="*{pseudo}" />
+			</li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
+
+			<li>
+				<label for="">Nom : </label>
+				<input type="text" th:field="*{nom}" />
+			</li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+
+			<li><label for="">Prénom : </label><input type="text" th:field="*{prenom}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+
+			<li><label for="">Email : </label><input type="email" th:field="*{email}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('email')}"></div>
+
+			<li><label for="">Téléphone : </label><input type="text" th:field="*{telephone}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('telephone')}"></div>
+
+			<li><label for="">Rue : </label><input type="text" th:field="*{rue}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('rue')}"></div>
+
+			<li><label for="">Code postal : </label><input type="text" th:field="*{codePostal}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('codePostal')}"></div>
+
+			<li><label for="">Ville : </label><input type="text" th:field="*{ville}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('ville')}"></div>
+
+			<li><label for="">Mot de passe : </label><input type="password" th:field="*{motDePasse}" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
+
+			<li><label for="confirmPassword">Confirmez le mot de passe :</label>
+    			<input type="password" th:field="*{confirmPassword}" placeholder="Confirmez le mot de passe" /></li>
+			<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
+			
+			<li><button type="submit">S'inscrire</button></li>
 			<li><a href="/">Annuler</a></li>
 		</ul>
 	</form>

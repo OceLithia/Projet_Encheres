@@ -4,14 +4,27 @@
 <meta charset="UTF-8">
 <title>Connexion</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
+	    <script>
+        window.onload = function () {
+            var message = document.getElementById('successMessage');
+            if (message) {
+                setTimeout(function () {
+                    message.style.display = 'none';
+                }, 3000);
+            }
+        };
+    </script>
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
+    <p th:if="${successMessage}" th:text="${successMessage}" id="successMessage"></p>
 <form th:action="@{/login}" method="post" class="login-form">
+    
+    <h2>Se connecter</h2>
     <ul th:if="${param.error}">
         <li>Identifiant ou mot de passe incorrect</li>
     </ul>
-    <h2>Se connecter</h2>
     <ul>
         <li>
             <label for="username">Identifiant : </label>
@@ -26,6 +39,9 @@
         </li>
     </ul>
 </form>
-	<a href="/signup">Créer un compte</a>
+	<a href="/signup">Vous n'avez pas de compte ? Inscrivez-vous !</a>
+	
+
+	
 </body>
 </html>
