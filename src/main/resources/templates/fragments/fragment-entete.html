@@ -1,12 +1,19 @@
 <nav th:fragment="entete">
-	<a href="/encheres">ENI-Enchères</a>
-	<p sec:authorize="isAuthenticated()" 
-   		th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
-   		th:text="'Bonjour, ' + ${utilisateur.pseudo} + ' !'">
-	</p>
-	<a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
-	<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
+    <a sec:authorize="!isAuthenticated()" class="logo" th:href="@{/}">MonLogo</a>
+    <a sec:authorize="isAuthenticated()" class="logo" th:href="@{/encheres}">MonLogo</a>
+    <div class="links">
+        <!-- Liens pour les utilisateurs non authentifiés -->
+        <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
+
+        <!-- Liens pour les utilisateurs authentifiés -->
+        <p sec:authorize="isAuthenticated()" 
+           th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
+           th:text="'Bonjour, ' + ${utilisateur.prenom} + ' !'"></p>
+        <a sec:authorize="isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
+    </div>
 </nav>
