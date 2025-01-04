@@ -1,31 +1,157 @@
 package fr.eni.project.bll;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.eni.project.bo.ArticleVendu;
+import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dal.ArticleVenduDAO;
+import fr.eni.project.dal.EnchereDAO;
+import fr.eni.project.dal.RetraitDAO;
+import fr.eni.project.dto.FiltreDTO;
+import fr.eni.project.exception.BusinessException;
 
 @Service
 public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Autowired
-	private ArticleVenduDAO enchereDao;
+	private ArticleVenduDAO articleVenduDAO;
+	@Autowired
+	private RetraitDAO retraitDAO;
+	@Autowired
+	private EnchereDAO enchereDAO;
 
 	@Override
-	public void addNewArticle(ArticleVendu articleVendu, Utilisateur utilisateur) {
-		enchereDao.createSellArticle(utilisateur, articleVendu);		
+	public void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle) {
+		articleVenduDAO.createSellArticle(vendeur, nouvelArticle);
+		nouvelArticle.setPrixVente(nouvelArticle.getMiseAPrix());
+		retraitDAO.insertLieuRetraitParDefaut(nouvelArticle.getNoArticle(), vendeur);
 	}
 
 	@Override
-	public List<ArticleVendu> consulterArticleVendu() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ArticleVendu> afficherArticles() {
+		return articleVenduDAO.findAll();
 	}
 
+	@Override
+	public ArticleVendu afficherArticleParNoArticle(long noArticle) {
+		return articleVenduDAO.readById(noArticle);
+	}
+
+	@Override
+	public List<ArticleVendu> afficherArticleParNoVendeur(long noVendeur) {
+		return articleVenduDAO.readByVendeur(noVendeur);
+	}
 	
+	@Override
+	public List<ArticleVendu> afficherArticlesParNoCategorie(long noCategorie) {
+		return articleVenduDAO.readByCategorie(noCategorie);
+	}
+	
+	@Override
+	public List<ArticleVendu> afficherArticlesParMotCle(String motCle) {
+		return articleVenduDAO.readByKeyword(motCle);
+	}
+	
+	@Override
+	public void mettreAJourEtatVentes() {
+        List<ArticleVendu> articles = articleVenduDAO.findAll();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (ArticleVendu article : articles) {
+            if (now.isBefore(article.getDateDebutEncheres())) {
+                article.setEtatVente(0);
+            } else if (now.isAfter(article.getDateFinEncheres())) {
+                article.setEtatVente(2);
+            } else {
+                article.setEtatVente(1);
+            }
+            articleVenduDAO.update(article, article.getVendeur()); // Met à jour l'article dans la BDD
+        }
+    }
+	
+	public void encherir(Long articleId, int montant, Utilisateur encherisseur) throws BusinessException {
+	    BusinessException be = new BusinessException();
+
+	    // Règle métier 1 : Vérifier si l'article existe
+	    ArticleVendu article = articleVenduDAO.readById(articleId);
+	    if (article == null) {
+	        be.addMessage("L'article avec l'ID " + articleId + " est introuvable.");
+	        throw be; // Lancer directement l'exception si l'article n'existe pas
+	    }
+	    // Règle métier 2 : Vérifier le montant de l'enchère
+	    if (montant <= article.getPrixVente()) {
+	        be.addMessage("Le montant doit être supérieur au prix actuel (" + article.getPrixVente() + " €).");
+	        throw be; // Lancer l'exception si le montant est invalide
+	    }
+	    
+	    // Règle métier 3 : Vérifier si l'enchérisseur est différent du vendeur
+	    if (encherisseur.getNoUtilisateur() == article.getVendeur().getNoUtilisateur()) {
+	        be.addMessage("Vous ne pouvez pas enchérir sur un article dont vous êtes le vendeur.");
+	        throw be; 
+	    }
+	    
+	    //Règle métier 4 : Vérifier que l'enchérisseur n'ait pas déjà fait la dernière enchère
+	    Optional<Enchere> derniereEnchere = enchereDAO.findByArticle(articleId);
+	    
+	    if (derniereEnchere.isPresent() ) {
+	    	// Récupérer l'enchère existante
+	        Enchere enchereExistante = derniereEnchere.get();
+	        // Vérifier si l'utilisateur actuel est le même que le dernier enchérisseur
+	        if (encherisseur.getNoUtilisateur() == enchereExistante.getEncherisseur().getNoUtilisateur()) {
+	            be.addMessage("Vous êtes déjà le dernier enchérisseur sur cet article.");
+	            throw be;
+	        }
+		}
+	    
+	    // Logique d'enchère si tout est valide
+	    enchereDAO.deleteEnchere(articleId);
+	    Enchere nouvelleEnchere = new Enchere(LocalDateTime.now(), montant, encherisseur, article);
+	    enchereDAO.createEnchere(article, nouvelleEnchere, encherisseur);
+
+	    // Mettre à jour le prix de vente
+	    article.setPrixVente(montant);
+	    
+	    articleVenduDAO.update(article, article.getVendeur());
+	}
+
+
+
+	@Override
+    public List<ArticleVendu> filtrerArticles(FiltreDTO filtre) {
+        // Récupérer tous les articles
+        List<ArticleVendu> articles = articleVenduDAO.findAll();
+
+        // Appliquer les filtres dynamiquement
+        return articles.stream()
+            .filter(article -> filtre.getIdCat() == null || (article.getCategorie().getNoCategorie()) == (filtre.getIdCat()))
+            .filter(article -> filtre.getMotCle() == null || article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase()))
+            .toList();
+    }
+	
+	@Override
+	public void verifierEtFinaliserVentes() {
+	    List<ArticleVendu> articles = articleVenduDAO.findAll(); // Récupérer tous les articles
+	    LocalDateTime maintenant = LocalDateTime.now();
+
+	    for (ArticleVendu article : articles) {
+	        // Vérifier si l'article est en cours de vente et que la date de fin est dépassée
+	        if (article.getDateFinEncheres().isBefore(maintenant) && article.getEtatVente() == 0) {
+	            // Récupérer la meilleure enchère pour l'article
+	            Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
+	            if (meilleureEnchere.isPresent()) {
+	            	article.setEtatVente(2);
+	            	Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
+	            	articleVenduDAO.update(article, article.getVendeur());
+	            }
+	        }
+	    }
+	}
+
 
 }
