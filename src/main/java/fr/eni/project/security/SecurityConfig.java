@@ -17,22 +17,23 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 		HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(
 				new ClearSiteDataHeaderWriter(Directive.ALL));
 
-		http.authorizeHttpRequests(
-				(authorize) -> authorize.requestMatchers("/", "/signup", "/img/**", "/css/**").permitAll()
-						// .requestMatchers("/user-profile").permitAll()
-						.anyRequest().authenticated())
+		http.authorizeHttpRequests((authorize) -> authorize
+				.requestMatchers("/","/filtrer/**").permitAll()
+				.requestMatchers("/uploads/**").permitAll()
+				.requestMatchers("/signup/**", "/img/**", "/css/**").permitAll()
+				.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				// personnalise la connexion
 				.formLogin(form -> form.loginPage("/login")
-						.defaultSuccessUrl("/user-profile") // Redirection après une connexion réussie															
-						.failureUrl("/login?error=true") // URL en cas d'erreur
+						.defaultSuccessUrl("/encheres") // Redirection après une connexion réussie															
+						.failureUrl("/error-page") // URL en cas d'erreur
 						.permitAll())
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 						.addLogoutHandler(clearSiteData) // vide les données de l'utilisateur
