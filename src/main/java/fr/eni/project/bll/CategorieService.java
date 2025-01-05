@@ -9,8 +9,6 @@ public interface CategorieService {
 
 	void addCategory(Categorie category);
 	
-	List<Categorie> readCategory();
-	
 	List<Categorie> getAllCategories();
 
 	void rechercherParFiltre(Filtre filtre) throws BusinessException;
@@ -21,4 +19,6 @@ public interface CategorieService {
 	}
 	
 	Categorie consulterCategorieParId(long id);
+
+	List<Categorie> afficherCategories();
 }

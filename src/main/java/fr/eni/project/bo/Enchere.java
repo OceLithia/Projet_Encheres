@@ -1,89 +1,47 @@
 package fr.eni.project.bo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.Min;
 
 public class Enchere {
 
-	private LocalDate dateEncheres;
-	private int montant_enchere;
-	private long noUtilisateur;
-	private long noArticle;
-	
-	//relations
-	//user qui fait l'enchere
-	private Utilisateur acheteur;
-	//article sur lequel l'enchere est faite
+	private LocalDateTime dateEnchere;
+	@Min(1)
+	private int montantEnchere;
+
+	// relations
+	// user qui fait l'enchere
+	private Utilisateur encherisseur;
+	// article sur lequel l'enchere est faite
 	private ArticleVendu articleVendu;
-	
-	
-	private Categorie categorie;
-	
-	public Enchere(Categorie categorie) {
-		super();
-		this.categorie = categorie;
-	}
-	public Categorie getCategorie() {
-		return categorie;
-	}
-	public void setCategorie(Categorie categorie) {
-		this.categorie = categorie;
-	}
-
-
 
 	public Enchere() {
 	}
 
-	
-	public Enchere(LocalDate dateEncheres, int montant_enchere, Utilisateur acheteur, ArticleVendu articleVendu, long noUtilisateur, long noArticle) {
-		this.dateEncheres = dateEncheres;
-		this.montant_enchere = montant_enchere;
-		this.acheteur = acheteur;
+	public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur encherisseur,
+			ArticleVendu articleVendu) {
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+		this.encherisseur = encherisseur;
 		this.articleVendu = articleVendu;
-		this.noUtilisateur = noUtilisateur;
-		this.noArticle = noArticle;
 
 	}
 
-	public LocalDate getDateEncheres() {
-		return dateEncheres;
+	public LocalDateTime getDateEnchere() {
+		return dateEnchere;
 	}
 
-	public void setDateEncheres(LocalDate dateEncheres) {
-		this.dateEncheres = dateEncheres;
+	public void setDateEnchere(LocalDateTime dateEnchere) {
+		this.dateEnchere = dateEnchere;
 	}
 
-	public int getMontant_enchere() {
-		return montant_enchere;
+	public Utilisateur getEncherisseur() {
+		return encherisseur;
 	}
 
-	public void setMontant_enchere(int montant_enchere) {
-		this.montant_enchere = montant_enchere;
-	}
-
-	public long getNoUtilisateur() {
-		return noUtilisateur;
-	}
-
-	public void setNoUtilisateur(long noUtilisateur) {
-		this.noUtilisateur = noUtilisateur;
-	}
-
-	public long getNoArticle() {
-		return noArticle;
-	}
-
-	public void setNoArticle(long noArticle) {
-		this.noArticle = noArticle;
-	}
-	
-	public Utilisateur getUtilisateur() {
-		return acheteur;
-	}
-
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.acheteur = utilisateur;
+	public void setEncherisseur(Utilisateur encherisseur) {
+		this.encherisseur = encherisseur;
 	}
 
 	public ArticleVendu getArticleVendu() {
@@ -95,12 +53,20 @@ public class Enchere {
 
 	}
 
-	@Override
-	public String toString() {
-		return "Enchere [dateEncheres=" + dateEncheres + ", montant_enchere=" + montant_enchere + ", noUtilisateur="
-				+ noUtilisateur + ", noArticle=" + noArticle + ", acheteur=" + acheteur + ", articleVendu="
-				+ articleVendu + "]";
+	public int getMontantEnchere() {
+		return montantEnchere;
 	}
 
-}
+	public void setMontantEnchere(int montantEnchere) {
+		this.montantEnchere = montantEnchere;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Enchere [dateEncheres=%s, montantEnchere=%s, encherisseur=%s, articleVendu=%s]",
+				dateEnchere, montantEnchere, encherisseur, articleVendu);
+	}
 	
+	
+
+}

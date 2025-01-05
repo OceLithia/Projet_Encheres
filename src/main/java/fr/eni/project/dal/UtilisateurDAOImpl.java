@@ -44,7 +44,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		map.addValue("code_postal", utilisateur.getCodePostal());
 		map.addValue("ville", utilisateur.getVille());
 		map.addValue("mot_de_passe", utilisateur.getMotDePasse());
-		map.addValue("credit", utilisateur.getCredit());
+		map.addValue("credit", 0);
 		map.addValue("administrateur", utilisateur.isAdministrateur());
 
 		// Exécution de l'insertion

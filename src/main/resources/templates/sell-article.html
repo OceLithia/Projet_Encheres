@@ -34,8 +34,8 @@
 			</li>
 			<li><label for="idCategorie">Catégorie : </label> <select
 				id="categorie" th:field="*{noCategorie}">
-					<option th:each="category : ${categories}"
-						th:value="${category.noCategorie}" th:text="${category.libelle}"></option>
+					<option th:each="categorie : ${categories}"
+						th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
 			</select>
 				<div
 					th:replace="~{fragments/fragment-error :: frag-error('noCategorie')}"></div>

@@ -1,17 +1,23 @@
 package fr.eni.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.UtilisateurService;
+import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.exception.BusinessException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -19,15 +25,23 @@ public class UtilisateurController {
 
 	@Autowired
 	private UtilisateurService utilisateurService;
-	
-    @GetMapping({"/", "/index"})
-    public String index() {
-        return "index"; 
-    }
+	@Autowired
+	private ArticleVenduService articleVenduService;
 
 	@GetMapping("/login")
-	public String afficherSeConnecter() {
-		return "login";
+	public String afficherSeConnecter(HttpSession session, Model model) {
+	    // Récupère le message de succès dans la session
+	    String message = (String) session.getAttribute("message");
+	    if (message != null) {
+	        model.addAttribute("successMessage", message);
+	        session.removeAttribute("message"); // Supprime le message après affichage
+	    }
+	    return "login";
+	}
+	
+	@PostMapping("/login")
+	public String seConnecter() {
+		return "redirect:/encheres";
 	}
 
 	@GetMapping("/signup")
@@ -37,48 +51,50 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/signup")
-	public String inscrireUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
-			Authentication authentication, Model model) {
+	public String inscrireUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult, HttpSession session, Model model) {
+		
+		// Vérification de la correspondance des mots de passe
+	    if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
+	        bindingResult.reject("passwordMismatch", "Les mots de passe ne correspondent pas.");
+	        return "signup";
+	    }
+		
 		if (bindingResult.hasErrors()) {
 			return "signup";
 		}
-		// Vérification si le pseudo ou l'email existe déjà
-		/*
-		 * if (utilisateurService.ex(utilisateur.getPseudo())) {
-		 * model.addAttribute("pseudoErreur", "Ce pseudo est déjà utilisé."); return
-		 * "signup"; } if
-		 * (utilisateurService.validerEmailUnique(utilisateur.getEmail())) {
-		 * model.addAttribute("emailErreur", "Cette adresse email est déjà utilisée.");
-		 * return "signup"; }
-		 */
+		 
 		try {
 			this.utilisateurService.creerUtilisateur(utilisateur);
+			
+			// Ajout du message de succès dans la session
+	        session.setAttribute("message", "Inscription réussie !");
+			return "redirect:/login";
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.getListeMessages().forEach(m->{
+				ObjectError error = new ObjectError("globalError", m);
+				bindingResult.addError(error);
+			});
 		}
-		authentication.setAuthenticated(true);
-		return "redirect:/";
+		return "signup";
 	}
 
 	@GetMapping("/user-profile")
 	public String afficherProfilUtilisateur(Authentication authentication, Model model) {
-		System.out.println("afficherProfilUtilisateur ");
-		
 		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (utilisateur == null) {
 			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
 			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 		}
-		System.out.println(utilisateur.getNoUtilisateur());
-		
+		List<ArticleVendu> articles = this.articleVenduService.afficherArticleParNoVendeur(utilisateur.getNoUtilisateur());
+		model.addAttribute("articles", articles);
 		model.addAttribute("utilisateur", utilisateur);
 		return "user-profile";
 	}
+	
+	
 
 	@GetMapping("/details")
 	public String afficherModifierProfil(Authentication authentication, Model model) {
-		System.out.println("afficherModifierProfil");
 		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		// Si le champ motDePasse est vide, conservez l'ancien mot de passe
 		if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) {
@@ -109,8 +125,6 @@ public class UtilisateurController {
 
 		// Ajoute un message de confirmation pour la vue
 		model.addAttribute("message", "Profil mis à jour avec succès.");
-		System.out.println(utilisateur);
-
 		return "redirect:/user-profile";
 	}
 
@@ -124,7 +138,6 @@ public class UtilisateurController {
 			return "error-page"; // page d'erreur personnalisée avec Thymeleaf
 		}
 		utilisateurService.supprimerUtilisateur(utilisateur);
-		System.out.println("utilisateur " + utilisateur.getPseudo() + " supprimé");
 		model.addAttribute("message", "Votre profil a été supprimé avec succès.");
 		authentication.setAuthenticated(false);
 		return "redirect:/";

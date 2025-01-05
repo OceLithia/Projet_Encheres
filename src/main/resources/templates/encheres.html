@@ -4,32 +4,47 @@
 <meta charset="UTF-8">
 <title>encheres</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <body>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
+	<div th:replace="~{fragments/fragment-entete::entete}"></div>
 
 	<h1>Liste des enchères</h1>
-		
-	<table>
+
+
+	<form th:action="@{/filtrer}" method="GET">
+	    <!-- Champ de recherche -->
+    <label for="motCle">Mot-clé :</label>
+    <input type="text" id="motCle" name="motCle" placeholder="Le nom de l'article contient..."/>
+		<select name="idCat" id="category">
+			<option value="" disabled selected>Choisir une catégorie</option>
+			<option th:each="cat : ${categories}" th:value="${cat.noCategorie}"
+				th:text="${cat.libelle}"></option>
+		</select>
+		<button type="submit">Rechercher</button>
+	</form>
+	
+	<table th:if="${articles != null and articles.size() > 0}">
 		<!-- entête -->
-			<thead>
-				<th>Article</th>
-				<th>Etat de la vente</th>
-				<th>Mise à prix</th>
-				<th>Se termine</th>
-				<th>Voir plus</th>
-			</thead>
-	<tr th:each="e : ${article}">
-				<td th:text="${e.nomArticle}"></td>
-				<td th:text="${e.etatVente}"></td>
-				<td th:text="${e.miseAPrix}"></td>
-				<td th:text="${e.dateFinEncheres}"></td>
-				<td><a th:href="@{/article-details(id=${e.id})}">Détails</a></td>
-			</tr>
+		<thead>
+			<th>Article</th>
+			<th>Prix actuel</th>
+			<th>Se termine</th>
+			<th>Vendeur</th>
+			<th>Ville de retrait</th>
+			<th>Voir plus</th>
+		</thead>
+		<tr th:each="e : ${articles}">
+			<td th:text="${e.nomArticle}"></td>
+			<td th:text="${e.prixVente}"></td>
+			<td th:text="${e.dateFinEncheres}"></td>
+			<td th:text="${e.vendeur.pseudo}"></td>
+			<td th:text="${e.lieuRetrait.ville}"></td>
+			<td><a th:href="@{/article-detail(noArticle=${e.noArticle})}">Détails</a></td>
+		</tr>
 	</table>
 
-<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
 </html>
 
-	

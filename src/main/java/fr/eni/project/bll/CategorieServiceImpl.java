@@ -1,9 +1,11 @@
 package fr.eni.project.bll;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Filtre;
 import fr.eni.project.dal.CategorieDAO;
@@ -22,7 +24,7 @@ public class CategorieServiceImpl implements CategorieService {
 	}
 
 	@Override
-	public List<Categorie> readCategory() {
+	public List<Categorie> afficherCategories() {
 		return this.categorieDAO.findAll();
 	}
 
@@ -48,7 +50,6 @@ public class CategorieServiceImpl implements CategorieService {
 
 	@Override
 	public Categorie consulterCategorieParId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return categorieDAO.readById(id);
 	}
 }

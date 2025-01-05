@@ -24,7 +24,7 @@ public class ArticleVendu {
 	@Min(0)
 	private int miseAPrix;
 	private int prixVente;
-	private String etatVente;
+	private int etatVente;
 	private long noUtilisateur;
 	private long noCategorie;
 	
@@ -34,7 +34,7 @@ public class ArticleVendu {
 	//encheres sur l'article
 	private List<Enchere> encheres = new ArrayList<Enchere>();
 	//categorie article
-	private Categorie categoryArticle;
+	private Categorie categorie;
 	//vers retrait (1 lieu max)
 	private Retrait lieuRetrait;
 	
@@ -42,8 +42,8 @@ public class ArticleVendu {
 	}
 
 	public ArticleVendu(long noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, String etatVente, long noUtilisateur,
-			long noCategorie, Utilisateur vendeur, List<Enchere> encheres, Categorie categoryArticle,
+			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, int etatVente, long noUtilisateur,
+			long noCategorie, Utilisateur vendeur, List<Enchere> encheres, Categorie categorie,
 			Retrait lieuRetrait) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -57,7 +57,7 @@ public class ArticleVendu {
 		this.noCategorie = noCategorie;
 		this.vendeur = vendeur;
 		this.encheres = encheres;
-		this.categoryArticle = categoryArticle;
+		this.categorie = categorie;
 		this.lieuRetrait = lieuRetrait;
 	}
 
@@ -117,11 +117,11 @@ public class ArticleVendu {
 		this.prixVente = prixVente;
 	}
 
-	public String getEtatVente() {
+	public int getEtatVente() {
 		return etatVente;
 	}
 
-	public void setEtatVente(String etatVente) {
+	public void setEtatVente(int etatVente) {
 		this.etatVente = etatVente;
 	}
 
@@ -157,12 +157,12 @@ public class ArticleVendu {
 		this.encheres = encheres;
 	}
 
-	public Categorie getCategoryArticle() {
-		return categoryArticle;
+	public Categorie getCategorie() {
+		return categorie;
 	}
 
-	public void setCategoryArticle(Categorie categoryArticle) {
-		this.categoryArticle = categoryArticle;
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
 	}
 
 	public Retrait getLieuRetrait() {
@@ -185,7 +185,7 @@ public class ArticleVendu {
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
 				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", noUtilisateur="
 				+ noUtilisateur + ", noCategorie=" + noCategorie + ", vendeur=" + vendeur + ", encheres=" + encheres
-				+ ", categoryArticle=" + categoryArticle + ", lieuRetrait=" + lieuRetrait + "]";
+				+ ", categoryArticle=" + categorie + ", lieuRetrait=" + lieuRetrait + "]";
 	}
 
 	@Override
@@ -200,7 +200,6 @@ public class ArticleVendu {
 		return Objects.equals(lieuRetrait, other.lieuRetrait) && noArticle == other.noArticle
 				&& Objects.equals(vendeur, other.vendeur);
 	}
-
 
 	
 }

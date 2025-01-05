@@ -4,86 +4,63 @@
 <meta charset="UTF-8">
 <title>Details article</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/profile.css}" />
 </head>
 <body>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
+	<div th:replace="~{fragments/fragment-entete::entete}"></div>
+	
+	<table>
+		<tr>
+			<th>Nom de l'article :</th>
+			<td th:text="${articleVendu.nomArticle}" /></td>
+		</tr>
 
-<!-- <form action="" >
-		<h1>Détail de l'article</h1>
-		<ul>
-			<label for="">Categorie :</label>
-			<input type="text" th:value="${article.categorie}" />
-		</ul>
-		<ul>
-			<label for="">noArticle :</label>
-			<input type="text" th:value="${article.noArticle}" />
-		</ul>
-		<ul>
-			<label for="">dateDebutEncheres :</label>
-			<input type="date" th:value="${article.dateDebutEncheres}" />
-		</ul>
-		<ul>
-			<label for="">dateFinEncheres :</label>
-			<input type="text" th:value="${article.dateFinEncheres}" />
-		</ul>
-		<ul>
-			<label for="">miseAPrix :</label>
-			<input type="text" th:value="${article.miseAPrix}" />
-		</ul>
-				<ul>
-			<label for="">vendeur :</label>
-			<input type="text" th:value="${article.vendeur}" />
-		</ul>
-				<ul>
-			<label for="">lieuRetrait :</label>
-			<input type="text" th:value="${article.lieuRetrait}" />
-		</ul>
+		<tr>
+			<th>Description :</th>
+			<td th:text="${articleVendu.description}" /></td>
+		</tr>
+		<tr>
+			<th>Catégorie :</th>
+			<td th:text="${articleVendu.categorie.libelle}" /></td>
+		</tr>
+		<tr>
+			<th>Meilleure offre :</th>
+			<td th:if="${enchere != null}"
+				th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></td>
+			<td th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</td>
+		</tr>
+		<tr>
+			<th>Mise à prix :</th>
+			<td th:text="${articleVendu.miseAPrix}" /></td>
+		</tr>
+		<tr>
+			<th>Date de fin des enchères :</th>
+			<td th:text="${articleVendu.dateFinEncheres}" /></td>
+		</tr>
+		<tr>
+			<th>Téléphone :</th>
+			<td th:text="${articleVendu.vendeur.telephone}" /></td>
+		</tr>
+		<tr>
+			<th>Ville de retrait :</th>
+			<td th:text="${articleVendu.lieuRetrait.ville}" /></td>
+		</tr>
+		<tr>
+			<th>Vendeur :</th>
+			<td th:text="${articleVendu.vendeur.pseudo}" /></td>
+		</tr>
 
-	</form> -->
-	
-	
-	<form th:action="@{/article-detail}" th:object="${articleVendu}" method="post">
-    <table>
-    <input th:field="*{noArticle}" type="hidden" />
-        <tr>
-            <td><input th:field="*{nomArticle}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Description :</th>
-            <td><input th:field="*{description}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Catégorie :</th>
-            <td><input th:field="*{categorie}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Meilleure offre :</th>
-            <td><input th:field="*{enchere.montant_enchere}" type="date"/></td>
-        </tr>
-        <tr>
-            <th>Date de fin des enchères  :</th>
-            <td><input th:field="*{dateFinEncheres}" type="email" /></td>
-        </tr>
-        <tr>
-            <th>Téléphone :</th>
-            <td><input th:field="*{telephone}" type="tel" /></td>
-        </tr>
-        <tr>
-            <th>Retrait :</th>
-            <td><input th:field="*{vendeur.ville" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Vendeur :</th>
-            <td><input th:field="*{vendeur.pseudo}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Ma proposition :</th>
-            <td><select th:field="*{enchere.montant_enchere}" type="number"></select></td>
-        </tr> 
-    </table>
-    <button type="submit">Enchérir</button>
-</form>
-	
-<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+	</table>
+
+	<form method="post" th:action="@{/encherir}">
+		<input type="hidden" name="articleId" th:value="${articleVendu.noArticle}" /> 
+		<div th:if="${erreur != null}" th:text="${erreur}"></div>
+		<label for="montant">Montant :</label>
+		<input type="number" id="montant" name="montant" min="1" required />
+		<button type="submit">Enchérir</button>
+	</form>
+
+
+	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
 </html>

@@ -7,6 +7,7 @@
 	--sunny-yellow: #E3B23C; /* Jaune doux */
 	--light-wood: #D3B69B; /* Bois clair */
 	--sky-blue: #87CEEB; /* Bleu ciel clair */
+	--mindaro: #cee79d; /*vert clair*/
 }
 
 /* Style général */
@@ -17,7 +18,8 @@ body {
 	background-color: var(--sand-beige); /* Fond beige sable */
 	color: var(--earth-brown); /* Texte marron terre */
 	line-height: 1.6;
-	background-image: url('/img/fond-motif.png');
+	/*background-image: url('/img/fond-motif.png');*/
+	background-color: var(--mindaro);
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
@@ -32,6 +34,11 @@ nav {
 	color: white;
 	padding: 10px 20px;
 	text-align: center;
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
@@ -44,7 +51,7 @@ nav a {
 }
 
 nav a:hover {
-	color: var(--sunny-yellow); /* Jaune doux au survol */
+	color: var(--sunny-yellow); /*Jaune doux au survol*/
 }
 
 /* Conteneur principal */
@@ -84,4 +91,45 @@ section {
 	form {
 		padding: 15px;
 	}
+}
+
+/* Style global de la barre de navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style du logo */
+nav a.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #004040; /* Couleur orange */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Style des liens de navigation */
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+/* Style du texte de bienvenue */
+nav p {
+    margin: 0;
+    font-size: 1em;
+    color: #555;
+}
+
+/* Aligner les liens lorsqu'un utilisateur est authentifié */
+nav div.links {
+    display: flex;
+    align-items: center;
 }
