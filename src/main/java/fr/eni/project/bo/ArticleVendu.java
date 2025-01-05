@@ -27,24 +27,33 @@ public class ArticleVendu {
 	private int etatVente;
 	private long noUtilisateur;
 	private long noCategorie;
-	
-	//relations 
-	//vendeur de l'article
+
+	// relations
+	// vendeur de l'article
 	private Utilisateur vendeur;
-	//encheres sur l'article
+	// encheres sur l'article
 	private List<Enchere> encheres = new ArrayList<Enchere>();
 	//categorie article
 	private Categorie categorie;
 	//vers retrait (1 lieu max)
+
+
 	private Retrait lieuRetrait;
-	
+
+	private String imagePath; // Stocke le chemin ou nom du fichier image
+
 	public ArticleVendu() {
 	}
 
-	public ArticleVendu(long noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, int etatVente, long noUtilisateur,
-			long noCategorie, Utilisateur vendeur, List<Enchere> encheres, Categorie categorie,
-			Retrait lieuRetrait) {
+	public ArticleVendu(long noArticle, @NotBlank(message = "Le nom de l''article est obligatoire.") String nomArticle,
+			@NotBlank(message = "La description de l''article est obligatoire.") String description,
+			@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.") LocalDateTime dateDebutEncheres,
+			@NotNull(message = "La date et l''heure de fin de l''enchère sont obligatoires.") LocalDateTime dateFinEncheres,
+			@NotNull(message = "Le prix de départ de l''enchère est obligatoire.") @Min(0) int miseAPrix, int prixVente,
+			int etatVente, long noUtilisateur, long noCategorie, Utilisateur vendeur, List<Enchere> encheres,
+			Categorie categorie, Retrait lieuRetrait, String imagePath) {
+		
+	
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -59,7 +68,9 @@ public class ArticleVendu {
 		this.encheres = encheres;
 		this.categorie = categorie;
 		this.lieuRetrait = lieuRetrait;
+		this.imagePath = imagePath;
 	}
+
 
 	public long getNoArticle() {
 		return noArticle;
@@ -140,7 +151,7 @@ public class ArticleVendu {
 	public void setNoCategorie(long noCategorie) {
 		this.noCategorie = noCategorie;
 	}
-	
+
 	public Utilisateur getVendeur() {
 		return vendeur;
 	}
@@ -174,18 +185,28 @@ public class ArticleVendu {
 
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(lieuRetrait, noArticle, vendeur);
+	public String getImagePath() {
+		return imagePath;
 	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
-				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
-				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", noUtilisateur="
-				+ noUtilisateur + ", noCategorie=" + noCategorie + ", vendeur=" + vendeur + ", encheres=" + encheres
-				+ ", categoryArticle=" + categorie + ", lieuRetrait=" + lieuRetrait + "]";
+		return String.format(
+				"ArticleVendu [noArticle=%s, nomArticle=%s, description=%s, dateDebutEncheres=%s, dateFinEncheres=%s, miseAPrix=%s, prixVente=%s, etatVente=%s, noUtilisateur=%s, noCategorie=%s, vendeur=%s, encheres=%s, categorie=%s, lieuRetrait=%s, imagePath=%s]",
+				noArticle, nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente,
+				noUtilisateur, noCategorie, vendeur, encheres, categorie, lieuRetrait, imagePath);
+	}
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(lieuRetrait, noArticle, vendeur);
 	}
 
 	@Override
@@ -201,5 +222,4 @@ public class ArticleVendu {
 				&& Objects.equals(vendeur, other.vendeur);
 	}
 
-	
 }

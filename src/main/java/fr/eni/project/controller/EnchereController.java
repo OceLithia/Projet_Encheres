@@ -1,9 +1,11 @@
 package fr.eni.project.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
@@ -21,7 +23,6 @@ import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Enchere;
-import fr.eni.project.bo.Filtre;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.EnchereDTO;
 import fr.eni.project.exception.BusinessException;
@@ -73,26 +74,62 @@ public class EnchereController {
 		model.addAttribute("currentDateTime", currentDateTime);
 		return "sell-article";
 	}
-
+	/*
+	 * @PostMapping("/sell-article") public String
+	 * createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu,
+	 * BindingResult bindingResult, Model model, Authentication authentication) { if
+	 * (bindingResult.hasErrors()) { // Si des erreurs existent, retourner à la page
+	 * du formulaire avec les erreurs model.addAttribute("currentDateTime", new
+	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date())); return
+	 * "sell-article"; } else { // Récupérer l'utilisateur authentifié String
+	 * pseudoUtilisateur = authentication.getName(); Utilisateur vendeur =
+	 * utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur); //
+	 * Associer l'utilisateur au nouvel article articleVendu.setVendeur(vendeur);
+	 * this.articleVenduService.addNewArticle(vendeur, articleVendu);
+	 * System.out.println("controller : "+articleVendu.getPrixVente()); return
+	 * "redirect:/encheres"; } }
+	 */
 	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult,
-			Model model, Authentication authentication) {
-		if (bindingResult.hasErrors()) {
-			// Si des erreurs existent, retourner à la page du formulaire avec les erreurs
-			model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
-			return "sell-article";
-		} else {
-			// Récupérer l'utilisateur authentifié
-			String pseudoUtilisateur = authentication.getName();
-			Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
-			// Associer l'utilisateur au nouvel article
-			articleVendu.setVendeur(vendeur);
-			this.articleVenduService.addNewArticle(vendeur, articleVendu);
-			System.out.println("controller : "+articleVendu.getPrixVente());
-			return "redirect:/encheres";
-		}
-	}
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, 
+	                                BindingResult bindingResult,
+	                                @RequestParam("image") MultipartFile image, 
+	                                Model model, 
+	                                Authentication authentication) {
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
+	        return "sell-article";
+	    } else {
+	        try {
+	            // Gérer le fichier image
+	            if (!image.isEmpty()) {
+	                // Nom unique pour l'image	            	
+	                String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+	                String uploadDir = "src/main/resources/static/uploads/"; // Dossier où les images seront stockées
+	                Path filePath = Path.of(uploadDir + fileName);
 
+	                // Sauvegarder l'image sur le disque
+	                Files.createDirectories(filePath.getParent());
+	                Files.write(filePath, image.getBytes());
+
+	                // Stocker le chemin dans l'entité
+	                articleVendu.setImagePath(fileName);
+	            }
+
+	            // Associer le vendeur
+	            String pseudoUtilisateur = authentication.getName();
+	            Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+	            articleVendu.setVendeur(vendeur);
+
+	            // Sauvegarder l'article
+	            articleVenduService.addNewArticle(vendeur, articleVendu);
+	            return "redirect:/encheres";
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            model.addAttribute("erreur", "Erreur lors du téléchargement de l'image.");
+	            return "sell-article";
+	        }
+	    }
+	}
 	private String preparerVueDetailArticle(Long articleId, Model model, Authentication authentication) {
 	    // Récupérer l'article et l'utilisateur
 	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);

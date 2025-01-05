@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
+<<<<<<< HEAD
 	
 	<table>
 		<tr>
@@ -16,6 +17,12 @@
 		</tr>
 
 		<tr>
+=======
+	<h2 th:text="${articleVendu.nomArticle}"></h2>
+	<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
+	<table>
+		<tr>
+>>>>>>> 97dbe62986e89ac84482fab0a2b3a21c9b6310fe
 			<th>Description :</th>
 			<td th:text="${articleVendu.description}" /></td>
 		</tr>

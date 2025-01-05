@@ -1,7 +1,6 @@
 package fr.eni.project.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.UtilisateurService;
@@ -70,6 +68,7 @@ public class IndexController {
 	 * "index"; }
 	 */
 	
+
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
 	    System.out.println("Filtres reçus : " + filtres);
@@ -86,8 +85,6 @@ public class IndexController {
 	    return "index";
 		}
 	}
-	
-	
 
 	/*
 	 * @PostMapping("/filtrer") public String

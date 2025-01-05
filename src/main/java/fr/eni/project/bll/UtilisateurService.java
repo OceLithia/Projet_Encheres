@@ -1,6 +1,5 @@
 package fr.eni.project.bll;
 
-
 import java.util.List;
 
 import fr.eni.project.bo.Utilisateur;
@@ -13,7 +12,7 @@ public interface UtilisateurService {
 	List<Utilisateur> afficherUtilisateurs();
 
 	Utilisateur afficherUtilisateurParPseudo(String pseudo);
-	
+
 	Utilisateur afficherUtilisateurParId(long idUtilisateur);
 
 	void supprimerUtilisateur(Utilisateur utilisateur);
@@ -21,5 +20,5 @@ public interface UtilisateurService {
 	void mettreAJourUtilisateur(Utilisateur utilisateur) throws BusinessException;
 
 	String getMotDePasseEncode(Utilisateur utilisateur);
-	
+
 }

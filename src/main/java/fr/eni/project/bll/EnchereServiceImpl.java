@@ -2,10 +2,8 @@ package fr.eni.project.bll;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
@@ -31,7 +29,10 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public void creerEnchere(Enchere nouvelleEnchere, Utilisateur encherisseur, ArticleVendu article) throws BusinessException {
+
+	public void creerEnchere(Enchere nouvelleEnchere, Utilisateur encherisseur, ArticleVendu article)
+			throws BusinessException {
+
 		BusinessException be = new BusinessException();
 		if (nouvelleEnchere.getMontantEnchere() > article.getPrixVente()) {
 			enchereDAO.createEnchere(article, nouvelleEnchere, encherisseur);
@@ -39,7 +40,7 @@ public class EnchereServiceImpl implements EnchereService {
 			throw be;
 		}
 	}
-	
+
 	@Override
 	public void supprimerEnchere(long idArticle) {
 		enchereDAO.deleteEnchere(idArticle);
@@ -52,10 +53,9 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	public Enchere consulterEnchereParArticle(long idArticle) {
-	    Optional<Enchere> optionalEnchere = enchereDAO.findByArticle(idArticle);
-
+		Optional<Enchere> optionalEnchere = enchereDAO.findByArticle(idArticle);
 	    // Si aucune enchère n'existe pour cet article, gérer comme suit :
-	    return optionalEnchere.orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + idArticle));
+		return optionalEnchere.orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + idArticle));
 	}
 
 }
