@@ -1,12 +1,10 @@
 package fr.eni.project.bll;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dal.UtilisateurDAO;
 import fr.eni.project.exception.BusinessException;

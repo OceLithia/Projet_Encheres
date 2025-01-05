@@ -1,7 +1,6 @@
 package fr.eni.project.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;

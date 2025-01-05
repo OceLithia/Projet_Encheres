@@ -3,10 +3,8 @@ package fr.eni.project.bll;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;

@@ -130,6 +130,7 @@ public class EnchereController {
 	        }
 	    }
 	}
+	@GetMapping("/article-detail")
 	private String preparerVueDetailArticle(Long articleId, Model model, Authentication authentication) {
 	    // Récupérer l'article et l'utilisateur
 	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);

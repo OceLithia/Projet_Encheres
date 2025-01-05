@@ -2,7 +2,6 @@ package fr.eni.project.dal;
 
 import java.util.List;
 import java.util.Optional;
-
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;

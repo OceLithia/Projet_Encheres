@@ -1,13 +1,11 @@
 @charset "UTF-8";
 
 :root {
-	--green-leaf: #6B8E23; /* Vert végétal */
-	--earth-brown: #8B4513; /* Marron terreux */
-	--sand-beige: #F5F5DC; /* Beige sable */
-	--sunny-yellow: #E3B23C; /* Jaune doux */
-	--light-wood: #D3B69B; /* Bois clair */
-	--sky-blue: #87CEEB; /* Bleu ciel clair */
-	--mindaro: #cee79d; /*vert clair*/
+--blue:#124660;
+--green:#1B9476;
+--light-green:#8BD59E;
+--grey:#C7DBC2;
+--pale-pink:#F4EBD6;
 }
 
 /* Style général */
@@ -15,11 +13,11 @@ body {
 	font-family: 'Arial', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: var(--sand-beige); /* Fond beige sable */
-	color: var(--earth-brown); /* Texte marron terre */
+	background-color: var(--pale-pink);
+	color: var(--green);
 	line-height: 1.6;
 	/*background-image: url('/img/fond-motif.png');*/
-	background-color: var(--mindaro);
+	background-color: var(--grey);
 	background-size: cover;
 	background-position: center;
 	background-attachment: fixed;
@@ -29,9 +27,9 @@ body {
 
 /* En-tête du site (navigation) */
 nav {
-	background-color: var(--green-leaf);
-	/* Vert végétal pour la navigation */
-	color: white;
+	background-color: var(--blue);
+	font-size:2em;
+	color: var(--pale-pink);
 	padding: 10px 20px;
 	text-align: center;
 	display: flex;
@@ -42,7 +40,7 @@ nav {
 }
 
 nav a {
-	color: white;
+	color:var(--pale-pink);
 	text-decoration: none;
 	font-size: 18px;
 	margin: 0 15px;
@@ -51,7 +49,7 @@ nav a {
 }
 
 nav a:hover {
-	color: var(--sunny-yellow); /*Jaune doux au survol*/
+	color: var(--green);
 }
 
 /* Conteneur principal */
@@ -63,7 +61,7 @@ nav a:hover {
 
 /* Titres */
 h1, h2, h3 {
-	color: var(--earth-brown);
+	color: var(--green);
 	font-family: 'Georgia', serif;
 	text-align: center;
 }
@@ -71,7 +69,7 @@ h1, h2, h3 {
 /* Section */
 section {
 	padding: 40px 0;
-	background-color: var(--light-wood); /* Bois clair pour les sections */
+	background-color: var(--grey);
 	border-radius: 10px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	margin-bottom: 20px;
@@ -107,7 +105,6 @@ nav {
 nav a.logo {
     font-size: 1.5em;
     font-weight: bold;
-    color: #004040; /* Couleur orange */
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -125,7 +122,8 @@ nav a {
 nav p {
     margin: 0;
     font-size: 1em;
-    color: #555;
+    color:var(--light-green);
+    font-style: italic;
 }
 
 /* Aligner les liens lorsqu'un utilisateur est authentifié */

@@ -1,11 +1,9 @@
 package fr.eni.project.bll;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Filtre;
 import fr.eni.project.dal.CategorieDAO;

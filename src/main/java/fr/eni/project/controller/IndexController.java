@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.UtilisateurService;
@@ -45,29 +44,6 @@ public class IndexController {
 		return "encheres";
 	}
 
-	/*
-	 * @GetMapping("/filtrer") public String rechercheParFiltre(@RequestParam(value
-	 * = "idCat", required = false) long id, @RequestParam(value = "motCle",
-	 * required = false) String saisie, Model model) {
-	 * System.out.println("ID Catégorie sélectionnée : " + id);
-	 * System.out.println("Mot-Clé saisi : " + saisie);
-	 * 
-	 * // Filtrer les articles par catégorie List<ArticleVendu> articlesParCategorie
-	 * = this.articleVenduService.afficherArticlesParNoCategorie(id); // Filtrer les
-	 * articles par mot-clé List<ArticleVendu> articlesParMotCle =
-	 * this.articleVenduService.afficherArticlesParMotCle(saisie);
-	 * 
-	 * // Trouver l'intersection des deux listes List<ArticleVendu> articlesFiltres
-	 * = articlesParCategorie.stream() .filter(articlesParMotCle::contains)
-	 * .toList();
-	 * 
-	 * List<Categorie> categories = this.categorieService.afficherCategories();
-	 * 
-	 * // Ajouter les données au modèle model.addAttribute("articles",
-	 * articlesFiltres); model.addAttribute("categories", categories); return
-	 * "index"; }
-	 */
-	
 
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {

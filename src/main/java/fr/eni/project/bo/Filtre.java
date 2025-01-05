@@ -11,11 +11,9 @@ public class Filtre {
 		this.motCle = motCle;
 	}
 	
-
 	public Filtre() {
 		super();
 	}
-
 
 	public Categorie getCategorie() {
 		return categorie;

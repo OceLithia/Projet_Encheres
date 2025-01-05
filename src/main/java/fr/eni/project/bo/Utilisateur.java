@@ -3,7 +3,6 @@ package fr.eni.project.bo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

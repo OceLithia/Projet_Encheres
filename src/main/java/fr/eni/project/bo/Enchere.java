@@ -1,7 +1,6 @@
 package fr.eni.project.bo;
 
 import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.Min;
 
 public class Enchere {

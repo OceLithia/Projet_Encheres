@@ -8,56 +8,32 @@
 </head>
 <body>
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
-<<<<<<< HEAD
-	
-	<table>
-		<tr>
-			<th>Nom de l'article :</th>
-			<td th:text="${articleVendu.nomArticle}" /></td>
-		</tr>
 
-		<tr>
-=======
-	<h2 th:text="${articleVendu.nomArticle}"></h2>
-	<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
-	<table>
-		<tr>
->>>>>>> 97dbe62986e89ac84482fab0a2b3a21c9b6310fe
-			<th>Description :</th>
-			<td th:text="${articleVendu.description}" /></td>
-		</tr>
-		<tr>
-			<th>Catégorie :</th>
-			<td th:text="${articleVendu.categorie.libelle}" /></td>
-		</tr>
-		<tr>
-			<th>Meilleure offre :</th>
-			<td th:if="${enchere != null}"
-				th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></td>
-			<td th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</td>
-		</tr>
-		<tr>
-			<th>Mise à prix :</th>
-			<td th:text="${articleVendu.miseAPrix}" /></td>
-		</tr>
-		<tr>
-			<th>Date de fin des enchères :</th>
-			<td th:text="${articleVendu.dateFinEncheres}" /></td>
-		</tr>
-		<tr>
-			<th>Téléphone :</th>
-			<td th:text="${articleVendu.vendeur.telephone}" /></td>
-		</tr>
-		<tr>
-			<th>Ville de retrait :</th>
-			<td th:text="${articleVendu.lieuRetrait.ville}" /></td>
-		</tr>
-		<tr>
-			<th>Vendeur :</th>
-			<td th:text="${articleVendu.vendeur.pseudo}" /></td>
-		</tr>
 
-	</table>
+<div th:each="pokemon : ${pokemons}">
+	<div class="card">
+		<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
+		<div class="container">
+			<h2 th:text="${articleVendu.nomArticle}"><b></b></h2>
+			<h4 th:text="${articleVendu.categorie.libelle}"></h4>
+				<p th:text="${articleVendu.description}"></p>
+			<h6>Meilleure offre :</h6>
+				<p th:if="${enchere != null}"
+				th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></p>
+				<p th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</p>
+			<h6>Mise à prix :</h6>
+				<p th:text="${articleVendu.miseAPrix}"></p>
+			<h6>Date de fin des enchères :</h6>
+				<p th:text="${articleVendu.dateFinEncheres}"></p>
+			<h6>Téléphone :</h6>
+				<p th:text="${articleVendu.vendeur.telephone}"></p>
+			<h6>Ville de retrait :</h6>
+				<p th:text="${articleVendu.lieuRetrait.ville}"></p>
+			<h6>Vendeur :</h6>
+				<p th:text="${articleVendu.vendeur.pseudo}"></p>
+		</div>
+	</div>
+</div>
 
 	<form method="post" th:action="@{/encherir}">
 		<input type="hidden" name="articleId" th:value="${articleVendu.noArticle}" /> 
