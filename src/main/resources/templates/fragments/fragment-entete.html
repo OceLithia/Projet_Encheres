@@ -1,6 +1,6 @@
 <nav th:fragment="entete">
-	<a sec:authorize="isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=50%  alt="logo" class="logo"></a>
-  
+	<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" width=40%  alt="logo" class="logo"></a>
+  	<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=40%  alt="logo" class="logo"></a>
     <div class="links">
         <!-- Liens pour les utilisateurs non authentifiés -->
         <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>

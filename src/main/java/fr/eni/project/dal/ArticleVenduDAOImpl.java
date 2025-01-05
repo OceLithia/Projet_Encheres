@@ -3,6 +3,7 @@ package fr.eni.project.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,8 +20,7 @@ import fr.eni.project.bo.Utilisateur;
 @Repository
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
-
-	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article, no_categorie, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, image_path)"
+	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article, no_categorie, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, image_path) "
 			+ "VALUES (:nomArticle, :noCategorie, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :imagePath)";
 	private static final String FIND_ALL = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, "
 			+ "a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville "
@@ -32,7 +32,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_CAT = FIND_ALL + " WHERE a.no_categorie = :no_categorie";
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, no_categorie = :noCategorie, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
-
+	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -61,7 +62,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("prixInitial", newArticle.getMiseAPrix());
 		map.addValue("prixVente", newArticle.getMiseAPrix());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
-
+		map.addValue("imagePath", newArticle.getImagePath());
 		jdbcTemplate.update(INSERT, map, keyHolder);
 		// MAJ n°categorie
 		if (keyHolder.getKey() != null) {
@@ -101,12 +102,19 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("saisie", "%" + motCle + "%");
 		return jdbcTemplate.query(FIND_BY_MOTCLE, map, new ArticleRowMapper());
 	}
+	
+	@Override
+	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("maintenant", maintenant);
+		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
+	}
 
 	@Override
 	public void update(ArticleVendu articleVendu, Utilisateur vendeur) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("no_article", articleVendu.getNoArticle());
-		map.addValue("nom_article", articleVendu.getNomArticle());
+		map.addValue("noArticle", articleVendu.getNoArticle());
+		map.addValue("nomArticle", articleVendu.getNomArticle());
 		map.addValue("noCategorie", articleVendu.getNoCategorie());
 		map.addValue("description", articleVendu.getDescription());
 		map.addValue("dateDebutEncheres", articleVendu.getDateDebutEncheres());
@@ -117,6 +125,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("imagePath", articleVendu.getImagePath());
 		jdbcTemplate.update(UPDATE, map);
 	}
+	
+
 
 	class ArticleRowMapper implements RowMapper<ArticleVendu> {
 

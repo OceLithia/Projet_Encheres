@@ -3,8 +3,11 @@ package fr.eni.project.bll;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
@@ -73,6 +76,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         }
     }
 	
+	@Override
 	public void encherir(Long articleId, int montant, Utilisateur encherisseur) throws BusinessException {
 	    BusinessException be = new BusinessException();
 
@@ -133,20 +137,24 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
     }
 	
 	@Override
+	@Transactional
 	public void verifierEtFinaliserVentes() {
-	    List<ArticleVendu> articles = articleVenduDAO.findAll(); // Récupérer tous les articles
-	    LocalDateTime maintenant = LocalDateTime.now();
+	    List<ArticleVendu> articles = articleVenduDAO.findByDateFinEncheresBefore(LocalDateTime.now());
 
 	    for (ArticleVendu article : articles) {
-	        // Vérifier si l'article est en cours de vente et que la date de fin est dépassée
-	        if (article.getDateFinEncheres().isBefore(maintenant) && article.getEtatVente() == 0) {
-	            // Récupérer la meilleure enchère pour l'article
-	            Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
-	            if (meilleureEnchere.isPresent()) {
-	            	article.setEtatVente(2);
-	            	Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
-	            	articleVenduDAO.update(article, article.getVendeur());
-	            }
+	        Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
+
+	        if (meilleureEnchere.isPresent()) {
+	            article.setEtatVente(2); // Vente finalisée
+	            articleVenduDAO.update(article, article.getVendeur()); // Mettez à jour l'article avec l'état finalisé
+
+	            Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
+	            System.out.println("Vente finalisée pour l'article : " + article.getNoArticle() +
+	                               ", Acheteur : " + acheteur.getPseudo());
+	        } else {
+	            article.setEtatVente(1); // Pas d'enchères, état à "invendu"
+	            articleVenduDAO.update(article, article.getVendeur()); 
+	            System.out.println("Aucune enchère pour l'article : " + article.getNoArticle());
 	        }
 	    }
 	}

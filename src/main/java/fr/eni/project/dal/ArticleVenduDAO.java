@@ -1,5 +1,6 @@
 package fr.eni.project.dal;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Utilisateur;
@@ -21,5 +22,7 @@ public interface ArticleVenduDAO {
 	List<ArticleVendu> readByKeyword(String motCle);
 	
 	void update(ArticleVendu articleVendu, Utilisateur vendeur);
+
+	List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant);
 
 }

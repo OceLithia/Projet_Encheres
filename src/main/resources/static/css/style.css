@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 :root {
---blue:#124660;
---green:#1B9476;
---light-green:#8BD59E;
---grey:#C7DBC2;
---pale-pink:#F4EBD6;
+	--blue: #124660;
+	--green: #1B9476;
+	--light-green: #8BD59E;
+	--grey: #C7DBC2;
+	--pale-pink: #F4EBD6;
 }
 
 /* Style général */
@@ -28,19 +28,19 @@ body {
 /* En-tête du site (navigation) */
 nav {
 	background-color: var(--blue);
-	font-size:2em;
+	font-size: 2em;
 	color: var(--pale-pink);
 	padding: 10px 20px;
 	text-align: center;
 	display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
-	color:var(--pale-pink);
+	color: var(--pale-pink);
 	text-decoration: none;
 	font-size: 18px;
 	margin: 0 15px;
@@ -93,41 +93,40 @@ section {
 
 /* Style global de la barre de navigation */
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Style du logo */
 nav a.logo {
-    font-size: 1.5em;
-    font-weight: bold;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+	font-size: 1.5em;
+	font-weight: bold;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
 }
 
 /* Style des liens de navigation */
 nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    font-size: 1em;
-    transition: color 0.3s ease;
+	margin: 0 10px;
+	text-decoration: none;
+	font-size: 1em;
+	transition: color 0.3s ease;
 }
 
 /* Style du texte de bienvenue */
 nav p {
-    margin: 0;
-    font-size: 1em;
-    color:var(--light-green);
-    font-style: italic;
+	margin: 0;
+	font-size: 1em;
+	color: var(--light-green);
+	font-style: italic;
 }
 
 /* Aligner les liens lorsqu'un utilisateur est authentifié */
 nav div.links {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }

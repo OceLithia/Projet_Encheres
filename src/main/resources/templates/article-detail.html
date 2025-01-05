@@ -10,7 +10,7 @@
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
 
 
-<div th:each="pokemon : ${pokemons}">
+<!-- <div th:each="article : ${articles}"> -->
 	<div class="card">
 		<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
 		<div class="container">
@@ -33,7 +33,7 @@
 				<p th:text="${articleVendu.vendeur.pseudo}"></p>
 		</div>
 	</div>
-</div>
+<!-- </div> -->
 
 	<form method="post" th:action="@{/encherir}">
 		<input type="hidden" name="articleId" th:value="${articleVendu.noArticle}" /> 

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
@@ -74,6 +76,7 @@ public class EnchereController {
 		model.addAttribute("currentDateTime", currentDateTime);
 		return "sell-article";
 	}
+
 	/*
 	 * @PostMapping("/sell-article") public String
 	 * createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu,
@@ -90,118 +93,130 @@ public class EnchereController {
 	 * "redirect:/encheres"; } }
 	 */
 	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, 
-	                                BindingResult bindingResult,
-	                                @RequestParam("image") MultipartFile image, 
-	                                Model model, 
-	                                Authentication authentication) {
-	    if (bindingResult.hasErrors()) {
-	        model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
-	        return "sell-article";
-	    } else {
-	        try {
-	            // Gérer le fichier image
-	            if (!image.isEmpty()) {
-	                // Nom unique pour l'image	            	
-	                String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-	                String uploadDir = "src/main/resources/static/uploads/"; // Dossier où les images seront stockées
-	                Path filePath = Path.of(uploadDir + fileName);
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult,
+			@RequestParam("image") MultipartFile image, Model model, Authentication authentication) {
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
+			return "sell-article";
+		} else {
+			try {
+				// Gérer le fichier image
+				if (!image.isEmpty()) {
+					// Nom unique pour l'image
+					String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+					String uploadDir = "src/main/resources/static/uploads/"; // Dossier où les images seront stockées
+					Path filePath = Path.of(uploadDir + fileName);
 
-	                // Sauvegarder l'image sur le disque
-	                Files.createDirectories(filePath.getParent());
-	                Files.write(filePath, image.getBytes());
+					// Sauvegarder l'image sur le disque
+					Files.createDirectories(filePath.getParent());
+					Files.write(filePath, image.getBytes());
 
-	                // Stocker le chemin dans l'entité
-	                articleVendu.setImagePath(fileName);
-	            }
+					// Stocker le chemin dans l'entité
+					articleVendu.setImagePath(fileName);
+				}
 
-	            // Associer le vendeur
-	            String pseudoUtilisateur = authentication.getName();
-	            Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
-	            articleVendu.setVendeur(vendeur);
+				// Associer le vendeur
+				String pseudoUtilisateur = authentication.getName();
+				Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
+				articleVendu.setVendeur(vendeur);
 
-	            // Sauvegarder l'article
-	            articleVenduService.addNewArticle(vendeur, articleVendu);
-	            return "redirect:/encheres";
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            model.addAttribute("erreur", "Erreur lors du téléchargement de l'image.");
-	            return "sell-article";
-	        }
-	    }
+				// Sauvegarder l'article
+				articleVenduService.addNewArticle(vendeur, articleVendu);
+				return "redirect:/encheres";
+			} catch (IOException e) {
+				e.printStackTrace();
+				model.addAttribute("erreur", "Erreur lors du téléchargement de l'image.");
+				return "sell-article";
+			}
+		}
 	}
-	@GetMapping("/article-detail")
+
 	private String preparerVueDetailArticle(Long articleId, Model model, Authentication authentication) {
-	    // Récupérer l'article et l'utilisateur
+	    // Récupérer l'article et l'utilisateur connecté
 	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);
-	    model.addAttribute("articleVendu", article);
-
 	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+
+	    model.addAttribute("articleVendu", article);
 	    model.addAttribute("utilisateur", utilisateur);
 
-	    Enchere enchereExistante = null;
 	    try {
-	        enchereExistante = enchereService.consulterEnchereParArticle(articleId);
+	        // Vérifier si une enchère existe pour cet article
+	        Enchere enchereExistante = enchereService.consulterEnchereParArticle(articleId);
+	        model.addAttribute("enchere", enchereExistante);
 	    } catch (EnchereNotFoundException ex) {
-	        // Si aucune enchère existante, enchereExistante reste null
+	        model.addAttribute("enchere", null);
 	    }
-	    model.addAttribute("enchere", enchereExistante);
+
+	    if (article.getEtatVente() == 2) {
+	        // Finaliser les ventes pour obtenir les informations de l'acheteur
+	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
+	        model.addAttribute("enchere", meilleureEnchere);
+	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+	    }
 
 	    return "article-detail";
 	}
 
-	@GetMapping({"/article-detail","/encherir"})
-	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model, Authentication authentication) {
-	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    model.addAttribute("utilisateur", utilisateur);
 
-	    ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
-	    model.addAttribute("articleVendu", article);
+	@GetMapping({ "/article-detail", "/encherir" })
+	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
+			Authentication authentication) {
+		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
+		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		
+		model.addAttribute("articleVendu", article);
+		model.addAttribute("utilisateur", utilisateur);
 
-	    Enchere enchere;
-	    try {
-	        enchere = this.enchereService.consulterEnchereParArticle(id);
-	    } catch (EnchereNotFoundException e) {
-	        enchere = null; // Si aucune enchère, on passe un objet null (ou un objet vide)
+		Enchere enchere;
+		try {
+			enchere = this.enchereService.consulterEnchereParArticle(id);
+		} catch (EnchereNotFoundException e) {
+			enchere = null; // Si aucune enchère, on passe un objet null (ou un objet vide)
+		}
+		
+		if (article.getEtatVente() == 2) {
+	        // Finaliser les ventes pour obtenir les informations de l'acheteur
+	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
+	        model.addAttribute("enchere", meilleureEnchere);
+	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
 	    }
-	    model.addAttribute("enchere", enchere);
-	    model.addAttribute("enchereDTO", new EnchereDTO()); // Ajouter un DTO vide pour le formulaire
-	    return "article-detail";
-	}
 
+		
+		model.addAttribute("enchere", enchere);
+		model.addAttribute("enchereDTO", new EnchereDTO()); // Ajouter un DTO vide pour le formulaire
+		return "article-detail";
+	}
 
 	@PostMapping("/encherir")
-	public String creerEnchereSurArticle(
-	        @Valid @ModelAttribute("enchereDTO") EnchereDTO enchereDTO, BindingResult br, Authentication authentication, Model model) {
-	    
+	public String creerEnchereSurArticle(@Valid @ModelAttribute("enchereDTO") EnchereDTO enchereDTO, BindingResult br,
+			Authentication authentication, Model model) {
+
 		// Vérification des erreurs de validation
-	    if (br.hasErrors()) {
-	        model.addAttribute("erreur", "Le formulaire contient des erreurs.");
-	        return preparerVueDetailArticle(enchereDTO.getArticleId(), model, authentication);
-	    }
+		if (br.hasErrors()) {
+			model.addAttribute("erreur", "Le formulaire contient des erreurs.");
+			return preparerVueDetailArticle(enchereDTO.getArticleId(), model, authentication);
+		}
 
-	    // Récupérer l'utilisateur authentifié
-	    Utilisateur encherisseur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    if (encherisseur == null) {
-	        model.addAttribute("erreur", "Utilisateur introuvable.");
-	        return "error-page";
-	    }
+		// Récupérer l'utilisateur authentifié
+		Utilisateur encherisseur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		if (encherisseur == null) {
+			model.addAttribute("erreur", "Utilisateur introuvable.");
+			return "error-page";
+		}
 
-	    try {
-	        // Appeler la logique métier pour créer une enchère
-	        articleVenduService.encherir(enchereDTO.getArticleId(), enchereDTO.getMontant(), encherisseur);
-	    } catch (BusinessException e) {
-	        // Gestion des exceptions métiers
-	        model.addAttribute("erreur", e.getMessage());
-	        return preparerVueDetailArticle(enchereDTO.getArticleId(), model, authentication);
-	    }
+		try {
+			// Appeler la logique métier pour créer une enchère
+			articleVenduService.encherir(enchereDTO.getArticleId(), enchereDTO.getMontant(), encherisseur);
+		} catch (BusinessException e) {
+			// Gestion des exceptions métiers
+			model.addAttribute("erreur", e.getMessage());
+			return preparerVueDetailArticle(enchereDTO.getArticleId(), model, authentication);
+		}
 
-	    // Redirection après une enchère réussie
-	    return "redirect:/article-detail?noArticle=" + enchereDTO.getArticleId();
+		// Redirection après une enchère réussie
+		return "redirect:/article-detail?noArticle=" + enchereDTO.getArticleId();
 	}
-	
-	
-	
+
 	/*
 	 * @GetMapping({"/", "/index"}) public String showForm(Model model,
 	 * Authentication authentication) { Enchere enchere = new Enchere(); // L'objet
@@ -239,9 +254,5 @@ public class EnchereController {
 	 * List<Enchere> encheres = this.enchereService.afficherEncheres();
 	 * System.out.println("recupere liste encheres" +encheres); return "encheres"; }
 	 */
-	
 
-
-
-	
 }

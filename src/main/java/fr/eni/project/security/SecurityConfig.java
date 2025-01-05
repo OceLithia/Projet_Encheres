@@ -25,9 +25,7 @@ public class SecurityConfig {
 
 		http.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers("/","/filtrer/**").permitAll()
-
 				.requestMatchers("/uploads/**").permitAll()
-
 				.requestMatchers("/signup/**", "/img/**", "/css/**").permitAll()
 				.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
