@@ -32,7 +32,10 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
-
+	private static final String DELETE_ARTICLE_BY_ID ="delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS]"
+			+ "where no_article = :no_article";
+	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -174,6 +177,14 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			return articleVendu;
 		}
 
+	}
+
+	@Override
+	public void deleteArticle(ArticleVendu article) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("no_article", article.getNoArticle());
+		jdbcTemplate.update(DELETE_RETRAIT_BY_ARTICLE, map);
+		jdbcTemplate.update(DELETE_ARTICLE_BY_ID, map);
 	}
 
 }

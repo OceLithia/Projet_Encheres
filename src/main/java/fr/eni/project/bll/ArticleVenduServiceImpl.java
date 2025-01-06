@@ -130,30 +130,16 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 
 	@Override
-	public List<ArticleVendu> filtrerArticles(FiltreDTO filtre) {
-	    // Récupérer tous les articles
-	    List<ArticleVendu> articles = articleVenduDAO.findAll();
+    public List<ArticleVendu> filtrerArticles(FiltreDTO filtre) {
+        // Récupérer tous les articles
+        List<ArticleVendu> articles = articleVenduDAO.findAll();
 
-	    // Appliquer les filtres dynamiquement
-	    return articles.stream()
-	        // Filtrer par catégorie
-	        .filter(article -> filtre.getIdCat() == null || article.getCategorie().getNoCategorie() == filtre.getIdCat())
-	        // Filtrer par mot-clé
-	        .filter(article -> filtre.getMotCle() == null || article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase()))
-	        // Filtrer par type (achats ou ventes)
-	        .filter(article -> {
-	            if ("achats".equals(filtre.getTypeFiltre())) {
-	                // Articles dans lesquels l'utilisateur connecté peut enchérir
-	                return article.getVendeur().getNoUtilisateur() != filtre.getUtilisateurId();
-	            } else if ("ventes".equals(filtre.getTypeFiltre())) {
-	                // Articles vendus par l'utilisateur connecté
-	                return article.getVendeur().getNoUtilisateur() == filtre.getUtilisateurId();
-	            }
-	            return true; // Si aucun filtre spécifique n'est appliqué
-	        })
-	        .toList();
-	}
-
+        // Appliquer les filtres dynamiquement
+        return articles.stream()
+            .filter(article -> filtre.getIdCat() == null || (article.getCategorie().getNoCategorie()) == (filtre.getIdCat()))
+            .filter(article -> filtre.getMotCle() == null || article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase()))
+            .toList();
+    }
 	
 	@Override
 	@Transactional
@@ -181,6 +167,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	@Override
 	public void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur) {
 		articleVenduDAO.update(article, vendeur);
+	}
+
+	@Override
+	public void supprimerArticle(ArticleVendu article) {
+		articleVenduDAO.deleteArticle(article);
 	}
 
 
