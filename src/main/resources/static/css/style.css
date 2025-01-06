@@ -1,11 +1,14 @@
 @charset "UTF-8";
 
 :root {
-	--blue: #124660;
-	--green: #1B9476;
-	--light-green: #8BD59E;
-	--grey: #C7DBC2;
-	--pale-pink: #F4EBD6;
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
 }
 
 /* Style général */
@@ -13,21 +16,13 @@ body {
 	font-family: 'Arial', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: var(--pale-pink);
-	color: var(--green);
+	color: var(--bleu-fonce);
 	line-height: 1.6;
-	/*background-image: url('/img/fond-motif.png');*/
-	background-color: var(--grey);
-	background-size: cover;
-	background-position: center;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	height: 100vh;
 }
 
 /* En-tête du site (navigation) */
 nav {
-	background-color: var(--blue);
+	background-color: var(--bleu-gris);
 	font-size: 2em;
 	color: var(--pale-pink);
 	padding: 10px 20px;

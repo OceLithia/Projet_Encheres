@@ -1,6 +1,6 @@
 <nav th:fragment="entete">
-	<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" width=40%  alt="logo" class="logo"></a>
-  	<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=40%  alt="logo" class="logo"></a>
+	<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
+  	<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
     <div class="links">
         <!-- Liens pour les utilisateurs non authentifiés -->
         <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
@@ -13,7 +13,9 @@
            th:text="'Bonjour, ' + ${utilisateur.prenom} + ' !'"></p>
         <a sec:authorize="isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
         <a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
+        <a th:href="@{/}"><img th:src="@{/img/panier.png}" width=15%  alt="image du panier" class="images">Mon panier</a>
         <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
+        <a th:href="@{/}"><img th:src="@{/img/token.png}" width=12%  alt="image du jeton" class="images"></a>
         <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
     </div>
 </nav>
