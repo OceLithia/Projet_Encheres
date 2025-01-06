@@ -44,7 +44,6 @@ public class IndexController {
 		return "encheres";
 	}
 
-
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
 	    System.out.println("Filtres reçus : " + filtres);

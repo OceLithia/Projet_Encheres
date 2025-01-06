@@ -3,14 +3,14 @@ package fr.eni.project.bo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.annotation.Id;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class ArticleVendu {
 
-	@Id
+
 	private long noArticle;
 	@NotBlank(message = "Le nom de l''article est obligatoire.")
 	private String nomArticle;

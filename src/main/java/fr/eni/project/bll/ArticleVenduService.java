@@ -1,8 +1,8 @@
 package fr.eni.project.bll;
 
 import java.util.List;
+
 import fr.eni.project.bo.ArticleVendu;
-import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.FiltreDTO;
 import fr.eni.project.exception.BusinessException;
@@ -28,5 +28,7 @@ public interface ArticleVenduService {
 	void verifierEtFinaliserVentes();
 
 	void mettreAJourEtatVentes();
+
+	void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur);
 	
 }

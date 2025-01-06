@@ -167,7 +167,8 @@ public class EnchereController {
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-		
+		System.out.println("prix de vente : "+article.getPrixVente());
+		System.out.println("etat de la vente : "+article.getEtatVente());
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
@@ -183,6 +184,7 @@ public class EnchereController {
 		}
 		
 		if (article.getEtatVente() == 2) {
+			System.out.println("etat de la vente si 2 : "+article.getEtatVente());
 	        // Finaliser les ventes pour obtenir les informations de l'acheteur
 	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
 	        model.addAttribute("enchere", meilleureEnchere);
@@ -214,6 +216,8 @@ public class EnchereController {
 		try {
 			// Appeler la logique métier pour créer une enchère
 			articleVenduService.encherir(enchereDTO.getArticleId(), enchereDTO.getMontant(), encherisseur);
+			ArticleVendu article = articleVenduService.afficherArticleParNoArticle(enchereDTO.getArticleId());
+			articleVenduService.mettreAJourArticle(article, article.getVendeur());
 		} catch (BusinessException e) {
 			// Gestion des exceptions métiers
 			model.addAttribute("erreur", e.getMessage());

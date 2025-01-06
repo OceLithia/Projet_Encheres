@@ -20,10 +20,9 @@ import fr.eni.project.bo.Utilisateur;
 @Repository
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
-	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article, no_categorie, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, image_path) "
-			+ "VALUES (:nomArticle, :noCategorie, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :imagePath)";
-	private static final String FIND_ALL = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, "
-			+ "a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville "
+	private static final String INSERT = "INSERT INTO ARTICLES_VENDUS (nom_article, no_categorie, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, image_path, etat_vente) "
+			+ "VALUES (:nomArticle, :noCategorie, :description, :dateDebutEncheres, :dateFinEncheres, :prixInitial, :prixVente, :noUtilisateur, :imagePath, :etatVente)";
+	private static final String FIND_ALL = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente "
 			+ "FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur "
 			+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
 			+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article";
@@ -33,7 +32,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -63,6 +62,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("prixVente", newArticle.getMiseAPrix());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
 		map.addValue("imagePath", newArticle.getImagePath());
+		map.addValue("etatVente", newArticle.getEtatVente());
 		jdbcTemplate.update(INSERT, map, keyHolder);
 		// MAJ n°categorie
 		if (keyHolder.getKey() != null) {
@@ -102,11 +102,11 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("saisie", "%" + motCle + "%");
 		return jdbcTemplate.query(FIND_BY_MOTCLE, map, new ArticleRowMapper());
 	}
-	
+
 	@Override
-	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant) {
+	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime localDateTime) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("maintenant", maintenant);
+		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
 	}
 
@@ -121,11 +121,14 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("prixInitial", articleVendu.getMiseAPrix());
 		map.addValue("prixVente", articleVendu.getPrixVente());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
-		map.addValue("imagePath", articleVendu.getImagePath());
+		map.addValue("etatVente", articleVendu.getEtatVente());
+		if (articleVendu.getImagePath() != null) {
+			map.addValue("imagePath", articleVendu.getImagePath());
+		} else {
+			map.addValue("imagePath", " ");
+		}
 		jdbcTemplate.update(UPDATE, map);
 	}
-	
-
 
 	class ArticleRowMapper implements RowMapper<ArticleVendu> {
 
@@ -148,7 +151,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			articleVendu.setMiseAPrix(rs.getInt("prix_initial"));
 			articleVendu.setPrixVente(rs.getInt("prix_vente"));
 			articleVendu.setImagePath(rs.getString("image_path"));
-
+			articleVendu.setEtatVente(rs.getInt("etat_vente"));
 
 			Categorie categorie = new Categorie();
 			categorie.setNoCategorie(rs.getLong("no_categorie"));
@@ -166,7 +169,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			lieuRetrait.setCodePostal(rs.getString("code_postal"));
 			lieuRetrait.setVille(rs.getString("ville"));
 			articleVendu.setLieuRetrait(lieuRetrait);
-			
+
 			// Retourne l'objet ArticleVendu complet
 			return articleVendu;
 		}

@@ -11,7 +11,7 @@
 
 
 <!-- <div th:each="article : ${articles}"> -->
-	<div class="card">
+<!-- 	<div class="card"> -->
 		<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
 		<div class="container">
 			<h2 th:text="${articleVendu.nomArticle}"><b></b></h2>
@@ -32,9 +32,9 @@
 			<h6>Vendeur :</h6>
 				<p th:text="${articleVendu.vendeur.pseudo}"></p>
 		</div>
-	</div>
+<!-- 	</div> -->
 <!-- </div> -->
-
+<div th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
 	<form method="post" th:action="@{/encherir}">
 		<input type="hidden" name="articleId" th:value="${articleVendu.noArticle}" /> 
 		<div th:if="${erreur != null}" th:text="${erreur}"></div>
@@ -42,7 +42,16 @@
 		<input type="number" id="montant" name="montant" min="1" required />
 		<button type="submit">Enchérir</button>
 	</form>
-
+</div>
+<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
+<h2 th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">bouton modifier/supprimer article - à faire</h2>
+<h2 th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}" th:text="${'Enchère remportée par '+acheteur.pseudo}"></h2>
+<h2 th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur == acheteur.noUtilisateur}">
+    <span th:utext="${'Vous avez remporté l''enchère pour un montant de ' + enchere.montantEnchere + '. <br>Veuillez vous rapprocher de '}"></span>
+    <a th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"  th:text="${articleVendu.vendeur.pseudo}"></a>
+    <span th:utext="${' pour effectuer le retrait.'}"></span>
+</h2>
+<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune enchère n'a été effectuée sur cet article.</h2>
 
 	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>

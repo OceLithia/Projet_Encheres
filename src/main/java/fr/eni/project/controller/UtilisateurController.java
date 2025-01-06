@@ -10,6 +10,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
@@ -141,4 +143,15 @@ public class UtilisateurController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/view-seller")
+	public String afficherProfilVendeur(@RequestParam("noVendeur") long noVendeur, Model model) {
+		Utilisateur utilisateur = this.utilisateurService.afficherUtilisateurParId(noVendeur);
+		if (utilisateur == null) {
+			model.addAttribute("erreur", "Aucun utilisateur trouvé avec l'ID : " + noVendeur);
+			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+		}
+		model.addAttribute("vendeur", utilisateur);
+		return "view-seller";
+	}
+	
 }
