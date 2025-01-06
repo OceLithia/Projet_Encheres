@@ -15,10 +15,12 @@
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
     gap: 30px; /* Espacement entre les cartes */
     width: 100%;
-    max-width: 1200px; /* Limite la largeur de la grille */
-    margin:auto;
+    margin-top:30px;
 }
 
+.link{
+	color: var(--light-green);
+}
 
 /* Style pour chaque carte */
 .articleCard {
