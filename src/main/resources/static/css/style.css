@@ -61,7 +61,7 @@ nav a:hover {
 
 /* Titres */
 h1, h2, h3 {
-	color: var(--green);
+	color: var(--blue);
 	font-family: 'Georgia', serif;
 	text-align: center;
 }
