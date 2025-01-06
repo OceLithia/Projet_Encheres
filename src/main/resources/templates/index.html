@@ -40,28 +40,29 @@
 <main class="grid">
 	<article th:each="e : ${articles}">
 		<div class="articleCard">
-			<!--  <img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />-->
+			<img th:src="@{'/uploads/' + ${e.imagePath}}" alt="Image de l'article" />
+ 
 			<div class="container">
-				<h2 th:text="${e.nomArticle}"><b></b></h2>
-				<h4 th:text="${e.categorie.libelle}"></h4>
-				<h6>Mise à prix :</h6>
-					<p th:text="${e.miseAPrix}"></p>
-				<h6>Meilleure offre :</h6>
-					<p th:if="${enchere != null}"
-					th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></p>
-					<p th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</p>
-				
-				<h6>Date de fin des enchères :</h6>
-					<p th:text="${e.dateFinEncheres}"></p>
-				<h6>Ville de retrait :</h6>
-					<p th:text="${e.lieuRetrait.ville}"></p>
-				<h6>Vendeur :</h6>
-					<p th:text="${e.vendeur.pseudo}"></p>
+				<h2 th:text="${e.nomArticle}"></h2>
+				<div>
+					<h5>Mise à prix : <a th:text="${e.miseAPrix}"></a></h5>	
+					<h5>Meilleure offre : <a th:if="${enchere != null}"
+						th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></a>
+						<a th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</a></h5>	
+					<h5>Termine le : <a th:text="${e.dateFinEncheres}"></a></h5>
+				</div>
+				<h6>Vendeur : <a th:text="${e.vendeur.pseudo}" href="/view-seller" class="link"></a></h6>
 				<a th:href="@{/article-detail(noArticle=${e.noArticle})}" class="button">Détails</a>
 			</div>
 		</div>
 	</article>
 </main>
+ 
+ <!-- TO DO
+ - lien vers view-seller
+ - afficher image de l'article
+ -->
+ 
 
 	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
