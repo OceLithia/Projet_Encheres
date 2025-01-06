@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
@@ -75,7 +76,7 @@ public class EnchereController {
 		model.addAttribute("utilisateur", vendeur);
 		// ajouter la date l'heure
 		model.addAttribute("currentDateTime", currentDateTime);
-		
+
 		return "sell-article";
 	}
 
@@ -105,7 +106,8 @@ public class EnchereController {
 				// Gérer le fichier image
 				if (!image.isEmpty()) {
 					// Nom unique pour l'image
-					String fileName = System.currentTimeMillis() + "_" + URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
+					String fileName = System.currentTimeMillis() + "_"
+							+ URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
 					String uploadDir = "src/main/resources/static/uploads/"; // Répertoire pour les images d'articles
 					Path filePath = Path.of(uploadDir, fileName);
 
@@ -136,10 +138,10 @@ public class EnchereController {
 	}
 
 	private String preparerVueDetailArticle(long articleId, Model model, Authentication authentication) {
-	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);
-	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    model.addAttribute("articleVendu", article);
-	    model.addAttribute("utilisateur", utilisateur);
+		ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);
+		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		model.addAttribute("articleVendu", article);
+		model.addAttribute("utilisateur", utilisateur);
 
 	    Enchere enchere = null;
 	    try {
@@ -157,32 +159,30 @@ public class EnchereController {
 	        model.addAttribute("enchere", enchere);
 	    }
 
-	    return "article-detail";
+		return "article-detail";
 	}
-
-
 
 	@GetMapping({ "/article-detail", "/encherir" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-		System.out.println("prix de vente : "+article.getPrixVente());
-		System.out.println("etat de la vente : "+article.getEtatVente());
+		System.out.println("prix de vente : " + article.getPrixVente());
+		System.out.println("etat de la vente : " + article.getEtatVente());
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
 		// Afficher le chemin de l'image de l'article
 		System.out.println("Chemin sauvegardé : " + article.getImagePath());
 		model.addAttribute("imagePath", article.getImagePath());
-		
+
 		Enchere enchere;
 		try {
 			enchere = this.enchereService.consulterDerniereEnchereParArticle(id);
 		} catch (EnchereNotFoundException e) {
 			enchere = null; // Si aucune enchère, on passe un objet null (ou un objet vide)
 		}
-		
+
 		if (article.getEtatVente() == 2) {
 			System.out.println("etat de la vente si 2 : "+article.getEtatVente());
 	        // Finaliser les ventes pour obtenir les informations de l'acheteur
@@ -226,6 +226,20 @@ public class EnchereController {
 
 		// Redirection après une enchère réussie
 		return "redirect:/article-detail?noArticle=" + enchereDTO.getArticleId();
+	}
+
+	@GetMapping("/delete-article-detail")
+	public String supprimerArticle(@RequestParam("noArticle") Long idArticle, RedirectAttributes redirectAttributes) {
+		// Vérifie si l'article existe
+		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(idArticle);
+		if (article == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "L'article avec l'ID " + idArticle + " n'existe pas.");
+			return "redirect:/";
+		}
+		// Supprime l'article
+		this.articleVenduService.supprimerArticle(article);
+		redirectAttributes.addFlashAttribute("successMessage", "Votre article a été supprimé avec succès.");
+		return "redirect:/";
 	}
 
 	/*
