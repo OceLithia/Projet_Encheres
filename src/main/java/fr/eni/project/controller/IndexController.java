@@ -12,6 +12,7 @@ import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
+import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.FiltreDTO;
 
 @Controller
@@ -48,18 +49,26 @@ public class IndexController {
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
 	    System.out.println("Filtres reçus : " + filtres);
 
+	    // Récupérer l'utilisateur connecté
+	    Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+	    filtres.setUtilisateurId(utilisateurConnecte.getNoUtilisateur());
+
+	    // Appliquer les filtres
 	    List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
 	    List<Categorie> categories = this.categorieService.afficherCategories();
 
+	    // Ajouter les données au modèle
 	    model.addAttribute("articles", articlesFiltres);
 	    model.addAttribute("categories", categories);
-	    model.addAttribute("utilisateur", utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
+	    model.addAttribute("utilisateur", utilisateurConnecte);
+
 	    if (authentication.isAuthenticated()) {
-			return "encheres";
-		} else {
-	    return "index";
-		}
+	        return "encheres";
+	    } else {
+	        return "index";
+	    }
 	}
+
 
 	/*
 	 * @PostMapping("/filtrer") public String

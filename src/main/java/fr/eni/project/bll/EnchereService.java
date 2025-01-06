@@ -1,6 +1,7 @@
 package fr.eni.project.bll;
 
 import java.util.List;
+
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
@@ -12,11 +13,13 @@ public interface EnchereService {
 
 	void creerEnchere(Enchere nouvelleEnchere, Utilisateur encherisseur, ArticleVendu article) throws BusinessException;
 
-	void supprimerEnchere(long idArticle);
+	List<Enchere> consulterEncheresParArticleEtUtilisateur(long idArticle, long idUtilisateur);
 
-	Enchere consulterEnchereParArticleEtUtilisateur(long idArticle, long idUtilisateur);
+	List<Enchere> consulterEncheresParArticle(long idArticle);
 
-	Enchere consulterEnchereParArticle(long id);
+	Enchere consulterEnchereParNoEnchere(long noEnchere);
+	
+	Enchere consulterDerniereEnchereParArticle(long idArticle);
 	
 	
 }

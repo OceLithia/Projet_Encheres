@@ -1,10 +1,13 @@
 package fr.eni.project.bo;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import jakarta.validation.constraints.Min;
 
 public class Enchere {
 
+	private long noEnchere;
 	private LocalDateTime dateEnchere;
 	@Min(1)
 	private int montantEnchere;
@@ -18,13 +21,20 @@ public class Enchere {
 	public Enchere() {
 	}
 
-	public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur encherisseur,
+	public Enchere(LocalDateTime dateEnchere, @Min(1) int montantEnchere, Utilisateur encherisseur,
 			ArticleVendu articleVendu) {
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
 		this.encherisseur = encherisseur;
 		this.articleVendu = articleVendu;
+	}
 
+	public long getNoEnchere() {
+		return noEnchere;
+	}
+
+	public void setNoEnchere(long noEnchere) {
+		this.noEnchere = noEnchere;
 	}
 
 	public LocalDateTime getDateEnchere() {
@@ -33,6 +43,14 @@ public class Enchere {
 
 	public void setDateEnchere(LocalDateTime dateEnchere) {
 		this.dateEnchere = dateEnchere;
+	}
+
+	public int getMontantEnchere() {
+		return montantEnchere;
+	}
+
+	public void setMontantEnchere(int montantEnchere) {
+		this.montantEnchere = montantEnchere;
 	}
 
 	public Utilisateur getEncherisseur() {
@@ -49,23 +67,29 @@ public class Enchere {
 
 	public void setArticleVendu(ArticleVendu articleVendu) {
 		this.articleVendu = articleVendu;
-
-	}
-
-	public int getMontantEnchere() {
-		return montantEnchere;
-	}
-
-	public void setMontantEnchere(int montantEnchere) {
-		this.montantEnchere = montantEnchere;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Enchere [dateEncheres=%s, montantEnchere=%s, encherisseur=%s, articleVendu=%s]",
-				dateEnchere, montantEnchere, encherisseur, articleVendu);
+		return "Enchere [noEnchere=" + noEnchere + ", dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere
+				+ ", encherisseur=" + encherisseur + ", articleVendu=" + articleVendu + "]";
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(noEnchere);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Enchere other = (Enchere) obj;
+		return noEnchere == other.noEnchere;
+	}
 
 }

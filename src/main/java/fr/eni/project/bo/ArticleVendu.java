@@ -3,12 +3,13 @@ package fr.eni.project.bo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class ArticleVendu {
+
 
 	private long noArticle;
 	@NotBlank(message = "Le nom de l''article est obligatoire.")
@@ -28,22 +29,17 @@ public class ArticleVendu {
 	private long noCategorie;
 
 	// relations
-	// vendeur de l'article
 	private Utilisateur vendeur;
-	// encheres sur l'article
 	private List<Enchere> encheres = new ArrayList<Enchere>();
-	//categorie article
 	private Categorie categorie;
-	//vers retrait (1 lieu max)
-
-
 	private Retrait lieuRetrait;
 
-	private String imagePath; // Stocke le chemin ou nom du fichier image
+	private String imagePath;
 
 	public ArticleVendu() {
 	}
 
+	// Constructeur avec paramètres
 	public ArticleVendu(long noArticle, @NotBlank(message = "Le nom de l''article est obligatoire.") String nomArticle,
 			@NotBlank(message = "La description de l''article est obligatoire.") String description,
 			@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.") LocalDateTime dateDebutEncheres,
@@ -51,8 +47,6 @@ public class ArticleVendu {
 			@NotNull(message = "Le prix de départ de l''enchère est obligatoire.") @Min(0) int miseAPrix, int prixVente,
 			int etatVente, long noUtilisateur, long noCategorie, Utilisateur vendeur, List<Enchere> encheres,
 			Categorie categorie, Retrait lieuRetrait, String imagePath) {
-		
-	
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -60,7 +54,7 @@ public class ArticleVendu {
 		this.dateFinEncheres = dateFinEncheres;
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
-		this.etatVente = etatVente;
+		this.setEtatVente(etatVente);
 		this.noUtilisateur = noUtilisateur;
 		this.noCategorie = noCategorie;
 		this.vendeur = vendeur;
@@ -70,7 +64,7 @@ public class ArticleVendu {
 		this.imagePath = imagePath;
 	}
 
-
+	// Getters et setters
 	public long getNoArticle() {
 		return noArticle;
 	}
@@ -127,14 +121,6 @@ public class ArticleVendu {
 		this.prixVente = prixVente;
 	}
 
-	public int getEtatVente() {
-		return etatVente;
-	}
-
-	public void setEtatVente(int etatVente) {
-		this.etatVente = etatVente;
-	}
-
 	public long getNoUtilisateur() {
 		return noUtilisateur;
 	}
@@ -181,7 +167,6 @@ public class ArticleVendu {
 
 	public void setLieuRetrait(Retrait lieuRetrait) {
 		this.lieuRetrait = lieuRetrait;
-
 	}
 
 	public String getImagePath() {
@@ -191,34 +176,20 @@ public class ArticleVendu {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		return String.format(
-				"ArticleVendu [noArticle=%s, nomArticle=%s, description=%s, dateDebutEncheres=%s, dateFinEncheres=%s, miseAPrix=%s, prixVente=%s, etatVente=%s, noUtilisateur=%s, noCategorie=%s, vendeur=%s, encheres=%s, categorie=%s, lieuRetrait=%s, imagePath=%s]",
-				noArticle, nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente,
+				"ArticleVendu [noArticle=%s, nomArticle=%s, description=%s, dateDebutEncheres=%s, dateFinEncheres=%s, miseAPrix=%s, prixVente=%s, noUtilisateur=%s, noCategorie=%s, vendeur=%s, encheres=%s, categorie=%s, lieuRetrait=%s, imagePath=%s]",
+				noArticle, nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente,
 				noUtilisateur, noCategorie, vendeur, encheres, categorie, lieuRetrait, imagePath);
 	}
 
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(lieuRetrait, noArticle, vendeur);
+	public int getEtatVente() {
+		return etatVente;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ArticleVendu other = (ArticleVendu) obj;
-		return Objects.equals(lieuRetrait, other.lieuRetrait) && noArticle == other.noArticle
-				&& Objects.equals(vendeur, other.vendeur);
+	public void setEtatVente(int etatVente) {
+		this.etatVente = etatVente;
 	}
-
 }

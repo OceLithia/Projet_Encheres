@@ -12,10 +12,14 @@ public interface EnchereDAO {
 
 	void createEnchere(ArticleVendu article, Enchere enchere, Utilisateur encherisseur);
 
-	void deleteEnchere(long idArticle);
+	//void deleteEnchere(long idArticle);
 
-	Enchere findByArticleAndUtilisateur(long noArticle, long noEncherisseur);
+	List<Enchere> findByArticleAndUtilisateur(long noArticle, long noEncherisseur);
 
-	Optional<Enchere> findByArticle(long idArticle);
+	Optional<List<Enchere>> findByArticle(long idArticle);
+
+	Enchere findByNoEnchere(long noEnchere);
+
+	Optional<Enchere> findLastEnchereByArticle(Long noArticle);
 	
 }

@@ -31,4 +31,6 @@ public interface ArticleVenduService {
 
 	void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur);
 	
+	void supprimerArticle(ArticleVendu article);
+	
 }
