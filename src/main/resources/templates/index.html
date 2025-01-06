@@ -43,6 +43,7 @@
 			<img th:src="@{'/uploads/' + ${e.imagePath}}" alt="Image de l'article" />
  
 			<div class="container">
+<<<<<<< HEAD
 				<h2 th:text="${e.nomArticle}"></h2>
 				<div>
 					<h5>Mise à prix : <a th:text="${e.miseAPrix}"></a></h5>	
@@ -52,6 +53,18 @@
 					<h5>Termine le : <a th:text="${e.dateFinEncheres}"></a></h5>
 				</div>
 				<h6>Vendeur : <a th:text="${e.vendeur.pseudo}" href="/view-seller" class="link"></a></h6>
+=======
+				<h2 th:text="${e.nomArticle}"><b></b></h2>
+				<h4 th:text="${e.categorie.libelle}"></h4>
+				<h6>Prix actuel :</h6>
+					<p th:text="${e.prixVente}"></p>
+				<h6>Date de fin des enchères :</h6>
+					<p th:text="${e.dateFinEncheres}"></p>
+				<h6>Ville de retrait :</h6>
+					<p th:text="${e.lieuRetrait.ville}"></p>
+				<h6>Vendeur :</h6>
+					<p th:text="${e.vendeur.pseudo}"></p>
+>>>>>>> 70e42b77e440c338cb0e0970e8cc1d6b5c042768
 				<a th:href="@{/article-detail(noArticle=${e.noArticle})}" class="button">Détails</a>
 			</div>
 		</div>
