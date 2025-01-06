@@ -40,7 +40,8 @@
 <main class="grid">
 	<article th:each="e : ${articles}">
 		<div class="articleCard">
-			<!--  <img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />-->
+			<img th:src="@{'/uploads/' + ${e.imagePath}}" alt="Image de l'article" />
+ 
 			<div class="container">
 				<h2 th:text="${e.nomArticle}"><b></b></h2>
 				<h4 th:text="${e.categorie.libelle}"></h4>
@@ -57,6 +58,12 @@
 		</div>
 	</article>
 </main>
+ 
+ <!-- TO DO
+ - lien vers view-seller
+ - afficher image de l'article
+ -->
+ 
 
 	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
