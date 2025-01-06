@@ -1,6 +1,7 @@
 package fr.eni.project.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -74,6 +75,7 @@ public class EnchereController {
 		model.addAttribute("utilisateur", vendeur);
 		// ajouter la date l'heure
 		model.addAttribute("currentDateTime", currentDateTime);
+		
 		return "sell-article";
 	}
 
@@ -103,12 +105,13 @@ public class EnchereController {
 				// Gérer le fichier image
 				if (!image.isEmpty()) {
 					// Nom unique pour l'image
-					String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-					String uploadDir = "src/main/resources/static/uploads/"; // Dossier où les images seront stockées
-					Path filePath = Path.of(uploadDir + fileName);
+					String fileName = System.currentTimeMillis() + "_" + URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
+					String uploadDir = "src/main/resources/static/uploads/"; // Répertoire pour les images d'articles
+					Path filePath = Path.of(uploadDir, fileName);
 
-					// Sauvegarder l'image sur le disque
+					// Créer les répertoires nécessaires s'ils n'existent pas
 					Files.createDirectories(filePath.getParent());
+					// Sauvegarder l'image sur le disque
 					Files.write(filePath, image.getBytes());
 
 					// Stocker le chemin dans l'entité
@@ -124,6 +127,7 @@ public class EnchereController {
 				articleVenduService.addNewArticle(vendeur, articleVendu);
 				return "redirect:/encheres";
 			} catch (IOException e) {
+				// Gestion des erreurs lors du téléchargement de l'image
 				e.printStackTrace();
 				model.addAttribute("erreur", "Erreur lors du téléchargement de l'image.");
 				return "sell-article";
@@ -131,31 +135,31 @@ public class EnchereController {
 		}
 	}
 
-	private String preparerVueDetailArticle(Long articleId, Model model, Authentication authentication) {
-	    // Récupérer l'article et l'utilisateur connecté
+	private String preparerVueDetailArticle(long articleId, Model model, Authentication authentication) {
 	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);
 	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-
 	    model.addAttribute("articleVendu", article);
 	    model.addAttribute("utilisateur", utilisateur);
 
+	    Enchere enchere = null;
 	    try {
-	        // Vérifier si une enchère existe pour cet article
-	        Enchere enchereExistante = enchereService.consulterEnchereParArticle(articleId);
-	        model.addAttribute("enchere", enchereExistante);
-	    } catch (EnchereNotFoundException ex) {
-	        model.addAttribute("enchere", null);
+	        enchere = enchereService.consulterEnchereParArticle(articleId);
+	    } catch (EnchereNotFoundException e) {
+	        // Pas d'enchère, rien à ajouter
 	    }
-
+	    
 	    if (article.getEtatVente() == 2) {
-	        // Finaliser les ventes pour obtenir les informations de l'acheteur
-	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
+	        // Finaliser la vente si nécessaire
+	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(articleId);
 	        model.addAttribute("enchere", meilleureEnchere);
 	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+	    } else {
+	        model.addAttribute("enchere", enchere);
 	    }
 
 	    return "article-detail";
 	}
+
 
 
 	@GetMapping({ "/article-detail", "/encherir" })
@@ -167,6 +171,10 @@ public class EnchereController {
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
+		// Afficher le chemin de l'image de l'article
+		System.out.println("Chemin sauvegardé : " + article.getImagePath());
+		model.addAttribute("imagePath", article.getImagePath());
+		
 		Enchere enchere;
 		try {
 			enchere = this.enchereService.consulterEnchereParArticle(id);
@@ -181,7 +189,6 @@ public class EnchereController {
 	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
 	    }
 
-		
 		model.addAttribute("enchere", enchere);
 		model.addAttribute("enchereDTO", new EnchereDTO()); // Ajouter un DTO vide pour le formulaire
 		return "article-detail";
