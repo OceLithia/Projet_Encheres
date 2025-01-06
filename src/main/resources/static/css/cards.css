@@ -1,11 +1,14 @@
 @charset "UTF-8";
 
 :root {
-    --blue: #124660;
-    --green: #1B9476;
-    --light-green: #8BD59E;
-    --grey: #C7DBC2;
-    --pale-pink: #F4EBD6;
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
 }
 
 /* Container pour toutes les cartes */
@@ -18,16 +21,12 @@
     margin-top:30px;
 }
 
-.link{
-	color: var(--light-green);
-}
-
 /* Style pour chaque carte */
 .articleCard {
-    background-color: var(--pale-pink);
+    background-color: var(--beige-doux);
     border: 1px solid #ddd;
     border-radius: 10px;
-    width: 500px;
+    width: 590px;
     height: 400px; /* Hauteur fixe pour toutes les cartes */
     padding: 15px;
     text-align: left;
@@ -35,11 +34,13 @@
     transition: transform 0.3s, box-shadow 0.3s;
     box-sizing: border-box;
     display: flex; /* Rend le conteneur flexible */
-    flex-direction: column; /* Organisation verticale */
-    justify-content: space-between; /* Répartit l'espace entre les éléments */
+    flex-direction: raw; /* Organisation verticale */
+    justify-content:flex-start; /* Répartit l'espace entre les éléments */
     margin-bottom: 20px; /* Espacement vertical entre les lignes */
 }
-
+.container{
+	padding-left: 15px;
+}
 .articleCard:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
@@ -47,8 +48,8 @@
 
 /* Style des images */
 .articleCard img {
-    width: 100%;
-    height: 200px; /* Taille uniforme pour les images */
+    width: 365px;
+    height: 365px; /* Taille uniforme pour les images */
     object-fit: cover; /* Ajuste l'image sans déformation */
     border-radius: 10px;
 }
@@ -62,7 +63,8 @@
 .articleCard h6 {
     text-align: left;
     margin: 10px 0;
-    color: var(--blue);
+    color: var(--bleu-fonce);
+    font-family: Playfair+Display+SC;
 }
 
 /* Style des paragraphes */
@@ -72,25 +74,34 @@
     overflow: hidden; /* Cache le texte qui dépasse */
     text-overflow: ellipsis; /* Ajoute "..." si le texte est trop long */
     line-height: 1.5;
-    color: black;
+    color:var(--bleu-fonce);
     font-size: 17px;
+    font-family: Lora;
 }
 
 /* Style des boutons */
 .button {
-    align-self: flex-end; /* Positionne le bouton en bas de la carte */
+    align-content: flex-end; /* Positionne le bouton en bas de la carte */
     display: inline-block;
     padding: 10px 20px;
-    background-color: var(--light-green); /* Couleur de fond */
-    color: black; /* Couleur du texte */
+    background-color: var(--bleu-gris); /* Couleur de fond */
+    color: var(--creme-clair); /* Couleur du texte */
     text-decoration: none; /* Supprime le soulignement du lien */
     border-radius: 5px; /* Coins arrondis */
-    border: none;
+    border:medium;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: color 0.3s ease;
+    font-family: Playfair+Display+SC;
+}
+#buttonDetail{
+	    color: var(--creme-clair); /* Couleur du texte */
+}
+.button:hover {
+    background-color: var(--dore-mat); /* Couleur au survol */
 }
 
-.button:hover {
-    background-color: var(--green); /* Couleur au survol */
+.link{
+	color: var(--rose-poudre);
+	text-decoration: none;
 }

@@ -11,63 +11,17 @@
 	--creme-clair:#f3e7d3;
 }
 
-/* Style général */
+/* STYLE GENERAL */
 body {
-	font-family: 'Arial', sans-serif;
-	margin: 0;
-	padding: 0;
+	font-family:Lora;
+	background-color:var(--creme-clair);
 	color: var(--bleu-fonce);
 	line-height: 1.6;
 }
-
-/* En-tête du site (navigation) */
-nav {
-	background-color: var(--bleu-gris);
-	font-size: 2em;
-	color: var(--pale-pink);
-	padding: 10px 20px;
-	text-align: center;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-nav a {
-	color: var(--pale-pink);
-	text-decoration: none;
-	font-size: 18px;
-	margin: 0 15px;
-	font-weight: bold;
-	transition: color 0.3s;
-}
-
-nav a:hover {
-	color: var(--green);
-}
-
-/* Conteneur principal */
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 20px;
-}
-
-/* Titres */
 h1, h2, h3 {
-	color: var(--blue);
-	font-family: 'Georgia', serif;
+	color: var(--bleu-fonce);
+	font-family:Playfair+Display+SC;
 	text-align: center;
-}
-
-/* Section */
-section {
-	padding: 40px 0;
-	background-color: var(--grey);
-	border-radius: 10px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	margin-bottom: 20px;
 }
 
 /* Style mobile - petite taille d'écran */
@@ -85,45 +39,56 @@ section {
 		padding: 15px;
 	}
 }
-
-/* Style global de la barre de navigation */
-nav {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* NAVBAR */
+/* Conteneur de la navbar */
+.navbar {
+  background-color: var(--bleu-gris);
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: space-between; /* Espacer les éléments */
+  position: relative;
 }
 
-/* Style du logo */
-nav a.logo {
-	font-size: 1.5em;
-	font-weight: bold;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
+/* Conteneur du logo et du texte de bienvenue */
+#logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-/* Style des liens de navigation */
-nav a {
-	margin: 0 10px;
-	text-decoration: none;
-	font-size: 1em;
-	transition: color 0.3s ease;
+#logo img {
+  width: 200px; /* Ajuste la taille du logo */
+  margin-right: 10px; /* Espacement entre l'image et le texte */
 }
 
 /* Style du texte de bienvenue */
-nav p {
-	margin: 0;
-	font-size: 1em;
-	color: var(--light-green);
-	font-style: italic;
+#bienvenu {
+  position: absolute; /* Permet de centrer le texte indépendamment des autres éléments */
+  left: 50%; /* Centre horizontalement */
+  transform: translateX(-50%); /* Compense le décalage pour un véritable centrage */
+  font-size: 3em;
+  color: var(--dore-mat);
+  font-style: italic;
+  margin: 0;
 }
 
-/* Aligner les liens lorsqu'un utilisateur est authentifié */
-nav div.links {
-	display: flex;
-	align-items: center;
+/* Liens de la navbar */
+.navbar .links {
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Pousse les liens vers la droite */
 }
 
+.navbar .links a {
+  color: white;
+  font-size: 20px;
+  transition: color 0.3s;
+  margin-left: 20px; /* Espacement entre les liens */
+  text-decoration: none; /* Retirer le soulignement des liens */
+}
 
+/* Effet sur le survol */
+.navbar .links a:hover {
+  color: var(--rose-poudre); /* Couleur survol */
+}

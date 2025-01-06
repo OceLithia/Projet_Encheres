@@ -1,21 +1,21 @@
-<nav th:fragment="entete">
-	<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
-  	<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
-    <div class="links">
+<nav th:fragment="entete" class="navbar">
+	<div id="logo">
+		<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" alt="logo"></a>
+  		<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
+  	</div>
+  	<div class="links">
         <!-- Liens pour les utilisateurs non authentifiés -->
-        <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
-        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
-        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
-
+	        <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
+	        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
+	        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
         <!-- Liens pour les utilisateurs authentifiés -->
-        <p sec:authorize="isAuthenticated()" 
+	        <a sec:authorize="isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
+	        <a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
+	        <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
+	        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
+	</div>
+	 <p id="bienvenu" sec:authorize="isAuthenticated()" 
            th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
-           th:text="'Bonjour, ' + ${utilisateur.prenom} + ' !'"></p>
-        <a sec:authorize="isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
-        <a th:href="@{/}"><img th:src="@{/img/panier.png}" width=15%  alt="image du panier" class="images">Mon panier</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
-        <a th:href="@{/}"><img th:src="@{/img/token.png}" width=12%  alt="image du jeton" class="images"></a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
-    </div>
+           th:text="'Bonjour ' + ${utilisateur.prenom} + ' !'"></p>
 </nav>
+
