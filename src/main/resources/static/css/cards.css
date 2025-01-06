@@ -1,22 +1,96 @@
 @charset "UTF-8";
 
-.card {
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  border-radius: 5px;
+:root {
+    --blue: #124660;
+    --green: #1B9476;
+    --light-green: #8BD59E;
+    --grey: #C7DBC2;
+    --pale-pink: #F4EBD6;
 }
 
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+/* Container pour toutes les cartes */
+.grid {
+    display: grid;
+    place-items: center; 
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
+    gap: 30px; /* Espacement entre les cartes */
+    width: 100%;
+    margin-top:30px;
 }
 
-/* Add some padding inside the card container */
-.container {
-  padding: 2px 16px;
+.link{
+	color: var(--light-green);
 }
 
-img {
-  border-radius: 5px 5px 0 0;
+/* Style pour chaque carte */
+.articleCard {
+    background-color: var(--pale-pink);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 500px;
+    height: 400px; /* Hauteur fixe pour toutes les cartes */
+    padding: 15px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+    display: flex; /* Rend le conteneur flexible */
+    flex-direction: column; /* Organisation verticale */
+    justify-content: space-between; /* Répartit l'espace entre les éléments */
+    margin-bottom: 20px; /* Espacement vertical entre les lignes */
+}
+
+.articleCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style des images */
+.articleCard img {
+    width: 100%;
+    height: 200px; /* Taille uniforme pour les images */
+    object-fit: cover; /* Ajuste l'image sans déformation */
+    border-radius: 10px;
+}
+
+/* Style des titres */
+.articleCard h1,
+.articleCard h2,
+.articleCard h3,
+.articleCard h4,
+.articleCard h5,
+.articleCard h6 {
+    text-align: left;
+    margin: 10px 0;
+    color: var(--blue);
+}
+
+/* Style des paragraphes */
+.articleCard a {
+    flex-grow: 1; /* Permet au texte de remplir l'espace restant */
+    margin: 10px 0;
+    overflow: hidden; /* Cache le texte qui dépasse */
+    text-overflow: ellipsis; /* Ajoute "..." si le texte est trop long */
+    line-height: 1.5;
+    color: black;
+    font-size: 17px;
+}
+
+/* Style des boutons */
+.button {
+    align-self: flex-end; /* Positionne le bouton en bas de la carte */
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--light-green); /* Couleur de fond */
+    color: black; /* Couleur du texte */
+    text-decoration: none; /* Supprime le soulignement du lien */
+    border-radius: 5px; /* Coins arrondis */
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--green); /* Couleur au survol */
 }

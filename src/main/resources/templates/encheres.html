@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <title>Accueil</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/profile.css}" />
+<link rel="stylesheet" th:href="@{/css/cards.css}" />
 </head>
 <body>
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
 
 	<h1>Liste des enchères</h1>
-
 
 	<form th:action="@{/filtrer}" method="GET">
 	    <!-- Champ de recherche -->
@@ -23,27 +22,35 @@
 		</select>
 		<button type="submit">Rechercher</button>
 	</form>
-	
-	<table th:if="${articles != null and articles.size() > 0}">
-		<!-- entête -->
-		<thead>
-			<th>Article</th>
-			<th>Prix actuel</th>
-			<th>Se termine</th>
-			<th>Vendeur</th>
-			<th>Ville de retrait</th>
-			<th>Voir plus</th>
-		</thead>
-		<tr th:each="e : ${articles}">
-			<td th:text="${e.nomArticle}"></td>
-			<td th:text="${e.prixVente}"></td>
-			<td th:text="${e.dateFinEncheres}"></td>
-			<td th:text="${e.vendeur.pseudo}"></td>
-			<td th:text="${e.lieuRetrait.ville}"></td>
-			<td><a th:href="@{/article-detail(noArticle=${e.noArticle})}">Détails</a></td>
-		</tr>
-	</table>
 
+<main class="grid">
+	<article th:each="e : ${articles}">
+		<div class="articleCard">
+			<!--  <img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />-->
+			<div class="container">
+				<h2 th:text="${e.nomArticle}"></h2>
+				<div>
+					<h5>Mise à prix : <a th:text="${e.miseAPrix}"></a></h5>	
+					<h5>Meilleure offre : <a th:if="${enchere != null}"
+						th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></a>
+						<a th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</a></h5>	
+					<h5>Termine le : <a th:text="${e.dateFinEncheres}"></a></h5>
+				</div>
+				<h6>Vendeur : <a th:text="${e.vendeur.pseudo}" href="/view-seller" class="link"></a></h6>
+				<a th:href="@{/article-detail(noArticle=${e.noArticle})}" class="button">Détails</a>
+			</div>
+		</div>
+	</article>
+</main>
+ 
+ <!-- TO DO
+ - lien vers vendeur
+ - afficher image de l'article
+ -->
+ 
+ 
+ 
+ 
 	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
 </body>
 </html>
