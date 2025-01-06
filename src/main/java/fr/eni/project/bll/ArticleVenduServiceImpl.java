@@ -31,6 +31,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	public void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle) {
 		articleVenduDAO.createSellArticle(vendeur, nouvelArticle);
 		nouvelArticle.setPrixVente(nouvelArticle.getMiseAPrix());
+		if (nouvelArticle.getDateDebutEncheres().isBefore(LocalDateTime.now())) {
+			nouvelArticle.setEtatVente(-1);
+		} else { 
+			nouvelArticle.setEtatVente(0);
+		}
 		retraitDAO.insertLieuRetraitParDefaut(nouvelArticle.getNoArticle(), vendeur);
 	}
 
@@ -142,6 +147,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	    List<ArticleVendu> articles = articleVenduDAO.findByDateFinEncheresBefore(LocalDateTime.now());
 
 	    for (ArticleVendu article : articles) {
+	    	System.out.println(article.getNoArticle()+" est à l'état : "+ article.getEtatVente());
 	        Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
 
 	        if (meilleureEnchere.isPresent()) {
@@ -149,12 +155,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	            articleVenduDAO.update(article, article.getVendeur()); // Mettez à jour l'article avec l'état finalisé
 
 	            Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
-	            System.out.println("Vente finalisée pour l'article : " + article.getNoArticle() +
-	                               ", Acheteur : " + acheteur.getPseudo());
+	            //System.out.println("Vente finalisée pour l'article : " + article.getNoArticle()+", Acheteur : " + acheteur.getPseudo());
 	        } else {
 	            article.setEtatVente(1); // Pas d'enchères, état à "invendu"
 	            articleVenduDAO.update(article, article.getVendeur()); 
-	            System.out.println("Aucune enchère pour l'article : " + article.getNoArticle());
+	            //System.out.println("Aucune enchère pour l'article : " + article.getNoArticle());
 	        }
 	    }
 	}
