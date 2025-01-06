@@ -64,7 +64,6 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("imagePath", newArticle.getImagePath());
 		map.addValue("etatVente", newArticle.getEtatVente());
 		jdbcTemplate.update(INSERT, map, keyHolder);
-		// MAJ n°categorie
 		if (keyHolder.getKey() != null) {
 			newArticle.setNoArticle(keyHolder.getKey().longValue());
 		}

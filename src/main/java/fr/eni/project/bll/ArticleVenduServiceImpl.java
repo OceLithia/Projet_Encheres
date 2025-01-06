@@ -104,20 +104,21 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	    }
 	    
 	    //Règle métier 4 : Vérifier que l'enchérisseur n'ait pas déjà fait la dernière enchère
-	    Optional<Enchere> derniereEnchere = enchereDAO.findByArticle(articleId);
-	    
-	    if (derniereEnchere.isPresent() ) {
-	    	// Récupérer l'enchère existante
-	        Enchere enchereExistante = derniereEnchere.get();
+	    Optional<Enchere> derniereEnchere = enchereDAO.findLastEnchereByArticle(articleId);
+
+	    if (derniereEnchere.isPresent()) {
+	        // Récupérer la dernière enchère
+	        Enchere derniereEnchereExistante = derniereEnchere.get();
+
 	        // Vérifier si l'utilisateur actuel est le même que le dernier enchérisseur
-	        if (encherisseur.getNoUtilisateur() == enchereExistante.getEncherisseur().getNoUtilisateur()) {
+	        if (encherisseur.getNoUtilisateur() == derniereEnchereExistante.getEncherisseur().getNoUtilisateur()) {
 	            be.addMessage("Vous êtes déjà le dernier enchérisseur sur cet article.");
 	            throw be;
 	        }
-		}
+	    }
+
 	    
 	    // Logique d'enchère si tout est valide
-	    enchereDAO.deleteEnchere(articleId);
 	    Enchere nouvelleEnchere = new Enchere(LocalDateTime.now(), montant, encherisseur, article);
 	    enchereDAO.createEnchere(article, nouvelleEnchere, encherisseur);
 
@@ -162,14 +163,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	    for (ArticleVendu article : articles) {
 	    	System.out.println(article.getNoArticle()+" est à l'état : "+ article.getEtatVente());
-	        Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
+	        Optional<Enchere> meilleureEnchere = enchereDAO.findLastEnchereByArticle(article.getNoArticle());
 
 	        if (meilleureEnchere.isPresent()) {
 	            article.setEtatVente(2); // Vente finalisée
 	            articleVenduDAO.update(article, article.getVendeur()); // Mettez à jour l'article avec l'état finalisé
-
-	            Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
-	            //System.out.println("Vente finalisée pour l'article : " + article.getNoArticle()+", Acheteur : " + acheteur.getPseudo());
 	        } else {
 	            article.setEtatVente(1); // Pas d'enchères, état à "invendu"
 	            articleVenduDAO.update(article, article.getVendeur()); 

@@ -143,14 +143,14 @@ public class EnchereController {
 
 	    Enchere enchere = null;
 	    try {
-	        enchere = enchereService.consulterEnchereParArticle(articleId);
+	        enchere = enchereService.consulterDerniereEnchereParArticle(articleId);
 	    } catch (EnchereNotFoundException e) {
 	        // Pas d'enchère, rien à ajouter
 	    }
 	    
 	    if (article.getEtatVente() == 2) {
 	        // Finaliser la vente si nécessaire
-	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(articleId);
+	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(articleId);
 	        model.addAttribute("enchere", meilleureEnchere);
 	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
 	    } else {
@@ -178,7 +178,7 @@ public class EnchereController {
 		
 		Enchere enchere;
 		try {
-			enchere = this.enchereService.consulterEnchereParArticle(id);
+			enchere = this.enchereService.consulterDerniereEnchereParArticle(id);
 		} catch (EnchereNotFoundException e) {
 			enchere = null; // Si aucune enchère, on passe un objet null (ou un objet vide)
 		}
@@ -186,7 +186,7 @@ public class EnchereController {
 		if (article.getEtatVente() == 2) {
 			System.out.println("etat de la vente si 2 : "+article.getEtatVente());
 	        // Finaliser les ventes pour obtenir les informations de l'acheteur
-	        Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
+	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(article.getNoArticle());
 	        model.addAttribute("enchere", meilleureEnchere);
 	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
 	    }
