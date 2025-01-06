@@ -51,19 +51,6 @@
 				</tr>
 			</table>
 		</section>
-		<section class="section-articles">
-			<h2>Articles actuellement en vente</h2>
-			<table th:if="${articles != null and articles.size() > 0}">
-				<tr th:each="a : ${articles}">
-					<th th:text="${a.nomArticle}"></th>
-					<td th:text="'Date de fin d\'enchères : '+ ${a.dateFinEncheres}"></td>
-					<th><a th:href="@{/article-detail(noArticle=${a.noArticle})}">Voir
-						plus</a></th>
-				</tr>
-			</table>
-			<h3 th:if="${articles == null or articles.size() == 0}" >Aucun article trouvé</h3>
-			<table></table>
-		</section>
 	</main>
 </body>
 </html>
