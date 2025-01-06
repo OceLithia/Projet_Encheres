@@ -48,17 +48,17 @@ public class EnchereServiceImpl implements EnchereService {
 	}
 
 	@Override
-	public List<Enchere> consulterEncheresParArticle(long idArticle) {
-		Optional<List<Enchere>> encheresParArticle = enchereDAO.findByArticle(idArticle);
+	public List<Enchere> consulterEncheresParArticle(long noArticle) {
+		Optional<List<Enchere>> encheresParArticle = enchereDAO.findByArticle(noArticle);
 	    // Si aucune enchère n'existe pour cet article, gérer comme suit :
-		return encheresParArticle.orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + idArticle));
+		return encheresParArticle.orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + noArticle));
+	}
+	
+	@Override
+	public Enchere consulterDerniereEnchereParArticle(Long noArticle) {
+	    return enchereDAO.findLastEnchereByArticle(noArticle)
+	            .orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + noArticle));
 	}
 
-	@Override
-	public Enchere consulterDerniereEnchereParArticle(long idArticle) {
-		Optional<Enchere> optionalEnchere = enchereDAO.findLastEnchereByArticle(idArticle);
-	    // Si aucune enchère n'existe pour cet article, gérer comme suit :
-		return optionalEnchere.orElseThrow(() -> new EnchereNotFoundException("Aucune enchère trouvée pour l'article ID : " + idArticle));
-	}
 
 }

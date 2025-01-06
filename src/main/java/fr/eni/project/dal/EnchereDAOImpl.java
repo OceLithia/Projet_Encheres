@@ -62,15 +62,22 @@ public class EnchereDAOImpl implements EnchereDAO {
 	
 	@Override
 	public Optional<Enchere> findLastEnchereByArticle(Long noArticle) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("noArticle", noArticle);
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    map.addValue("noArticle", noArticle);
+
 	    try {
-	    	Enchere enchere = jdbcTemplate.queryForObject(FIND_LAST_ENCHERE_BY_ARTICLE, map, new EnchereRowMapper());
-	        return Optional.of(enchere);
-	    } catch (BusinessException e) {
-	        return Optional.empty(); // Aucun résultat trouvé
+	        List<Enchere> encheres = jdbcTemplate.query(FIND_LAST_ENCHERE_BY_ARTICLE, map, new EnchereRowMapper());
+	        // Vérifie si une enchère existe, retourne le premier élément s'il y en a
+	        if (!encheres.isEmpty()) {
+	            return Optional.of(encheres.get(0));
+	        } else {
+	            return Optional.empty(); // Pas de résultat
+	        }
+	    } catch (Exception e) {
+	        throw new BusinessException("Erreur lors de la récupération de la dernière enchère pour l'article " + noArticle);
 	    }
-	};
+	}
+
 
 	@Override
 	public List<Enchere> findAll() {

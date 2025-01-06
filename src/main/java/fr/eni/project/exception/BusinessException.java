@@ -21,7 +21,7 @@ public class BusinessException extends RuntimeException {
         super("Une ou plusieurs erreurs sont survenues.");
     }
 
-    // Ajouter un message d'erreur à la liste
+	// Ajouter un message d'erreur à la liste
     public void addMessage(String message) {
         this.listeMessages.add(message);
     }

@@ -18,8 +18,8 @@ public interface EnchereService {
 	List<Enchere> consulterEncheresParArticle(long idArticle);
 
 	Enchere consulterEnchereParNoEnchere(long noEnchere);
-	
-	Enchere consulterDerniereEnchereParArticle(long idArticle);
+
+	Enchere consulterDerniereEnchereParArticle(Long noArticle);
 	
 	
 }

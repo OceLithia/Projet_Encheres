@@ -148,7 +148,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	    List<ArticleVendu> articles = articleVenduDAO.findByDateFinEncheresBefore(LocalDateTime.now());
 
 	    for (ArticleVendu article : articles) {
-	    	System.out.println(article.getNoArticle()+" est à l'état : "+ article.getEtatVente());
 	        Optional<Enchere> meilleureEnchere = enchereDAO.findLastEnchereByArticle(article.getNoArticle());
 
 	        if (meilleureEnchere.isPresent()) {
@@ -157,7 +156,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	        } else {
 	            article.setEtatVente(1); // Pas d'enchères, état à "invendu"
 	            articleVenduDAO.update(article, article.getVendeur()); 
-	            //System.out.println("Aucune enchère pour l'article : " + article.getNoArticle());
 	        }
 	    }
 	}
