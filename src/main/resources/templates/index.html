@@ -44,13 +44,8 @@
 			<div class="container">
 				<h2 th:text="${e.nomArticle}"><b></b></h2>
 				<h4 th:text="${e.categorie.libelle}"></h4>
-				<h6>Mise à prix :</h6>
-					<p th:text="${e.miseAPrix}"></p>
-				<h6>Meilleure offre :</h6>
-					<p th:if="${enchere != null}"
-					th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></p>
-					<p th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</p>
-				
+				<h6>Prix actuel :</h6>
+					<p th:text="${e.prixVente}"></p>
 				<h6>Date de fin des enchères :</h6>
 					<p th:text="${e.dateFinEncheres}"></p>
 				<h6>Ville de retrait :</h6>
