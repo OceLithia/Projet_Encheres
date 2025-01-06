@@ -33,7 +33,7 @@
 					<h5>Prix actuel : <a th:text="${e.prixVente}"></a></h5>	
 					<h5>Termine le : <a th:text="${e.dateFinEncheres}"></a></h5>
 				</div>
-				<h6>Vendeur : <a th:text="${e.vendeur.pseudo}" th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}" class="link"></a></h6>
+				<h6>Vendeur : <a th:text="${e.vendeur.pseudo}" th:href="@{/view-seller(noVendeur=${e.vendeur.noUtilisateur})}" class="link"></a></h6>
 				<a th:href="@{/article-detail(noArticle=${e.noArticle})}" class="button">Détails</a>
 			</div>
 		</div>
