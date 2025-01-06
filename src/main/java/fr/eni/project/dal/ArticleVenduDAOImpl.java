@@ -111,7 +111,15 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
 	}
+	
+	@Override
+	public List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noUtilisateur", utilisateurId);
+		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
+	};
 
+	
 	@Override
 	public void update(ArticleVendu articleVendu, Utilisateur vendeur) {
 		MapSqlParameterSource map = new MapSqlParameterSource();

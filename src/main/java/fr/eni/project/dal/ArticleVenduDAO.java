@@ -26,4 +26,6 @@ public interface ArticleVenduDAO {
 	List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant);
 
 	void deleteArticle(ArticleVendu article);
+
+	List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId);
 }
