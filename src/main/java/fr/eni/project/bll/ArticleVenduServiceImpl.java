@@ -158,6 +158,11 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	        }
 	    }
 	}
+	
+	@Override
+	public void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur) {
+		articleVenduDAO.update(article, vendeur);
+	}
 
 
 }

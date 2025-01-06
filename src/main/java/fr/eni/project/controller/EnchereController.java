@@ -135,7 +135,7 @@ public class EnchereController {
 	    // Récupérer l'article et l'utilisateur connecté
 	    ArticleVendu article = articleVenduService.afficherArticleParNoArticle(articleId);
 	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-
+	    System.out.println(article.getPrixVente());
 	    model.addAttribute("articleVendu", article);
 	    model.addAttribute("utilisateur", utilisateur);
 
@@ -207,6 +207,9 @@ public class EnchereController {
 		try {
 			// Appeler la logique métier pour créer une enchère
 			articleVenduService.encherir(enchereDTO.getArticleId(), enchereDTO.getMontant(), encherisseur);
+			ArticleVendu article = articleVenduService.afficherArticleParNoArticle(enchereDTO.getArticleId());
+			System.out.println(article.getPrixVente());
+			articleVenduService.mettreAJourArticle(article, article.getVendeur());
 		} catch (BusinessException e) {
 			// Gestion des exceptions métiers
 			model.addAttribute("erreur", e.getMessage());

@@ -31,7 +31,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_ID_VENDEUR = FIND_ALL + " WHERE a.no_utilisateur = :no_vendeur";
 	private static final String FIND_BY_CAT = FIND_ALL + " WHERE a.no_categorie = :no_categorie";
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
-	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, no_categorie = :noCategorie, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
+	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
 	
 	@Autowired
@@ -104,9 +104,9 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	}
 	
 	@Override
-	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant) {
+	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime localDateTime) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("maintenant", maintenant);
+		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
 	}
 
@@ -115,18 +115,20 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("noArticle", articleVendu.getNoArticle());
 		map.addValue("nomArticle", articleVendu.getNomArticle());
-		map.addValue("noCategorie", articleVendu.getNoCategorie());
+		//map.addValue("noCategorie", articleVendu.getNoCategorie());
 		map.addValue("description", articleVendu.getDescription());
 		map.addValue("dateDebutEncheres", articleVendu.getDateDebutEncheres());
 		map.addValue("dateFinEncheres", articleVendu.getDateFinEncheres());
 		map.addValue("prixInitial", articleVendu.getMiseAPrix());
 		map.addValue("prixVente", articleVendu.getPrixVente());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
-		map.addValue("imagePath", articleVendu.getImagePath());
+		if (articleVendu.getImagePath() != null) {
+			map.addValue("imagePath", articleVendu.getImagePath());
+		} else {
+			map.addValue("imagePath", " ");
+		}
 		jdbcTemplate.update(UPDATE, map);
 	}
-	
-
 
 	class ArticleRowMapper implements RowMapper<ArticleVendu> {
 
