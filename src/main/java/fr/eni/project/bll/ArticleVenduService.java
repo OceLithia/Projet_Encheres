@@ -3,6 +3,7 @@ package fr.eni.project.bll;
 import java.util.List;
 
 import fr.eni.project.bo.ArticleVendu;
+import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.FiltreDTO;
 import fr.eni.project.exception.BusinessException;
@@ -32,5 +33,7 @@ public interface ArticleVenduService {
 	void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur);
 	
 	void supprimerArticle(ArticleVendu article);
+
+	void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
 	
 }

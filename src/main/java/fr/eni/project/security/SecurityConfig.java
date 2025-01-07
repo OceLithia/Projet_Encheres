@@ -27,6 +27,7 @@ public class SecurityConfig {
 				.requestMatchers("/","/filtrer/**").permitAll()
 				.requestMatchers("/uploads/**").permitAll()
 				.requestMatchers("/signup/**", "/img/**", "/css/**").permitAll()
+				.requestMatchers("/article-update/**").hasAnyRole("USER", "ADMIN") // Autoriser USER ou ADMIN
 				.anyRequest().authenticated())
 				.httpBasic(Customizer.withDefaults())
 				// personnalise la connexion
@@ -54,4 +55,5 @@ public class SecurityConfig {
 		return jdbcUserDetailsManager;
 	}
 
+	
 }
