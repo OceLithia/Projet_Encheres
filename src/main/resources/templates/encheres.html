@@ -7,10 +7,45 @@
 <link rel="stylesheet" th:href="@{/css/cards.css}" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const radioAchats = document.getElementById('achats');
+        const radioVentes = document.getElementById('ventes');
+        const achatsCheckboxes = document.querySelectorAll('#ouvertes, #cours, #remportees');
+        const ventesCheckboxes = document.querySelectorAll('#ventesCours, #nonDebutees, #terminees');
+
+        const updateCheckboxesState = () => {
+            if (radioAchats.checked) {
+                achatsCheckboxes.forEach(checkbox => checkbox.disabled = false);
+                ventesCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false; // Décocher les checkbox désactivées
+                    checkbox.disabled = true; // Désactiver
+                });
+            } else if (radioVentes.checked) {
+                ventesCheckboxes.forEach(checkbox => checkbox.disabled = false);
+                achatsCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    checkbox.disabled = true;
+                });
+            }
+        };
+
+        // Écoute les changements des boutons radio
+        radioAchats.addEventListener('change', updateCheckboxesState);
+        radioVentes.addEventListener('change', updateCheckboxesState);
+
+        // Initialise l'état des checkbox au chargement
+        updateCheckboxesState();
+    });
+</script>
 </head>
 <body>
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
@@ -108,7 +143,7 @@
 		</article>
 	</main>
 
-<!-- TO DO
+	<!-- TO DO
  - lien vers vendeur
  - afficher image de l'article
  -->

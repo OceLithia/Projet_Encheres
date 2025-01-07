@@ -161,10 +161,13 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 				.filter(article -> filtre.getEncheresOuvertes() == null
 						|| (filtre.getEncheresOuvertes() && article.getEtatVente() == 0))
 				// Enchères en cours (enchères où l'utilisateur a déjà enchéri au moins une fois
-				.filter(article -> filtre.getEncheresEnCours() == null || (filtre.getEncheresEnCours()
-	                    && article.getEtatVente() == 0
-	                    && article.getEncheres().stream()
-	                            .anyMatch(enchere -> enchere.getEncherisseur().getNoUtilisateur() == (filtre.getUtilisateurId()))))
+				.filter(article -> {
+	                if (filtre.getEncheresEnCours() != null && filtre.getEncheresEnCours()) {
+	                    List<ArticleVendu> articlesEncheris = articleVenduDAO.findArticlesEncheresEnCours(filtre.getUtilisateurId());
+	                    return articlesEncheris.contains(article);
+	                }
+	                return true;
+	            })
 				// Enchères remportées
 				.filter(article -> filtre.getEncheresRemportees() == null
 						|| (filtre.getEncheresRemportees() && article.getEtatVente() == 2))

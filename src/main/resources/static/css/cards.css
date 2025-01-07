@@ -105,3 +105,8 @@
 	color: var(--rose-poudre);
 	text-decoration: none;
 }
+
+input[type="checkbox"]:disabled + label {
+    color: gray;
+    cursor: not-allowed;
+}
