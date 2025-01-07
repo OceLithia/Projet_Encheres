@@ -27,7 +27,7 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     width: 590px;
-    height: 400px; /* Hauteur fixe pour toutes les cartes */
+    height: 350px; /* Hauteur fixe pour toutes les cartes */
     padding: 15px;
     text-align: left;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -48,8 +48,8 @@
 
 /* Style des images */
 .articleCard img {
-    width: 365px;
-    height: 365px; /* Taille uniforme pour les images */
+    width: 300px;
+    height: 320px; /* Taille uniforme pour les images */
     object-fit: cover; /* Ajuste l'image sans déformation */
     border-radius: 10px;
 }

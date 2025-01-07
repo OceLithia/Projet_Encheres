@@ -17,6 +17,8 @@ body {
 	background-color:var(--creme-clair);
 	color: var(--bleu-fonce);
 	line-height: 1.6;
+	margin:0px;
+	padding:0px;
 }
 h1, h2, h3 {
 	color: var(--bleu-fonce);
@@ -39,7 +41,9 @@ h1, h2, h3 {
 		padding: 15px;
 	}
 }
+
 /* NAVBAR */
+
 /* Conteneur de la navbar */
 .navbar {
   background-color: var(--bleu-gris);
@@ -48,6 +52,8 @@ h1, h2, h3 {
   align-items: center;
   justify-content: space-between; /* Espacer les éléments */
   position: relative;
+  margin:0px;
+  padding:0px;
 }
 
 /* Conteneur du logo et du texte de bienvenue */
@@ -65,12 +71,11 @@ h1, h2, h3 {
 /* Style du texte de bienvenue */
 #bienvenu {
   position: absolute; /* Permet de centrer le texte indépendamment des autres éléments */
-  left: 50%; /* Centre horizontalement */
-  transform: translateX(-50%); /* Compense le décalage pour un véritable centrage */
+  left: 16%; /* Centre horizontalement */
+  justify-content: flex-end;
   font-size: 3em;
   color: var(--dore-mat);
   font-style: italic;
-  margin: 0;
 }
 
 /* Liens de la navbar */
