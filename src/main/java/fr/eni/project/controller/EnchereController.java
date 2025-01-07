@@ -169,6 +169,7 @@ public class EnchereController {
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
+		System.out.println(article.getEtatVente());
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -251,43 +252,5 @@ public class EnchereController {
 		redirectAttributes.addFlashAttribute("successMessage", "Votre article a été supprimé avec succès.");
 		return "redirect:/";
 	}
-
-	/*
-	 * @GetMapping({"/", "/index"}) public String showForm(Model model,
-	 * Authentication authentication) { Enchere enchere = new Enchere(); // L'objet
-	 * qui contient le champ categorie model.addAttribute("enchere", enchere); //
-	 * L'ajouter au modèle List<Categorie> categories =
-	 * categorieService.getAllCategories(); model.addAttribute("categories",
-	 * categories); Utilisateur vendeur =
-	 * this.addressUser.afficherUtilisateurParPseudo(authentication.getName()); //
-	 * Vérification que l'utilisateur existe et est co if (vendeur == null) {
-	 * model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " +
-	 * authentication.getName()); return "error-page"; // Une page d'erreur
-	 * Thymeleaf personnalisée } model.addAttribute("utilisateur", vendeur); return
-	 * "index"; }
-	 */
-	/*
-	 * @GetMapping("/sell-article") public String afficherVendreArticle(Model model)
-	 * { String pseudoUser = addressUser.afficherUtilisateurParPseudo(); Utilisateur
-	 * user = addressUser.afficherUtilisateurParPseudo(noUtilisateur);
-	 * user.getRue(); user.getCodePostal(); user.getVille();
-	 * model.addAttribute("utilisateur", user); return "sell-article"; }
-	 */
-	/*
-	 * @GetMapping("/encheres") public String showCategories(@RequestParam(name =
-	 * "categorie", required = false) Integer categorieId, Model model,
-	 * Authentication authentication) { if (categorieId != null) { // Récupérer les
-	 * articles pour cette catégorie model.addAttribute("articles",
-	 * CategorieService.getArticlesByCategorie(categorieId)); }
-	 * model.addAttribute("categories", categorieService.getAllCategories());
-	 * Utilisateur vendeur =
-	 * this.addressUser.afficherUtilisateurParPseudo(authentication.getName()); //
-	 * Vérification que l'utilisateur existe et est co if (vendeur == null) {
-	 * model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " +
-	 * authentication.getName()); return "error-page"; // Une page d'erreur
-	 * Thymeleaf personnalisée } model.addAttribute("utilisateur", vendeur);
-	 * List<Enchere> encheres = this.enchereService.afficherEncheres();
-	 * System.out.println("recupere liste encheres" +encheres); return "encheres"; }
-	 */
 
 }
