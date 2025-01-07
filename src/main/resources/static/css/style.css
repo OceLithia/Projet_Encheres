@@ -26,6 +26,23 @@ h1, h2, h3 {
 	text-align: center;
 }
 
+.button {
+    background-color: var(--rose-poudre);
+    color:var(--bleu-fonce);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+}
+.button:hover {
+    background-color:var(--dore-mat);
+}
+
+
+
 /* Style mobile - petite taille d'écran */
 @media ( max-width : 768px) {
 	body {
@@ -53,7 +70,8 @@ h1, h2, h3 {
   justify-content: space-between; /* Espacer les éléments */
   position: relative;
   margin:0px;
-  padding:0px;
+  padding-left:20px;
+  padding-right: 20px;
 }
 
 /* Conteneur du logo et du texte de bienvenue */
