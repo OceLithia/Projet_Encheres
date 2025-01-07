@@ -3,15 +3,20 @@ package fr.eni.project.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Retrait;
@@ -32,10 +37,12 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
-	private static final String DELETE_ARTICLE_BY_ID = "delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS]"
-			+ "where no_article = :no_article";
+	private static final String DELETE_ARTICLE_BY_ID ="delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS] where no_article = :no_article";
 	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
+	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, no_categorie = :noCategorie, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
+	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = :rue, code_postal = :codePostal, ville = :ville WHERE no_article = :noArticle";
 	private static final String FIND_ARTICLES_ENCHERES_EN_COURS = "SELECT top 1 a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie LEFT JOIN RETRAITS r ON a.no_article = r.no_article inner join ENCHERES e on a.no_article = e.no_article where e.no_utilisateur = :noUtilisateur and a.etat_vente = 0 ORDER BY e.date_enchere DESC";
+
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -63,7 +70,6 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
 		map.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
 		map.addValue("prixInitial", newArticle.getMiseAPrix());
-		map.addValue("prixVente", newArticle.getMiseAPrix());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
 		map.addValue("imagePath", newArticle.getImagePath());
 		map.addValue("etatVente", newArticle.getEtatVente());
@@ -135,7 +141,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		if (articleVendu.getImagePath() != null) {
 			map.addValue("imagePath", articleVendu.getImagePath());
 		} else {
-			map.addValue("imagePath", " ");
+			map.addValue("imagePath", null);
 		}
 		jdbcTemplate.update(UPDATE, map);
 	}
@@ -192,6 +198,71 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("no_article", article.getNoArticle());
 		jdbcTemplate.update(DELETE_RETRAIT_BY_ARTICLE, map);
 		jdbcTemplate.update(DELETE_ARTICLE_BY_ID, map);
+	}
+
+	@Override
+	@Transactional
+	public void updateArticle(ArticleVendu updatedArticle, Retrait updateRetrait) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noArticle", updatedArticle.getNoArticle());
+		System.out.println(updatedArticle.getNoArticle());
+		map.addValue("nomArticle", updatedArticle.getNomArticle());
+		System.out.println(updatedArticle.getNomArticle());
+		map.addValue("description", updatedArticle.getDescription());
+		System.out.println(updatedArticle.getDescription());
+	    map.addValue("noCategorie", updatedArticle.getCategorie().getNoCategorie());
+	    if (updatedArticle.getCategorie() == null) {
+	        throw new IllegalArgumentException("La catégorie ne peut pas être nulle.");
+	    }
+
+	    System.out.println(updatedArticle.getCategorie());
+		map.addValue("dateDebutEncheres", updatedArticle.getDateDebutEncheres());
+		System.out.println(updatedArticle.getDateDebutEncheres());
+		map.addValue("dateFinEncheres", updatedArticle.getDateFinEncheres());
+		System.out.println(updatedArticle.getDateFinEncheres());
+		map.addValue("prixInitial", updatedArticle.getMiseAPrix());
+		System.out.println(updatedArticle.getMiseAPrix());
+		/*Integer prixVente = updatedArticle.getPrixVente();
+		 * if (prixVente != null) { map.addValue("prixVente", prixVente); } else {
+		 * map.addValue("prixVente", Types.INTEGER); // ou ne pas ajouter cette valeur
+		 * si le champ doit rester inchangé }
+		 */
+		map.addValue("prixVente", updatedArticle.getMiseAPrix());
+		System.out.println(updatedArticle.getPrixVente());
+		System.out.println(updatedArticle.getEtatVente());
+		map.addValue("etatVente", updatedArticle.getEtatVente());
+		/*
+		 * Integer etatVente = updatedArticle.getEtatVente(); if (etatVente != null) {
+		 * map.addValue("etatVente", etatVente); } else { map.addValue("etatVente",
+		 * Types.INTEGER); } System.out.println("etatVente : "+ etatVente);
+		 */
+		// Gestion propre de l'image
+		String imagePath = updatedArticle.getImagePath();
+		if (imagePath == null || imagePath.trim().isEmpty()) {
+		    map.addValue("imagePath", null);  // Laisser la valeur NULL si l'image est vide
+		} else {
+		    map.addValue("imagePath", imagePath);
+		}
+		System.out.println(updatedArticle.getImagePath());
+		
+		map.addValue("rue", updateRetrait.getRue());
+		map.addValue("codePostal", updateRetrait.getCodePostal());
+		map.addValue("ville", updateRetrait.getVille());
+		this.jdbcTemplate.update(UPDATE_RETRAIT, map);
+		this.jdbcTemplate.update(UPDATE_ARTICLE, map);
+		
+		System.out.println("Article et retrait mis à jour avec succès.");
+		/*
+		 * try {
+		 * 
+		 * 
+		 * 
+		 * } catch (DataAccessException e) {
+		 * System.out.println("Erreur lors de la mise à jour : " + e.getMessage());
+		 * throw new
+		 * RuntimeException("Erreur lors de la mise à jour de l'article en base : " +
+		 * e.getMessage(), e); }
+		 */
 	}
 
 }

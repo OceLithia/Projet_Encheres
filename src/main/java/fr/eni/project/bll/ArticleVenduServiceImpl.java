@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.qos.logback.core.joran.conditional.IfAction;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
+import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dal.ArticleVenduDAO;
 import fr.eni.project.dal.EnchereDAO;
@@ -69,6 +69,17 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	public void mettreAJourEtatVentes() {
 		List<ArticleVendu> articles = articleVenduDAO.findAll();
 		LocalDateTime now = LocalDateTime.now();
+
+		for (ArticleVendu article : articles) {
+			if (now.isBefore(article.getDateDebutEncheres())) {
+				article.setEtatVente(0);
+			} else if (now.isAfter(article.getDateFinEncheres())) {
+				article.setEtatVente(2);
+			} else {
+				article.setEtatVente(1);
+			}
+			articleVenduDAO.update(article, article.getVendeur()); // Met à jour l'article dans la BDD
+		}
 
 		for (ArticleVendu article : articles) {
 			if (now.isBefore(article.getDateDebutEncheres())) {
@@ -180,18 +191,22 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	            .toList();
 	}
 
-
 	@Override
 	@Transactional
 	public void verifierEtFinaliserVentes() {
 		List<ArticleVendu> articles = articleVenduDAO.findByDateFinEncheresBefore(LocalDateTime.now());
 
 		for (ArticleVendu article : articles) {
+			System.out.println(article.getNoArticle() + " est à l'état : " + article.getEtatVente());
 			Optional<Enchere> meilleureEnchere = enchereDAO.findLastEnchereByArticle(article.getNoArticle());
 
 			if (meilleureEnchere.isPresent()) {
 				article.setEtatVente(2); // Vente finalisée
 				articleVenduDAO.update(article, article.getVendeur()); // Mettez à jour l'article avec l'état finalisé
+
+				Utilisateur acheteur = meilleureEnchere.get().getEncherisseur();
+				// System.out.println("Vente finalisée pour l'article : " +
+				// article.getNoArticle()+", Acheteur : " + acheteur.getPseudo());
 			} else {
 				article.setEtatVente(1); // Pas d'enchères, état à "invendu"
 				articleVenduDAO.update(article, article.getVendeur());
@@ -207,6 +222,26 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	@Override
 	public void supprimerArticle(ArticleVendu article) {
 		articleVenduDAO.deleteArticle(article);
+	}
+
+	@Override
+	public void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait) {
+		ArticleVendu articleAvantMaj = articleVenduDAO.readById(updatedArticle.getNoArticle());
+		System.out.println(articleAvantMaj);
+		updatedArticle.setPrixVente(updatedArticle.getMiseAPrix());
+		updatedArticle.setEtatVente(articleAvantMaj.getEtatVente());
+		Retrait retraitAvantMaj = articleAvantMaj.getLieuRetrait();
+		if (updatedRetrait.getRue() == null) {
+			updatedRetrait.setRue(retraitAvantMaj.getRue());
+		}
+		if (updatedRetrait.getCodePostal() == null) {
+			updatedRetrait.setCodePostal(retraitAvantMaj.getCodePostal());
+		}
+		if (updatedRetrait.getVille() == null) {
+			updatedRetrait.setVille(retraitAvantMaj.getVille());
+		}
+		System.out.println(updatedArticle);
+		articleVenduDAO.updateArticle(updatedArticle, updatedRetrait);
 	}
 
 }

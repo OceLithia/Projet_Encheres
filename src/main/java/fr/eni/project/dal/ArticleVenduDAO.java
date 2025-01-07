@@ -3,6 +3,7 @@ package fr.eni.project.dal;
 import java.time.LocalDateTime;
 import java.util.List;
 import fr.eni.project.bo.ArticleVendu;
+import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 
 public interface ArticleVenduDAO {
@@ -26,6 +27,8 @@ public interface ArticleVenduDAO {
 	List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime maintenant);
 
 	void deleteArticle(ArticleVendu article);
-
+	
+	void updateArticle(ArticleVendu updatedArticle, Retrait updatedRetrait);
+	
 	List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId);
 }

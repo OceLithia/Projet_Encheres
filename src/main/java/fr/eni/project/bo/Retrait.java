@@ -3,8 +3,11 @@ package fr.eni.project.bo;
 public class Retrait {
 
 	private String rue;
+	private String oldRue;
 	private String codePostal;
+	private String oldCodePostal;
 	private String ville;
+	private String oldVille;
 	
 	//relation 
 	private ArticleVendu article;
@@ -51,9 +54,34 @@ public class Retrait {
 		this.article = article;
 	}
 
+	public String getOldRue() {
+		return oldRue;
+	}
+
+	public void setOldRue(String oldRue) {
+		this.oldRue = oldRue;
+	}
+
+	public String getOldCodePostal() {
+		return oldCodePostal;
+	}
+
+	public void setOldCodePostal(String oldCodePostal) {
+		this.oldCodePostal = oldCodePostal;
+	}
+
+	public String getOldVille() {
+		return oldVille;
+	}
+
+	public void setOldVille(String oldVille) {
+		this.oldVille = oldVille;
+	}
+
 	@Override
 	public String toString() {
-		return "Retrait [rue=" + rue + ", codePostal=" + codePostal + ", ville=" + ville + ", article=" + article + "]";
-	}	
-	
+		return "Retrait [rue=" + rue + ", oldRue=" + oldRue + ", codePostal=" + codePostal + ", oldCodePostal="
+				+ oldCodePostal + ", ville=" + ville + ", oldVille=" + oldVille + ", article=" + article + "]";
+	}
+
 }

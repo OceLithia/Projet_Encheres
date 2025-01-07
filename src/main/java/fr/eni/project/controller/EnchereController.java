@@ -2,8 +2,11 @@ package fr.eni.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -28,6 +31,7 @@ import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Enchere;
+import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.EnchereDTO;
 import fr.eni.project.exception.BusinessException;
@@ -111,21 +115,17 @@ public class EnchereController {
 							+ URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
 					String uploadDir = "src/main/resources/static/uploads/"; // Répertoire pour les images d'articles
 					Path filePath = Path.of(uploadDir, fileName);
-
 					// Créer les répertoires nécessaires s'ils n'existent pas
 					Files.createDirectories(filePath.getParent());
 					// Sauvegarder l'image sur le disque
 					Files.write(filePath, image.getBytes());
-
 					// Stocker le chemin dans l'entité
 					articleVendu.setImagePath(fileName);
 				}
-
 				// Associer le vendeur
 				String pseudoUtilisateur = authentication.getName();
 				Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
 				articleVendu.setVendeur(vendeur);
-
 				// Sauvegarder l'article
 				articleVenduService.addNewArticle(vendeur, articleVendu);
 				return "redirect:/encheres";
@@ -169,6 +169,7 @@ public class EnchereController {
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
+		System.out.println(article.getEtatVente());
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -252,42 +253,86 @@ public class EnchereController {
 		return "redirect:/";
 	}
 
-	/*
-	 * @GetMapping({"/", "/index"}) public String showForm(Model model,
-	 * Authentication authentication) { Enchere enchere = new Enchere(); // L'objet
-	 * qui contient le champ categorie model.addAttribute("enchere", enchere); //
-	 * L'ajouter au modèle List<Categorie> categories =
-	 * categorieService.getAllCategories(); model.addAttribute("categories",
-	 * categories); Utilisateur vendeur =
-	 * this.addressUser.afficherUtilisateurParPseudo(authentication.getName()); //
-	 * Vérification que l'utilisateur existe et est co if (vendeur == null) {
-	 * model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " +
-	 * authentication.getName()); return "error-page"; // Une page d'erreur
-	 * Thymeleaf personnalisée } model.addAttribute("utilisateur", vendeur); return
-	 * "index"; }
-	 */
-	/*
-	 * @GetMapping("/sell-article") public String afficherVendreArticle(Model model)
-	 * { String pseudoUser = addressUser.afficherUtilisateurParPseudo(); Utilisateur
-	 * user = addressUser.afficherUtilisateurParPseudo(noUtilisateur);
-	 * user.getRue(); user.getCodePostal(); user.getVille();
-	 * model.addAttribute("utilisateur", user); return "sell-article"; }
-	 */
-	/*
-	 * @GetMapping("/encheres") public String showCategories(@RequestParam(name =
-	 * "categorie", required = false) Integer categorieId, Model model,
-	 * Authentication authentication) { if (categorieId != null) { // Récupérer les
-	 * articles pour cette catégorie model.addAttribute("articles",
-	 * CategorieService.getArticlesByCategorie(categorieId)); }
-	 * model.addAttribute("categories", categorieService.getAllCategories());
-	 * Utilisateur vendeur =
-	 * this.addressUser.afficherUtilisateurParPseudo(authentication.getName()); //
-	 * Vérification que l'utilisateur existe et est co if (vendeur == null) {
-	 * model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " +
-	 * authentication.getName()); return "error-page"; // Une page d'erreur
-	 * Thymeleaf personnalisée } model.addAttribute("utilisateur", vendeur);
-	 * List<Enchere> encheres = this.enchereService.afficherEncheres();
-	 * System.out.println("recupere liste encheres" +encheres); return "encheres"; }
-	 */
+	@GetMapping("/article/update")
+	public String viewArticleUpdate(@RequestParam("noArticle") Long noArticle, RedirectAttributes redirectAttributes,
+			Model model) {
+		// Récupérer l'article depuis le service
+		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(noArticle);
 
+		// Vérifier si l'article existe
+		if (article == null) {
+			redirectAttributes.addFlashAttribute("errorMessage", "L'article avec l'ID " + noArticle + " n'existe pas.");
+			return "redirect:/article-detail?noArticle=" + noArticle;
+		}
+		// Ajouter l'article et les catégories au modèle
+		model.addAttribute("articleVendu", article); // Changé de "article" à "articleVendu" pour correspondre au
+														// th:object
+		model.addAttribute("categories", categorieService.getAllCategories()); // Ajout des catégories nécessaires pour le select
+		return "article-update";
+	}
+
+	@PostMapping("/article/update")
+	public String updateArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute Retrait adresseRetrait, @RequestParam(value = "image", required = false) MultipartFile image,
+			RedirectAttributes redirectAttributes) {
+		System.out.println("postemapp");
+		
+		try {
+			System.out.println("try");
+			// Gérer le téléchargement de l'image seulement si une nouvelle image est fournie
+			if (image != null && !image.isEmpty()) {
+				/*
+				 * // Validation du type de fichier String contentType = image.getContentType();
+				 * System.out.println("if image"); if (!contentType.startsWith("image/")) {
+				 * throw new
+				 * IllegalArgumentException("Le fichier téléchargé doit être une image."); } //
+				 * Générer un nom unique pour l'image String fileName =
+				 * System.currentTimeMillis() + "_" +
+				 * URLEncoder.encode(image.getOriginalFilename(), StandardCharsets.UTF_8); //
+				 * Définir le chemin de sauvegarde String uploadDir =
+				 * "src/main/resources/static/uploads/"; Path uploadPath = Paths.get(uploadDir);
+				 * //chemin complet Path filePath = uploadPath.resolve(fileName); // Créer le
+				 * répertoire s'il n'existe pas if (!Files.exists(uploadPath)) {
+				 * Files.createDirectories(uploadPath); // Donner les permissions de
+				 * lecture/écriture uploadPath.toFile().setWritable(true, false);
+				 * uploadPath.toFile().setReadable(true, false); } // Sauvegarder l'image
+				 * Files.copy(image.getInputStream(), filePath,
+				 * StandardCopyOption.REPLACE_EXISTING); // Mettre à jour le chemin de l'image
+				 * dans l'entité articleVendu.setImagePath(fileName); // Assurer que le chemin
+				 * relatif est bien enregistré System.out.println(fileName);
+				 */
+				System.out.println("if");
+				// Nom unique pour l'image
+				String fileName = System.currentTimeMillis() + "_"
+						+ URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
+				String uploadDir = "src/main/resources/static/uploads/"; // Répertoire pour les images d'articles
+				Path filePath = Path.of(uploadDir, fileName);
+				// Créer les répertoires nécessaires s'ils n'existent pas
+				Files.createDirectories(filePath.getParent());
+				// Sauvegarder l'image sur le disque
+				Files.write(filePath, image.getBytes());
+				// Stocker le chemin dans l'entité
+				articleVendu.setImagePath(fileName);
+			}
+			System.out.println("categorie : "+articleVendu.getCategorie());
+			if (articleVendu.getCategorie().getNoCategorie() == 0) {
+				System.out.println("if cat");
+			    // Traitez cette situation, soit en affectant une valeur par défaut, soit en levant une exception
+			    throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
+			}
+			System.out.println("avant d'update");
+			// Sauvegarder l'article et son adresse de retrait
+			articleVenduService.savedUpdate(articleVendu, adresseRetrait);
+			System.out.println("après update");
+			redirectAttributes.addFlashAttribute("successMessage", "L'article a été mis à jour avec succès.");
+	    } catch (IllegalArgumentException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+	    } catch (IOException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de la sauvegarde de l'image : " + e.getMessage());
+	    } catch (Exception e) {
+	    	System.out.println(e);
+	        redirectAttributes.addFlashAttribute("errorMessage",
+	                "Une erreur est survenue lors de la mise à jour de l'article : " + e.getMessage());
+	    }
+		return "redirect:/article-detail?noArticle=" + articleVendu.getNoArticle();
+	}
 }

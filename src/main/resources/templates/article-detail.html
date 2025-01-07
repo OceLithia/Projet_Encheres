@@ -58,7 +58,7 @@
 		encore débuté</h2>
 	<h2
 		th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-		<a class="button" href="/article-detail">Modifier</a>
+		<a th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
 		<a th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
 	</h2>
 	<h2
