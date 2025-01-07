@@ -35,7 +35,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String DELETE_ARTICLE_BY_ID = "delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS]"
 			+ "where no_article = :no_article";
 	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
-	private static final String FIND_ARTICLE_ENCHERES_EN_COURS = "SELECT top 1 a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie LEFT JOIN RETRAITS r ON a.no_article = r.no_article inner join ENCHERES e on a.no_article = e.no_article where e.no_utilisateur = :noUtilisateur and a.etat_vente = 0 ORDER BY e.date_enchere DESC";
+	private static final String FIND_ARTICLES_ENCHERES_EN_COURS = "SELECT top 1 a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie LEFT JOIN RETRAITS r ON a.no_article = r.no_article inner join ENCHERES e on a.no_article = e.no_article where e.no_utilisateur = :noUtilisateur and a.etat_vente = 0 ORDER BY e.date_enchere DESC";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -117,7 +117,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	public List<ArticleVendu> findArticlesEncheresEnCours(Long noUtilisateur) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("noUtilisateur", noUtilisateur);
-		return jdbcTemplate.query(FIND_ARTICLE_ENCHERES_EN_COURS, map, new ArticleRowMapper());
+		return jdbcTemplate.query(FIND_ARTICLES_ENCHERES_EN_COURS, map, new ArticleRowMapper());
 	};
 
 	@Override

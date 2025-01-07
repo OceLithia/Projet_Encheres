@@ -7,9 +7,9 @@ public class FiltreDTO {
 	private String typeFiltre;
 	private Long utilisateurId;
 
-	private Boolean ventesEnCours; // Nouveau champ pour les ventes en cours
-	private Boolean ventesTerminees; // Nouveau champ pour les ventes terminées
-	private Boolean ventesNonDebutees; // Nouveau champ pour les ventes non débutées
+	private Boolean ventesEnCours; 
+	private Boolean ventesTerminees; 
+	private Boolean ventesNonDebutees; 
 	private Boolean encheresOuvertes;
 	private Boolean encheresEnCours;
 	private Boolean encheresRemportees;

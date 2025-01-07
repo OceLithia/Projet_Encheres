@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.qos.logback.core.joran.conditional.IfAction;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Utilisateur;
@@ -130,49 +131,55 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Override
 	public List<ArticleVendu> filtrerArticles(FiltreDTO filtre) {
-		List<ArticleVendu> articles = articleVenduDAO.findAll();
+	    List<ArticleVendu> articles = articleVenduDAO.findAll();
 
-		return articles.stream()
-				// Filtrer par catégorie
-				.filter(article -> filtre.getIdCat() == null
-						|| article.getCategorie().getNoCategorie() == filtre.getIdCat())
-				// Filtrer par mot-clé
-				.filter(article -> filtre.getMotCle() == null
-						|| article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase()))
-				// Filtrer par type d'article (achats ou ventes)
-				.filter(article -> {
-					if ("achats".equals(filtre.getTypeFiltre())) {
-						return article.getVendeur().getNoUtilisateur() != filtre.getUtilisateurId();
-					} else if ("ventes".equals(filtre.getTypeFiltre())) {
-						return article.getVendeur().getNoUtilisateur() == filtre.getUtilisateurId();
-					}
-					return true;
-				})
-				// Ventes en cours
-				.filter(article -> filtre.getVentesEnCours() == null
-						|| (filtre.getVentesEnCours() && article.getEtatVente() == 0))
-				// Ventes terminées
-				.filter(article -> filtre.getVentesTerminees() == null || (filtre.getVentesTerminees()
-						&& (article.getEtatVente() == 1 || article.getEtatVente() == 2)))
-				// Ventes non débutées
-				.filter(article -> filtre.getVentesNonDebutees() == null
-						|| (filtre.getVentesNonDebutees() && article.getEtatVente() == -1))
-				// Enchères ouvertes
-				.filter(article -> filtre.getEncheresOuvertes() == null
-						|| (filtre.getEncheresOuvertes() && article.getEtatVente() == 0))
-				// Enchères en cours (enchères où l'utilisateur a déjà enchéri au moins une fois
-				.filter(article -> {
+	    return articles.stream()
+	            // Filtrer par catégorie
+	            .filter(article -> {
+	                boolean match = filtre.getIdCat() == null || article.getCategorie().getNoCategorie() == filtre.getIdCat();
+	                return match;
+	            })
+	            // Filtrer par mot-clé
+	            .filter(article -> {
+	                boolean match = filtre.getMotCle() == null || article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase());
+	                return match;
+	            })
+	            // Filtrer par type d'article (achats ou ventes)
+	            .filter(article -> {
+	                boolean match = true;
+	                if ("achats".equals(filtre.getTypeFiltre())) {
+	                    match = article.getVendeur().getNoUtilisateur() != filtre.getUtilisateurId();
+	                } else if ("ventes".equals(filtre.getTypeFiltre())) {
+	                    match = article.getVendeur().getNoUtilisateur() == filtre.getUtilisateurId();
+	                }
+	                return match;
+	            })
+	            // Filtrer par état des ventes
+	            .filter(article -> {
+	                boolean ventesEnCours = filtre.getVentesEnCours() != null && filtre.getVentesEnCours() && article.getEtatVente() == 0;
+	                boolean ventesTerminees = filtre.getVentesTerminees() != null && filtre.getVentesTerminees() && (article.getEtatVente() == 1 || article.getEtatVente() == 2);
+	                boolean ventesNonDebutees = filtre.getVentesNonDebutees() != null && filtre.getVentesNonDebutees() && article.getEtatVente() == -1;
+
+	                boolean match = ventesEnCours || ventesTerminees || ventesNonDebutees || (filtre.getVentesEnCours() == null && filtre.getVentesTerminees() == null && filtre.getVentesNonDebutees() == null);
+	                return match;
+	            })
+	            // Filtrer par état des enchères
+	            .filter(article -> {
+	                boolean encheresOuvertes = filtre.getEncheresOuvertes() != null && filtre.getEncheresOuvertes() && article.getEtatVente() == 0;
+	                boolean encheresEnCours = false;
+	                boolean encheresRemportees = filtre.getEncheresRemportees() != null && filtre.getEncheresRemportees() && article.getEtatVente() == 2;
+
 	                if (filtre.getEncheresEnCours() != null && filtre.getEncheresEnCours()) {
 	                    List<ArticleVendu> articlesEncheris = articleVenduDAO.findArticlesEncheresEnCours(filtre.getUtilisateurId());
-	                    return articlesEncheris.contains(article);
+	                    encheresEnCours = articlesEncheris.contains(article);
 	                }
-	                return true;
+
+	                boolean match = encheresOuvertes || encheresEnCours || encheresRemportees || (filtre.getEncheresOuvertes() == null && filtre.getEncheresEnCours() == null && filtre.getEncheresRemportees() == null);
+	                return match;
 	            })
-				// Enchères remportées
-				.filter(article -> filtre.getEncheresRemportees() == null
-						|| (filtre.getEncheresRemportees() && article.getEtatVente() == 2))
-				.toList();
+	            .toList();
 	}
+
 
 	@Override
 	@Transactional
