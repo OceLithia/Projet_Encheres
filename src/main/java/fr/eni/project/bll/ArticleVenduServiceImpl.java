@@ -80,6 +80,17 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 			}
 			articleVenduDAO.update(article, article.getVendeur()); // Met à jour l'article dans la BDD
 		}
+
+		for (ArticleVendu article : articles) {
+			if (now.isBefore(article.getDateDebutEncheres())) {
+				article.setEtatVente(0);
+			} else if (now.isAfter(article.getDateFinEncheres())) {
+				article.setEtatVente(2);
+			} else {
+				article.setEtatVente(1);
+			}
+			articleVenduDAO.update(article, article.getVendeur()); // Met à jour l'article dans la BDD
+		}
 	}
 
 	@Override
@@ -106,20 +117,20 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 		// Règle métier 4 : Vérifier que l'enchérisseur n'ait pas déjà fait la dernière
 		// enchère
-		Optional<Enchere> derniereEnchere = enchereDAO.findByArticle(articleId);
+		Optional<Enchere> derniereEnchere = enchereDAO.findLastEnchereByArticle(articleId);
 
 		if (derniereEnchere.isPresent()) {
-			// Récupérer l'enchère existante
-			Enchere enchereExistante = derniereEnchere.get();
+			// Récupérer la dernière enchère
+			Enchere derniereEnchereExistante = derniereEnchere.get();
+
 			// Vérifier si l'utilisateur actuel est le même que le dernier enchérisseur
-			if (encherisseur.getNoUtilisateur() == enchereExistante.getEncherisseur().getNoUtilisateur()) {
+			if (encherisseur.getNoUtilisateur() == derniereEnchereExistante.getEncherisseur().getNoUtilisateur()) {
 				be.addMessage("Vous êtes déjà le dernier enchérisseur sur cet article.");
 				throw be;
 			}
 		}
 
 		// Logique d'enchère si tout est valide
-		enchereDAO.deleteEnchere(articleId);
 		Enchere nouvelleEnchere = new Enchere(LocalDateTime.now(), montant, encherisseur, article);
 		enchereDAO.createEnchere(article, nouvelleEnchere, encherisseur);
 
@@ -131,16 +142,53 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Override
 	public List<ArticleVendu> filtrerArticles(FiltreDTO filtre) {
-		// Récupérer tous les articles
-		List<ArticleVendu> articles = articleVenduDAO.findAll();
+	    List<ArticleVendu> articles = articleVenduDAO.findAll();
 
-		// Appliquer les filtres dynamiquement
-		return articles.stream()
-				.filter(article -> filtre.getIdCat() == null
-						|| (article.getCategorie().getNoCategorie()) == (filtre.getIdCat()))
-				.filter(article -> filtre.getMotCle() == null
-						|| article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase()))
-				.toList();
+	    return articles.stream()
+	            // Filtrer par catégorie
+	            .filter(article -> {
+	                boolean match = filtre.getIdCat() == null || article.getCategorie().getNoCategorie() == filtre.getIdCat();
+	                return match;
+	            })
+	            // Filtrer par mot-clé
+	            .filter(article -> {
+	                boolean match = filtre.getMotCle() == null || article.getNomArticle().toLowerCase().contains(filtre.getMotCle().toLowerCase());
+	                return match;
+	            })
+	            // Filtrer par type d'article (achats ou ventes)
+	            .filter(article -> {
+	                boolean match = true;
+	                if ("achats".equals(filtre.getTypeFiltre())) {
+	                    match = article.getVendeur().getNoUtilisateur() != filtre.getUtilisateurId();
+	                } else if ("ventes".equals(filtre.getTypeFiltre())) {
+	                    match = article.getVendeur().getNoUtilisateur() == filtre.getUtilisateurId();
+	                }
+	                return match;
+	            })
+	            // Filtrer par état des ventes
+	            .filter(article -> {
+	                boolean ventesEnCours = filtre.getVentesEnCours() != null && filtre.getVentesEnCours() && article.getEtatVente() == 0;
+	                boolean ventesTerminees = filtre.getVentesTerminees() != null && filtre.getVentesTerminees() && (article.getEtatVente() == 1 || article.getEtatVente() == 2);
+	                boolean ventesNonDebutees = filtre.getVentesNonDebutees() != null && filtre.getVentesNonDebutees() && article.getEtatVente() == -1;
+
+	                boolean match = ventesEnCours || ventesTerminees || ventesNonDebutees || (filtre.getVentesEnCours() == null && filtre.getVentesTerminees() == null && filtre.getVentesNonDebutees() == null);
+	                return match;
+	            })
+	            // Filtrer par état des enchères
+	            .filter(article -> {
+	                boolean encheresOuvertes = filtre.getEncheresOuvertes() != null && filtre.getEncheresOuvertes() && article.getEtatVente() == 0;
+	                boolean encheresEnCours = false;
+	                boolean encheresRemportees = filtre.getEncheresRemportees() != null && filtre.getEncheresRemportees() && article.getEtatVente() == 2;
+
+	                if (filtre.getEncheresEnCours() != null && filtre.getEncheresEnCours()) {
+	                    List<ArticleVendu> articlesEncheris = articleVenduDAO.findArticlesEncheresEnCours(filtre.getUtilisateurId());
+	                    encheresEnCours = articlesEncheris.contains(article);
+	                }
+
+	                boolean match = encheresOuvertes || encheresEnCours || encheresRemportees || (filtre.getEncheresOuvertes() == null && filtre.getEncheresEnCours() == null && filtre.getEncheresRemportees() == null);
+	                return match;
+	            })
+	            .toList();
 	}
 
 	@Override
@@ -150,7 +198,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 		for (ArticleVendu article : articles) {
 			System.out.println(article.getNoArticle() + " est à l'état : " + article.getEtatVente());
-			Optional<Enchere> meilleureEnchere = enchereDAO.findByArticle(article.getNoArticle());
+			Optional<Enchere> meilleureEnchere = enchereDAO.findLastEnchereByArticle(article.getNoArticle());
 
 			if (meilleureEnchere.isPresent()) {
 				article.setEtatVente(2); // Vente finalisée
@@ -162,8 +210,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 			} else {
 				article.setEtatVente(1); // Pas d'enchères, état à "invendu"
 				articleVenduDAO.update(article, article.getVendeur());
-				// System.out.println("Aucune enchère pour l'article : " +
-				// article.getNoArticle());
 			}
 		}
 	}

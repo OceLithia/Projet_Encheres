@@ -3,6 +3,7 @@ package fr.eni.project.bo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -277,4 +278,21 @@ public class ArticleVendu {
 				+ ", imagePath=" + imagePath + ", oldImagePath=" + oldImagePath + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(noArticle);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArticleVendu other = (ArticleVendu) obj;
+		return noArticle == other.noArticle;
+	}
+	
 }

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -143,21 +144,23 @@ public class EnchereController {
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
-		Enchere enchere = null;
-		try {
-			enchere = enchereService.consulterEnchereParArticle(articleId);
-		} catch (EnchereNotFoundException e) {
-			// Pas d'enchère, rien à ajouter
-		}
-
-		if (article.getEtatVente() == 2) {
-			// Finaliser la vente si nécessaire
-			Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(articleId);
-			model.addAttribute("enchere", meilleureEnchere);
-			model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
-		} else {
-			model.addAttribute("enchere", enchere);
-		}
+	    Enchere enchere = null;
+	    try {
+	        enchere = enchereService.consulterDerniereEnchereParArticle(articleId);
+	    } catch (EnchereNotFoundException e) {
+	        // Pas d'enchère, rien à ajouter
+	    }
+	    
+	    if (article.getEtatVente() == 2) {
+	        // Finaliser la vente si nécessaire
+	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(articleId);
+	        if (meilleureEnchere != null) {
+	        	model.addAttribute("enchere", meilleureEnchere);
+		        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+			}
+	    } else {
+	        model.addAttribute("enchere", enchere);
+	    }
 
 		return "article-detail";
 	}
@@ -166,9 +169,15 @@ public class EnchereController {
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
+		System.out.println(article.getEtatVente());
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-		System.out.println("prix de vente : " + article.getPrixVente());
-		System.out.println("etat de la vente : " + article.getEtatVente());
+		if (article.getDateFinEncheres() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String dateFormatee = article.getDateFinEncheres().format(formatter);
+            model.addAttribute("dateFinEncheresFormatee", dateFormatee);
+        } else {
+            model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
+        }
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
@@ -178,20 +187,22 @@ public class EnchereController {
 
 		Enchere enchere;
 		try {
-			enchere = this.enchereService.consulterEnchereParArticle(id);
+		    enchere = enchereService.consulterDerniereEnchereParArticle(id);
+		    model.addAttribute("enchere", enchere);
 		} catch (EnchereNotFoundException e) {
-			enchere = null; // Si aucune enchère, on passe un objet null (ou un objet vide)
+		    System.out.println("Aucune enchère trouvée pour l'article ID : " + id);
+		    model.addAttribute("enchere", null); // Aucun enchère à afficher
 		}
+
 
 		if (article.getEtatVente() == 2) {
-			System.out.println("etat de la vente si 2 : " + article.getEtatVente());
-			// Finaliser les ventes pour obtenir les informations de l'acheteur
-			Enchere meilleureEnchere = enchereService.consulterEnchereParArticle(article.getNoArticle());
-			model.addAttribute("enchere", meilleureEnchere);
-			model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
-		}
+			System.out.println("etat de la vente si 2 : "+article.getEtatVente());
+	        // Finaliser les ventes pour obtenir les informations de l'acheteur
+	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(article.getNoArticle());
+	        model.addAttribute("enchere", meilleureEnchere);
+	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+	    }
 
-		model.addAttribute("enchere", enchere);
 		model.addAttribute("enchereDTO", new EnchereDTO()); // Ajouter un DTO vide pour le formulaire
 		return "article-detail";
 	}

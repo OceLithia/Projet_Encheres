@@ -41,6 +41,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, no_categorie = :noCategorie, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = :rue, code_postal = :codePostal, ville = :ville WHERE no_article = :noArticle";
+	private static final String FIND_ARTICLES_ENCHERES_EN_COURS = "SELECT top 1 a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie LEFT JOIN RETRAITS r ON a.no_article = r.no_article inner join ENCHERES e on a.no_article = e.no_article where e.no_utilisateur = :noUtilisateur and a.etat_vente = 0 ORDER BY e.date_enchere DESC";
+
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -72,7 +74,6 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("imagePath", newArticle.getImagePath());
 		map.addValue("etatVente", newArticle.getEtatVente());
 		jdbcTemplate.update(INSERT, map, keyHolder);
-		// MAJ n°categorie
 		if (keyHolder.getKey() != null) {
 			newArticle.setNoArticle(keyHolder.getKey().longValue());
 		}
@@ -117,6 +118,13 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
 	}
+
+	@Override
+	public List<ArticleVendu> findArticlesEncheresEnCours(Long noUtilisateur) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noUtilisateur", noUtilisateur);
+		return jdbcTemplate.query(FIND_ARTICLES_ENCHERES_EN_COURS, map, new ArticleRowMapper());
+	};
 
 	@Override
 	public void update(ArticleVendu articleVendu, Utilisateur vendeur) {

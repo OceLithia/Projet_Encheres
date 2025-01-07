@@ -1,65 +1,136 @@
 package fr.eni.project.bo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import fr.eni.project.dto.ValidationGroups;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class Utilisateur {
+public class Utilisateur implements UserDetails {
+
+	private static final long serialVersionUID = 1L;
 
 	private long noUtilisateur;
 
-	@NotBlank(message = "Le pseudo est obligatoire.")
-	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Le pseudo ne doit contenir que des caractères alphanumériques (lettres et chiffres).")
+	@NotBlank(message = "Le pseudo est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "Le pseudo ne doit contenir que des caractères alphanumériques (lettres et chiffres).", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String pseudo;
 
-	@NotBlank(message = "Le nom de famille est obligatoire.")
-	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.")
+	@NotBlank(message = "Le nom de famille est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String nom;
 
-	@NotBlank(message = "Le prénom est obligatoire.")
-	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.")
+	@NotBlank(message = "Le prénom est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String prenom;
 
-	@NotBlank(message = "L''adresse e-mail est obligatoire.")
-	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "L''adresse e-mail n''est pas valide.")
+	@NotBlank(message = "L''adresse e-mail est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "L''adresse e-mail n''est pas valide.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String email;
 
-	@NotBlank(message = "Le numéro de téléphone est obligatoire.")
-	@Pattern(regexp = "^0\\d{9}$", message = "Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par 0.")
+	@NotBlank(message = "Le numéro de téléphone est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^0\\d{9}$", message = "Le numéro de téléphone doit contenir exactement 10 chiffres et commencer par 0.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String telephone;
 
-	@NotBlank(message = "L''adresse postale est obligatoire.")
-	@Pattern(regexp = "^[A-Za-zÀ-ÿ0-9 ,.'-]+$", message = "L''adresse postale n''est pas valide.")
+	@NotBlank(message = "L''adresse postale est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-zÀ-ÿ0-9 ,.'-]+$", message = "L''adresse postale n''est pas valide.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String rue;
 
-	@NotBlank(message = "Le code postal est obligatoire.")
-	@Pattern(regexp = "^0[1-9]\\d{3}|[1-9]\\d{4}$", message = "Le code postal doit contenir exactement 5 chiffres et être compris entre 01000 et 99999.")
+	@NotBlank(message = "Le code postal est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^0[1-9]\\d{3}|[1-9]\\d{4}$", message = "Le code postal doit contenir exactement 5 chiffres et être compris entre 01000 et 99999.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String codePostal;
 
-	@NotBlank(message = "La ville est obligatoire.")
-	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.")
+	@NotBlank(message = "La ville est obligatoire.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
+	@Pattern(regexp = "^[A-Za-zÀ-ÿ -]+$", message = "Format incorrect.", groups = { ValidationGroups.Creation.class,
+			ValidationGroups.Update.class })
 	private String ville;
 
-	@NotBlank(message = "Le mot de passe est obligatoire.")
-	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.")
-	private String motDePasse;
+	/*
+	 * @NotBlank(message = "Le mot de passe est obligatoire.", groups =
+	 * ValidationGroups.Creation.class)
+	 * 
+	 * @Pattern(regexp =
+	 * "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+	 * message =
+	 * "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
+	 * ) private String motDePasse;
+	 */
 
 	private int credit;
 	private boolean administrateur;
 
 	private List<Enchere> encheres = new ArrayList<>();
 	private List<ArticleVendu> articlesVendus = new ArrayList<>();
-	
-	@NotBlank(message = "La confirmation du mot de passe est obligatoire.")
+
+	/*
+	 * @NotBlank(message = "La confirmation du mot de passe est obligatoire.",
+	 * groups = ValidationGroups.Creation.class) private String confirmPassword;
+	 * 
+	 * @AssertTrue(message = "Les mots de passe ne correspondent pas.", groups =
+	 * ValidationGroups.Creation.class) public boolean isPasswordMatching() { return
+	 * motDePasse != null && motDePasse.equals(confirmPassword); }
+	 */
+
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.", groups = {
+			ValidationGroups.Creation.class })
+	@NotBlank(message = "Le mot de passe est obligatoire.", groups = ValidationGroups.Creation.class)
+	private String motDePasse;
+
 	private String confirmPassword;
 
-	@AssertTrue(message = "Les mots de passe ne correspondent pas.")
-	public boolean isPasswordMatching() {
-		return motDePasse != null && motDePasse.equals(confirmPassword);
-	}
+	// Modification de la méthode isPasswordMatching pour prendre en compte la mise
+	// à jour
+	@AssertTrue(message = "Les mots de passe ne correspondent pas.", groups = ValidationGroups.Creation.class )
+	public boolean isPasswordMatchingCreate() {
+		// Pour la création, les deux mots de passe doivent être renseignés et identiques
+			return motDePasse != null && motDePasse.equals(confirmPassword);
+		}
+		
+		
+	@AssertFalse(message = "Les mots de passe ne correspondent pas.", groups = ValidationGroups.Update.class )
+	public boolean isPasswordMatchingUpdate() {
+			// Si les deux champs sont vides, c'est valide (pas de changement de mot de
+			// passe)
+			if ((motDePasse == null || motDePasse.isBlank())
+					&& (confirmPassword == null || confirmPassword.isBlank())) {
+				System.out.println("mot de passe inchangé");
+				return true;
+			} else if (motDePasse.equals(confirmPassword)) { 
+				System.out.println("mots de passe identiques");
+				System.out.println(motDePasse);
+				System.out.println(confirmPassword);
+				return true;
+			} else {
+				System.out.println("mots de passe différents");
+				System.out.println(motDePasse);
+				System.out.println(confirmPassword);
+				return false;
+			}
+		}
 
 	public Utilisateur() {
 	}
@@ -239,6 +310,49 @@ public class Utilisateur {
 		return "Utilisateur [noUtilisateur=" + noUtilisateur + ", pseudo=" + pseudo + ", nom=" + nom + ", prenom="
 				+ prenom + ", email=" + email + ", telephone=" + telephone + ", rue=" + rue + ", codePostal="
 				+ codePostal + ", ville=" + ville + ", credit=" + credit + ", administrateur=" + administrateur + "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// Si l'utilisateur est administrateur, on lui attribue le rôle ROLE_ADMIN
+		// Sinon, on lui attribue le rôle ROLE_USER
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		if (this.administrateur) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		} else {
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		}
+		return authorities;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.motDePasse;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.pseudo;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true; // Par défaut, le compte n'est pas expiré
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true; // Par défaut, le compte n'est pas verrouillé
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true; // Par défaut, les identifiants ne sont pas expirés
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true; // Par défaut, l'utilisateur est activé
 	}
 
 }

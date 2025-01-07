@@ -5,6 +5,10 @@
 <title>Details article</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 <link rel="stylesheet" th:href="@{/css/profile.css}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div th:replace="~{fragments/fragment-entete::entete}"></div>
@@ -12,8 +16,9 @@
 
 	<!-- <div th:each="article : ${articles}"> -->
 	<!-- 	<div class="card"> -->
-	<img th:src="@{'/uploads/' + ${articleVendu.imagePath}}"
-		alt="Image de l'article" />
+	<img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}"
+     alt="Image de l'article" />
+
 	<div class="container">
 		<h2 th:text="${articleVendu.nomArticle}">
 			<b></b>
@@ -28,7 +33,7 @@
 		<h6>Mise à prix :</h6>
 		<p th:text="${articleVendu.miseAPrix}"></p>
 		<h6>Date de fin des enchères :</h6>
-		<p th:text="${articleVendu.dateFinEncheres}"></p>
+		<p th:text="${dateFinEncheresFormatee}"></p>
 		<h6>Téléphone :</h6>
 		<p th:text="${articleVendu.vendeur.telephone}"></p>
 		<h6>Ville de retrait :</h6>

@@ -29,6 +29,6 @@ public interface ArticleVenduDAO {
 	void deleteArticle(ArticleVendu article);
 	
 	void updateArticle(ArticleVendu updatedArticle, Retrait updatedRetrait);
-
-	//ArticleVendu getArticleForUpdate(Long noArticle);
+	
+	List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId);
 }

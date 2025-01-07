@@ -50,20 +50,52 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Override
 	public void mettreAJourUtilisateur(Utilisateur utilisateur) throws BusinessException {
 		BusinessException be = new BusinessException();
-		// Récupérer l'utilisateur en session pour conserver l'ancien mot de passe si nécessaire
+
+		// Récupérer l'utilisateur en session
 		Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
-		// Si le mot de passe est non vide, valider la correspondance et encoder
-	    if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-	        if (!validerCorrespondanceMotDePasse(utilisateur, be)) {
-	            throw be;
-	        }
-	        utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
-	    } else {
-	        // Conserver l'ancien mot de passe si le champ est vide
-	        utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse());
-	    }
-		// Mise à jour de l'utilisateur dans la base de données
+		// Vérifier si le mot de passe est fourni
+		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
+			// Uniquement valider la correspondance si un nouveau mot de passe est fourni
+			if (!validerCorrespondanceMotDePassePourModification(utilisateur, be)) {
+				throw be;
+			}
+			utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
+		} else {
+			// Conserver l'ancien mot de passe
+			utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse());
+			System.out.println("mot de passe conservé");
+		}
+		// Vérifier si le pseudo a changé et s'il est unique
+		if (!utilisateur.getPseudo().equals(utilisateurEnSession.getPseudo())) {
+			if (!validerPseudoUnique(utilisateur.getPseudo(), be)) {
+				throw be;
+			}
+		}
+
+		// Vérifier si l'email a changé et s'il est unique
+		if (!utilisateur.getEmail().equals(utilisateurEnSession.getEmail())) {
+			if (!validerEmailUnique(utilisateur.getEmail(), be)) {
+				throw be;
+			}
+		}
+
+		// Mise à jour de l'utilisateur
 		utilisateurDAO.update(utilisateur);
+	}
+
+	// Nouvelle méthode spécifique pour la validation du mot de passe lors de la
+	// modification
+	private boolean validerCorrespondanceMotDePassePourModification(Utilisateur utilisateur, BusinessException be) {
+		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
+			System.out.println("Les mots de passe ne correspondent pas.");
+			// Ne vérifier la correspondance que si un nouveau mot de passe est fourni
+			if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
+				System.out.println("Les mots de passe ne correspondent pas.");
+				be.addMessage("Les mots de passe ne correspondent pas.");
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -99,14 +131,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		return !emailExiste;
 	}
-	
+
 	private boolean validerCorrespondanceMotDePasse(Utilisateur utilisateur, BusinessException be) {
-	    if (utilisateur.getMotDePasse() == null || utilisateur.getConfirmPassword() == null 
-	            || !utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
-	        be.addMessage("Les mots de passe ne correspondent pas.");
-	        return false;
-	    }
-	    return true;
+		if (utilisateur.getMotDePasse() == null || utilisateur.getConfirmPassword() == null
+				|| !utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
+			be.addMessage("Les mots de passe ne correspondent pas.");
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -1,18 +1,14 @@
 @charset "UTF-8";
 
 :root {
-	--green-leaf: #6B8E23; /* Vert végétal */
-	--earth-brown: #8B4513; /* Marron terreux */
-	--sand-beige: #F5F5DC; /* Beige sable */
-	--sunny-yellow: #E3B23C; /* Jaune doux */
-	--light-wood: #D3B69B; /* Bois clair */
-	--sky-blue: #87CEEB; /* Bleu ciel clair */
-	--pearl: #E4D6BC;
-}
-
-/* Styles généraux */
-body {
-    margin: 0;
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
 }
 
 main {
@@ -27,9 +23,9 @@ table {
 	width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: var(--sand-beige);
+    background-color: var(--vert-sauge);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -52,13 +48,12 @@ th, td {
 }
 
 th {
-    background-color: var(--pearl);
-    color: #333;
-    font-weight: bold;
+    background-color: var(--bleu-gris);
+    color:white;
 }
 
 td {
-    color: #555;
+    color:var(--bleu-fonce);
 }
 
 tr:last-child td {
@@ -67,15 +62,14 @@ tr:last-child td {
 
 /* Style pour les liens */
 a {
-    color: var(--green-leaf);
+    color: var(--rose-poudre);
     text-decoration: none;
-    font-weight: bold;
     margin-right: 10px;
 }
 
 a:hover {
     text-decoration: none;
-    color: var(--earth-brown);
+    color: var(--rose-poudre);
 }
 
 .button {
@@ -152,8 +146,6 @@ form button {
 form button:hover {
     background-color: #0056b3;
 }
-
-
 
 li {
 	list-style-type: none;

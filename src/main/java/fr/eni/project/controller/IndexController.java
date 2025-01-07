@@ -60,40 +60,13 @@ public class IndexController {
 	    // Ajouter les données au modèle
 	    model.addAttribute("articles", articlesFiltres);
 	    model.addAttribute("categories", categories);
-	    model.addAttribute("utilisateur", utilisateurConnecte);
+		model.addAttribute("utilisateur", utilisateurConnecte);
 
-	    if (authentication.isAuthenticated()) {
+		if (authentication.isAuthenticated()) {
 	        return "encheres";
 	    } else {
 	        return "index";
 	    }
 	}
-
-
-	/*
-	 * @PostMapping("/filtrer") public String
-	 * rechercheParFiltre(@Valid @ModelAttribute Filtre filtre, BindingResult
-	 * bindingResult) { return "encheres"; }
-	 */
-	/*
-	 * @GetMapping("/") public String index(@RequestParam(value = "categorie",
-	 * required = false) String category, Model model) { // Récupérer les catégories
-	 * depuis la base de données List<Categorie> categories =
-	 * categorieDAO.findAll();
-	 * 
-	 * // Liste simulée des objets List<String> objets =
-	 * List.of("Objet 1 - Catégorie 1", "Objet 2 - Catégorie 2",
-	 * "Objet 3 - Catégorie 1", "Objet 4 - Catégorie 3");
-	 * 
-	 * // Si une catégorie est sélectionnée, filtrer les objets if (categories !=
-	 * null) { objets = objets.stream().filter(obj -> obj.contains(obj)).toList(); }
-	 * 
-	 * // Ajouter les données au modèle model.addAttribute("categories",
-	 * categories); model.addAttribute("objets", objets);
-	 * model.addAttribute("selectedCategory", category); // Conserve la catégorie
-	 * sélectionnée return "index"; }
-	 */
-
-
 
 }

@@ -5,71 +5,103 @@
 <title>Profil utilisateur</title>
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 <link rel="stylesheet" th:href="@{/css/profile.css}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
 </head>
 <div th:replace="~{fragments/fragment-entete::entete}"></div>
 <body>
-<main id="main-user-profile-details">
-<section class="section-profil">
-<form th:action="@{/update-user}" th:object="${utilisateur}" method="post">
-    <table>
-    <input th:field="*{noUtilisateur}" type="hidden" />
-        <tr>
-            <th>Pseudo :</th>
-            <td><input th:field="*{pseudo}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Nom :</th>
-            <td><input th:field="*{nom}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Prénom :</th>
-            <td><input th:field="*{prenom}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Email :</th>
-            <td><input th:field="*{email}" type="email" /></td>
-        </tr>
-        <tr>
-            <th>Téléphone :</th>
-            <td><input th:field="*{telephone}" type="tel" /></td>
-        </tr>
-        <tr>
-            <th>Rue :</th>
-            <td><input th:field="*{rue}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Code postal :</th>
-            <td><input th:field="*{codePostal}" type="text" /></td>
-        </tr>
-        <tr>
-            <th>Ville :</th>
-            <td><input th:field="*{ville}" type="text" /></td>
-        </tr>
-         <tr>
-            <th>Mot de passe actuel :</th>
-            <td><input placeholder="••••••••" type="password" disabled="disabled"/></td>
-        </tr>
-        <tr>
-            <th>Nouveau mot de passe :</th>
-            <td><input th:field="*{motDePasse}" type="password" placeholder="••••••••" /></td>
-        </tr>
-        <tr>
-            <th>Crédit :</th>
-            <td><input th:field="*{credit}" type="number" disabled="disabled" /></td>
-        </tr> 
-    </table>
-    <button type="submit">Mettre à jour</button>
-</form>
+	<main id="main-user-profile-details">
+		<section class="section-profil">
+			<form th:action="@{/update-user}" th:object="${utilisateur}"
+				method="post">
+				<div th:if="${#fields.hasGlobalErrors()}" class="error-message">
+					<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Erreur
+						globale</p>
+				</div>
+				<table>
+					<input th:field="*{noUtilisateur}" type="hidden" />
+					<tr>
+						<th>Pseudo :</th>
+						<td><input th:field="*{pseudo}" type="text" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
+					</tr>
+					<tr>
+						<th>Nom :</th>
+						<td><input th:field="*{nom}" type="text" /></td>
+						<div th:replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+					</tr>
+					<tr>
+						<th>Prénom :</th>
+						<td><input th:field="*{prenom}" type="text" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+					</tr>
+					<tr>
+						<th>Email :</th>
+						<td><input th:field="*{email}" type="email" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('email')}"></div>
+					</tr>
+					<tr>
+						<th>Téléphone :</th>
+						<td><input th:field="*{telephone}" type="tel" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('telephone')}"></div>
+					</tr>
+					<tr>
+						<th>Rue :</th>
+						<td><input th:field="*{rue}" type="text" /></td>
+						<div th:replace="~{fragments/fragment-error :: frag-error('rue')}"></div>
+					</tr>
+					<tr>
+						<th>Code postal :</th>
+						<td><input th:field="*{codePostal}" type="text" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('codePostal')}"></div>
+					</tr>
+					<tr>
+						<th>Ville :</th>
+						<td><input th:field="*{ville}" type="text" /></td>
+						<div
+							th:replace="~{fragments/fragment-error :: frag-error('ville')}"></div>
+					</tr>
+					<tr>
+						<th>Nouveau mot de passe :</th>
+						<td><input th:field="*{motDePasse}" type="password"
+							placeholder="Laissez vide pour conserver le mot de passe actuel" /></td>
+						<div th:replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
+					</tr>
+					<tr>
+						<th>Confirmation :</th>
+						<td><input th:field="*{confirmPassword}" type="password"
+							placeholder="Laissez vide pour conserver le mot de passe actuel" /></td>
+						<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
+					</tr>
+					<tr>
+						<th>Crédit :</th>
+						<td><input th:field="*{credit}" type="number" readonly /> <input
+							type="hidden" th:field="*{credit}" /></td>
+					</tr>
+				</table>
+					<button type="submit" class="primary-button">Mettre à jour</button>
+			</form>
 
-   	<a href="/user-profile">Retour</a>
-    <a href="/delete-profile">Supprimer mon profil</a>
-    </section>
-        <section class="section-articles">
-    <h2>Mes articles actuellement en vente</h2>
-    <h3>Aucun article trouvé</h3>
-    <a class="button" href="/sell-article">Mettre un article en vente</a>
-    <table></table>
-    </section>
-    </main>
+			<a href="/user-profile">Retour</a> <a href="/delete-profile">Supprimer
+				mon profil</a>
+		</section>
+		<section class="section-articles">
+			<h2>Mes articles actuellement en vente</h2>
+			<h3>Aucun article trouvé</h3>
+			<a class="button" href="/sell-article">Mettre un article en vente</a>
+			<table></table>
+		</section>
+	</main>
 </body>
 </html>
