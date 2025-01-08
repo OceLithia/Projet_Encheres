@@ -1,19 +1,23 @@
 package fr.eni.project.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.UtilisateurService;
 import fr.eni.project.bo.ArticleVendu;
 import fr.eni.project.bo.Categorie;
 import fr.eni.project.bo.Utilisateur;
+import fr.eni.project.dto.ArticleDTO;
 import fr.eni.project.dto.FiltreDTO;
+import fr.eni.project.dto.FormatDTO;
 
 @Controller
 public class IndexController {
@@ -39,9 +43,14 @@ public class IndexController {
 	public String afficherAccueilConnecte(Model model, Authentication authentication) {
 		List<ArticleVendu> articles = this.articleVenduService.afficherArticles();
 		List<Categorie> categories = this.categorieService.afficherCategories();
-		model.addAttribute("categories", categories);
-		model.addAttribute("articles", articles);
-		model.addAttribute("utilisateur", utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
+		
+		List<ArticleDTO> articlesDTO = articles.stream()
+		        .map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres())))
+		        .toList();
+
+		    model.addAttribute("categories", categories);
+		    model.addAttribute("articles", articlesDTO);
+		    model.addAttribute("utilisateur", utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
 		return "encheres";
 	}
 

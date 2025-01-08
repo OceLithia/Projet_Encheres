@@ -12,7 +12,6 @@ public class EnchereDTO {
     @Min(value = 1, message = "Le montant doit être supérieur à zéro.")
     private Integer montant;
 
-    // Getters et Setters
     public Long getArticleId() {
         return articleId;
     }

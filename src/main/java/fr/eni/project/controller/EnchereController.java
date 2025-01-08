@@ -2,11 +2,8 @@ package fr.eni.project.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -34,6 +31,7 @@ import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.EnchereDTO;
+import fr.eni.project.dto.ArticleDTO;
 import fr.eni.project.exception.BusinessException;
 import fr.eni.project.exception.EnchereNotFoundException;
 import jakarta.validation.Valid;
@@ -50,12 +48,6 @@ public class EnchereController {
 	private UtilisateurService utilisateurService;
 	@Autowired
 	private ArticleVenduService articleVenduService;
-
-	/*
-	 * @GetMapping public String afficherEncheres(Model model) { List<Enchere>
-	 * encheres = this.enchereService.afficherEncheres();
-	 * model.addAttribute("encheres", encheres); return "index"; }
-	 */
 
 	@GetMapping("/sell-article")
 	public String afficherVendreArticle(Authentication authentication, Model model) {
@@ -85,21 +77,6 @@ public class EnchereController {
 		return "sell-article";
 	}
 
-	/*
-	 * @PostMapping("/sell-article") public String
-	 * createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu,
-	 * BindingResult bindingResult, Model model, Authentication authentication) { if
-	 * (bindingResult.hasErrors()) { // Si des erreurs existent, retourner à la page
-	 * du formulaire avec les erreurs model.addAttribute("currentDateTime", new
-	 * SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date())); return
-	 * "sell-article"; } else { // Récupérer l'utilisateur authentifié String
-	 * pseudoUtilisateur = authentication.getName(); Utilisateur vendeur =
-	 * utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur); //
-	 * Associer l'utilisateur au nouvel article articleVendu.setVendeur(vendeur);
-	 * this.articleVenduService.addNewArticle(vendeur, articleVendu);
-	 * System.out.println("controller : "+articleVendu.getPrixVente()); return
-	 * "redirect:/encheres"; } }
-	 */
 	@PostMapping("/sell-article")
 	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult,
 			@RequestParam("image") MultipartFile image, Model model, Authentication authentication) {
@@ -172,11 +149,14 @@ public class EnchereController {
 		System.out.println(article.getEtatVente());
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            String dateFormatee = article.getDateFinEncheres().format(formatter);
-            model.addAttribute("dateFinEncheresFormatee", dateFormatee);
+            model.addAttribute("dateFinEncheresFormatee", article.getDateFinEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
         } else {
             model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
+        }
+		if (article.getDateDebutEncheres() != null) {
+            model.addAttribute("dateDebutEncheresFormatee", article.getDateDebutEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
+        } else {
+            model.addAttribute("dateDebutEncheresFormatee", "Date non disponible");
         }
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
@@ -274,10 +254,8 @@ public class EnchereController {
 	@PostMapping("/article/update")
 	public String updateArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute Retrait adresseRetrait, @RequestParam(value = "image", required = false) MultipartFile image,
 			RedirectAttributes redirectAttributes) {
-		System.out.println("postemapp");
-		
+	
 		try {
-			System.out.println("try");
 			// Gérer le téléchargement de l'image seulement si une nouvelle image est fournie
 			if (image != null && !image.isEmpty()) {
 				/*
@@ -300,7 +278,6 @@ public class EnchereController {
 				 * dans l'entité articleVendu.setImagePath(fileName); // Assurer que le chemin
 				 * relatif est bien enregistré System.out.println(fileName);
 				 */
-				System.out.println("if");
 				// Nom unique pour l'image
 				String fileName = System.currentTimeMillis() + "_"
 						+ URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
@@ -313,23 +290,16 @@ public class EnchereController {
 				// Stocker le chemin dans l'entité
 				articleVendu.setImagePath(fileName);
 			}
-			System.out.println("categorie : "+articleVendu.getCategorie());
 			if (articleVendu.getCategorie().getNoCategorie() == 0) {
-				System.out.println("if cat");
-			    // Traitez cette situation, soit en affectant une valeur par défaut, soit en levant une exception
 			    throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
 			}
-			System.out.println("avant d'update");
-			// Sauvegarder l'article et son adresse de retrait
 			articleVenduService.savedUpdate(articleVendu, adresseRetrait);
-			System.out.println("après update");
 			redirectAttributes.addFlashAttribute("successMessage", "L'article a été mis à jour avec succès.");
 	    } catch (IllegalArgumentException e) {
 	        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
 	    } catch (IOException e) {
 	        redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de la sauvegarde de l'image : " + e.getMessage());
 	    } catch (Exception e) {
-	    	System.out.println(e);
 	        redirectAttributes.addFlashAttribute("errorMessage",
 	                "Une erreur est survenue lors de la mise à jour de l'article : " + e.getMessage());
 	    }
