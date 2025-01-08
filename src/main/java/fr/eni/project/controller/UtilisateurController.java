@@ -33,19 +33,16 @@ public class UtilisateurController {
 	private ArticleVenduService articleVenduService;
 
 	@GetMapping("/login")
-	public String afficherSeConnecter(HttpSession session, Model model) {
-		// Récupère le message de succès dans la session
+	public String login(@RequestParam(name = "error", required = false) String error, HttpSession session, Model model) { 
 		String message = (String) session.getAttribute("message");
 		if (message != null) {
 			model.addAttribute("successMessage", message);
-			session.removeAttribute("message"); // Supprime le message après affichage
+			session.removeAttribute("message");
+		}
+		if (error != null) {
+			model.addAttribute("error", "Pseudo ou mot de passe incorrect.");
 		}
 		return "login";
-	}
-
-	@PostMapping("/login")
-	public String seConnecter() {
-		return "redirect:/encheres";
 	}
 
 	@GetMapping("/signup")
@@ -91,9 +88,7 @@ public class UtilisateurController {
 			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
 			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
 		}
-		List<ArticleVendu> articlesEnVente = this.articleVenduService
-				.afficherArticleParNoVendeur(utilisateur.getNoUtilisateur());
-		// List<ArticleVendu> articlesAvecEnchereEnCours = this.articleVenduService.a
+		List<ArticleVendu> articlesEnVente = this.articleVenduService.afficherArticleParNoVendeur(utilisateur.getNoUtilisateur());
 		model.addAttribute("articles", articlesEnVente);
 		model.addAttribute("utilisateur", utilisateur);
 		return "user-profile";
@@ -112,32 +107,33 @@ public class UtilisateurController {
 
 	@PostMapping("/update-user")
 	public String modifierProfil(@Validated(ValidationGroups.Update.class) @ModelAttribute Utilisateur utilisateur,
-	        BindingResult bindingResult, Model model, Authentication authentication) {
+			BindingResult bindingResult, Model model, Authentication authentication) {
 
-	    if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("utilisateur", utilisateur);
-	        return "user-profile-details";
-	    }
+			return "user-profile-details";
+		}
 
-	    utilisateur.setNoUtilisateur(utilisateurService.afficherUtilisateurParPseudo(authentication.getName()).getNoUtilisateur());
-	    try {
-	        utilisateurService.mettreAJourUtilisateur(utilisateur);
-	        System.out.println("Profil mis à jour avec succès");
-	    } catch (BusinessException e) {
-	        e.getListeMessages().forEach(m -> {
-	            ObjectError error = new ObjectError("globalError", m);
-	            bindingResult.addError(error);
-	        });
-	        model.addAttribute("utilisateur", utilisateur);
-	        return "user-profile-details";  // Retourner à la vue en cas d'erreur
-	    }
+		utilisateur.setNoUtilisateur(
+				utilisateurService.afficherUtilisateurParPseudo(authentication.getName()).getNoUtilisateur());
+		try {
+			utilisateurService.mettreAJourUtilisateur(utilisateur);
+			System.out.println("Profil mis à jour avec succès");
+		} catch (BusinessException e) {
+			e.getListeMessages().forEach(m -> {
+				ObjectError error = new ObjectError("globalError", m);
+				bindingResult.addError(error);
+			});
+			model.addAttribute("utilisateur", utilisateur);
+			return "user-profile-details"; // Retourner à la vue en cas d'erreur
+		}
 
-	    // Update authentication
-	    Authentication newAuth = new UsernamePasswordAuthenticationToken(utilisateur, utilisateur.getMotDePasse(),
-	            authentication.getAuthorities());
-	    SecurityContextHolder.getContext().setAuthentication(newAuth);
+		// Update authentication
+		Authentication newAuth = new UsernamePasswordAuthenticationToken(utilisateur, utilisateur.getMotDePasse(),
+				authentication.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-	    return "redirect:/user-profile";
+		return "redirect:/user-profile";
 	}
 
 	@GetMapping("/delete-profile")
