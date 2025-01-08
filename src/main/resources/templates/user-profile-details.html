@@ -32,50 +32,42 @@
 						<tr>
 							<th>Pseudo :</th>
 							<td><input th:field="*{pseudo}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('pseudo')}"></div>
 						</tr>
 						<tr>
 							<th>Nom :</th>
 							<td><input th:field="*{nom}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('nom')}"></div>
 						</tr>
 						<tr>
 							<th>Prénom :</th>
 							<td><input th:field="*{prenom}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('prenom')}"></div>
 						</tr>
 						<tr>
 							<th>Email :</th>
 							<td><input th:field="*{email}" type="email" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('email')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('email')}"></div>
 						</tr>
 						<tr>
 							<th>Téléphone :</th>
 							<td><input th:field="*{telephone}" type="tel" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('telephone')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('telephone')}"></div>
 						</tr>
 						<tr>
 							<th>Rue :</th>
 							<td><input th:field="*{rue}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('rue')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('rue')}"></div>
 						</tr>
 						<tr>
 							<th>Code postal :</th>
 							<td><input th:field="*{codePostal}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('codePostal')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('codePostal')}"></div>
 						</tr>
 						<tr>
 							<th>Ville :</th>
 							<td><input th:field="*{ville}" type="text" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('ville')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('ville')}"></div>
 						</tr>
 						<tr>
 							<th>Nouveau mot de passe :</th>
@@ -88,8 +80,7 @@
 							<th>Confirmation :</th>
 							<td><input th:field="*{confirmPassword}" type="password"
 								placeholder="Laissez vide pour conserver le mot de passe actuel" /></td>
-							<div
-								th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
+							<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
 						</tr>
 					</table>
 					<button type="submit" class="button">Mettre à jour</button>

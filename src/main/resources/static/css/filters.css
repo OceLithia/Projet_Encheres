@@ -23,24 +23,24 @@ h1{
 /*------------------------------RECHERCHE MOT CLE--------------------------------------*/
 .recherche-mot-cle{
 	font-family: Playfair+Display+SC;
-	font-size: 25px;
-	margin-left: 200px;
-	margin-bottom:20px;
+	font-size: 30px;
 	display: flex;
+	margin-left: 170px;
 	justify-content: flex-start;
 	color: var(--bleu-gris);
-	z-index: 1
+	z-index: 1;
 }
 .recherche-mot-cle input{
 	padding: 8px 15px;
 	border-radius: 10px;
+	z-index: 1;
 }
 /*---------------------------RECHERCHE PAR CATEGORIE------------------------------------*/
 .recherche-categorie{
 	font-family: Playfair+Display+SC;
 	font-size: 25px;
 	padding: 0px;
-	margin-left: 200px;
+	margin-left: 170px;
 	display: flex;
 	justify-content: flex-start;
 	color: var(--bleu-gris);
@@ -69,6 +69,7 @@ h1{
 .recherche-categorie select:hover{
 	background-color: var(--rose-poudre);
 }
+
 /*-----------------------------OPTION ACHAT VENTE--------------------------------------*/
 /* TITRES */
 .filtrage{
@@ -159,8 +160,11 @@ button{
     border-radius: 90px;
     font-size: 20px;
     cursor: pointer;
+    border: 2px solid #ddd;
 }
 button:hover {
     background-color:var(--dore-mat);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 

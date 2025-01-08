@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Accueil</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/filters.css}" />
+	<link rel="stylesheet" th:href="@{/css/cards.css}" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -14,7 +16,6 @@
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
 <main>
-	<h1>Welcome</h1>
 
  <!-- Affichage des messages de succès ou d'erreur -->
     <div th:if="${successMessage}" class="alert alert-success">
@@ -23,22 +24,11 @@
     <div th:if="${errorMessage}" class="alert alert-danger">
         <p th:text="${errorMessage}"></p>
     </div>
-	<!-- 	<form action="@{/encheres}" method="get" th:object="${filtre}">
-	 <label for="categorie">Choisir une catégorie :</label>
-	
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option th:each="cat : ${categories}" 
-                    th:value="${cat}" 
-                    th:text="${cat}" 
-                    th:selected="${cat == selectedCategory}"></option>
-        </select>
-    </form> -->
     
 <h1>Liste des enchères</h1>
 
 	<form th:action="@{/filtrer}" method="GET">
 	    <!-- Champ de recherche -->
-    <label for="motCle">Mot-clé :</label>
     <input type="text" id="motCle" name="motCle" placeholder="Le nom de l'article contient..."/>
 		<select name="idCat" id="category">
 			<option value="" disabled selected>Choisir une catégorie</option>

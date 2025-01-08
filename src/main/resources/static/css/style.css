@@ -13,15 +13,19 @@
 }
 
 /*-------------------------------GENERAL---------------------------------------*/
+html {
+  height: 100%;
+}
 body {
-	background-color:var(--creme-clair);
-	line-height: 1.6;
-	margin:0;
-	padding:0;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color:var(--creme-clair);
+  position: relative;
 }
 main{
 	margin-left: 40px;
-	margin-right: 40px;
+    margin-right: 40px;
 }
 
 /*--------------------------------NAVBAR----------------------------------------*/
@@ -72,7 +76,7 @@ main{
 }
 
 /*----------------------------TEXTE DE BIENVENU------------------------------------*/
-#bienvenu {
+.bienvenu {
 	position: absolute; /* Permet de centrer le texte indépendamment des autres éléments */
 	left: 18%; /* Centre horizontalement */
 	justify-content: flex-end;
@@ -83,16 +87,19 @@ main{
 
 /*---------------------------------FOOTER------------------------------------------*/
 footer {
-	background-color: var(--dore-mat);
-	background-attachment:fixed;
-	display:flex;
-	justify-content: center;
-	text-align: center;
-  	align-items: center; /* Centre verticalement le contenu */
-}	
-footer p {
-	font-family: Playfair+Display+SC;
-	font-style: italic;
-	color: var(--chocolat);
+    background-color: var(--dore-mat);
+    text-align: center;
+    justify-content: center;
+    align-items: center; /* Centre verticalement le contenu */
+    bottom: 0;
+    left: 0;
+    right: 0;
+	position: absolute;
+	bottom: 0;
+	margin-top: 20px;
 }
-
+footer p {
+    font-family: Playfair+Display+SC;
+    font-style: italic;
+    color: var(--chocolat);
+}
