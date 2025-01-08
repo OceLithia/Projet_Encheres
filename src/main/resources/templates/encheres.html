@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Accueil</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}" />
-	<link rel="stylesheet" th:href="@{/css/filters.css}" />
-	<link rel="stylesheet" th:href="@{/css/cards.css}" />
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/filters.css}" />
+<link rel="stylesheet" th:href="@{/css/cards.css}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const radioAchats = document.getElementById('achats');
@@ -46,8 +50,8 @@
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
-<main>
-	<h1>Liste des enchères</h1>
+	<main>
+		<h1>Liste des enchères</h1>
 
 	<form th:action="@{/filtrer}" method="GET">
 
@@ -69,15 +73,14 @@
 				<label for="achats" class="dropdown-link">Achats</label>
 
 				<ul class="dropdown-menu">
-					<li><input type="checkbox" id="ouvertes" name="encheresOuvertes"
-						value="true" /><label for="ouvertes">Enchères ouvertes</label></li>
+					<li><input type="checkbox" id="ouvertes" name="encheresOuvertes" value="true" />
+					<label for="ouvertes">Enchères ouvertes</label></li>
+					
+					<li><input type="checkbox" id="cours" name="encheresEnCours" value="true" />
+					<label for="cours">Mes enchères en cours</label></li>
 
-					<li><input type="checkbox" id="cours" name="encheresEnCours"
-						value="true" /> <label for="cours">Mes enchères en cours</label></li>
-
-					<li><input type="checkbox" id="remportees" name="encheresRemportees"
-						value="true" /> <label for="remportees">Mes enchères
-						remportées</label></li>
+					<li><input type="checkbox" id="remportees" name="encheresRemportees" value="true" />
+					<label for="remportees">Mes enchères remportées</label></li>
 				</ul>
 			</div>
 
@@ -86,50 +89,48 @@
 				<label for="ventes" class="dropdown-link">Mes ventes</label>
 
 				<ul class="dropdown-menu">
-					<li><input type="checkbox" id="ventesCours" name="ventesEnCours"
-						value="true" /> <label for="ventesCours">Mes ventes en cours</label></li>
-						
-					<li><input type="checkbox" id="nonDebutees"
-						name="ventesNonDebutees" value="true" /> <label for="nonDebutees">Ventes
-						non débutées</label></li>
-					<li><input type="checkbox" id="terminees"
-						name="ventesTerminees" value="true" /> <label for="terminees">Ventes
-						terminées</label></li>
+					<li><input type="checkbox" id="ventesCours" name="ventesEnCours" value="true" />
+					<label for="ventesCours">Mes ventes en cours</label></li>
+
+					<li><input type="checkbox" id="nonDebutees" name="ventesNonDebutees" value="true" />
+					<label for="nonDebutees">Ventes non débutées</label></li>
+					
+					<li><input type="checkbox" id="terminees" name="ventesTerminees" value="true" />
+					<label for="terminees">Ventes terminées</label></li>
 				</ul>
 			</div>
 		</div>
-		<div>
-			<button type="submit">Rechercher</button>
-		</div>
+			<div>
+				<button type="submit">Rechercher</button>
+			</div>
 	</form>
 
-	<div class="grid">
-		<article th:each="e : ${articles}">
-			<div class="articleCard">
-				<img th:src="@{'/uploads/' + ${e.imagePath}}"
-					alt="Image de l'article" />
-				<div class="container">
-					<h2 th:text="${e.nomArticle}"></h2>
-					<div>
-						<h5>
-							Prix actuel : <a th:text="${e.prixVente}"></a>
-						</h5>
-						<h5>
-							Termine le : <a th:text="${e.dateFinEncheres}"></a>
-						</h5>
+		<div class="grid">
+			<article th:each="e : ${articles}">
+				<div class="articleCard">
+					<img th:src="@{'/uploads/' + ${e.imagePath}}"
+						alt="Image de l'article" />
+					<div class="container">
+						<h2 th:text="${e.nomArticle}"></h2>
+						<div>
+							<h5>
+								Prix actuel : <a th:text="${e.prixVente}"></a>
+							</h5>
+							<h5>
+								Termine le : <a th:text="${e.dateFinFormattee}"></a>
+							</h5>
+							<h6>
+								Vendeur : <a th:text="${e.vendeur.pseudo}"
+								th:href="@{/view-seller(noVendeur=${e.vendeur.noUtilisateur})}" class="link"></a>
+							</h6>
+							
+							<a th:href="@{/article-detail(noArticle=${e.noArticle})}"
+							class="button" id="buttonDetail">Détails</a>
+						</div>
 					</div>
-					<h6>
-						Vendeur : <a th:text="${e.vendeur.pseudo}"
-							th:href="@{/view-seller(noVendeur=${e.vendeur.noUtilisateur})}"
-							class="link"></a>
-					</h6>
-					<a th:href="@{/article-detail(noArticle=${e.noArticle})}"
-						class="button" id="buttonDetail">Détails</a>
-				</div>
-			</div>
-		</article>
-	</div>
-</main>
+			</article>
+		</div>
+	</main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>
