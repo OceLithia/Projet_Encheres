@@ -1,90 +1,30 @@
 @charset "UTF-8";
 
 :root {
-    --green-leaf: #6B8E23; /* Vert végétal */
-    --earth-brown: #8B4513; /* Marron terreux */
-    --sand-beige: #F5F5DC; /* Beige sable */
-    --sunny-yellow: #E3B23C; /* Jaune doux */
-    --light-wood: #D3B69B; /* Bois clair */
-    --sky-blue: #87CEEB; /* Bleu ciel clair */
-}
-
-body {
-	margin:0px;
-	padding:0px;
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
 }
 
 form {
-    background-color: var(--sand-beige);
-    padding: 20px;
-    border-radius: 8px;
+    background-color: var(--rose-poudre);
+    padding: 10px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: grid;
-    gap: 15px;
-    max-width: 500px;
-    margin: 20px auto;
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+    list-style: none;
+}
+form li{
+	list-style: none;
 }
 
-/* Champs de saisie */
-input[type="text"], input[type="email"], input[type="password"], textarea, select {
-    padding: 12px;
-    border: 1px solid var(--earth-brown);
-    border-radius: 5px;
-    background-color: #fff;
-    color: var(--earth-brown);
-    font-size: 16px;
-    width: 95%;
-}
 
-/* Focus sur les champs */
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--green-leaf);
-}
-
-/* Boutons */
-button {
-    background-color: var(--green-leaf); /* Vert végétal pour les boutons */
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: var(--sunny-yellow); /* Jaune doux au survol */
-}
-
-/* Liens */
-a {
-    color: var(--green-leaf);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: var(--sunny-yellow); /* Jaune doux au survol */
-}
-
-/* Pied de page */
-footer {
-    background-color: var(--earth-brown);
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
-
-ul {
-	padding: 0px;
-	margin: 0px;
-}
-
-li {
-	list-style-type: none;
-}

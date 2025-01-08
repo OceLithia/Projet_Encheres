@@ -12,14 +12,14 @@
 }
 
 /* LOG FORM */
-.login-form {
+form {
 	background-color:var(--bleu-gris);
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: 0 auto;
 }
-.login-form input {
+form input {
     width: 90%;
     padding: 8px 10px;
     border: 1px solid #ddd;

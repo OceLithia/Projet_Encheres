@@ -3,20 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Profil utilisateur</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/profile.css}" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-	rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
+
 <body>
-	<main id="main-user-profile-details">
+	<div th:replace="~{fragments/fragment-header::header}"></div>
+	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+<main>
+	<div id="main-user-profile-details">
 		<section class="section-profil">
 			<form th:action="@{/update-user}" th:object="${utilisateur}"
 				method="post">
@@ -97,6 +95,8 @@
 			<a class="button" href="/sell-article">Mettre un article en vente</a>
 			<table></table>
 		</section>
-	</main>
+	</div>
+</main>
+	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>
