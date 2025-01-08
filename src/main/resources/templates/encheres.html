@@ -51,62 +51,11 @@
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+
 	<main>
 		<h1>Liste des enchères</h1>
-
-	<form th:action="@{/filtrer}" method="GET">
-
-<!------------------------ PAR MOT CLE ----------------------------->
-		<div class="recherche-mot-cle">
-			<input type="text" id="motCle" name="motCle" placeholder="Rechercher par mot clé" />
-		</div>
-		
-<!------------------------ PAR CATEGORIES ----------------------------->
-		<div class="recherche-categorie">
-			<select name="idCat" id="category">
-				<li><option value="" th:selected="${idCat == null}">Choisir une catégorie</option></li>
-				<li><option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option></li>
-			</select>
-		</div>
-<!------------------------ PAR OPTIONS VENTES OU ACHATS ----------------------------->
-		<div class="filtrage">
-			<div class="dropdown">
-				<input type="radio" id="achats" name="typeFiltre" value="achats" checked/>
-				<label for="achats" class="dropdown-link">Achats</label>
-
-				<ul class="dropdown-menu">
-					<li><input type="checkbox" id="ouvertes" name="encheresOuvertes" value="true" />
-					<label for="ouvertes">Enchères ouvertes</label></li>
-					
-					<li><input type="checkbox" id="cours" name="encheresEnCours" value="true" />
-					<label for="cours">Mes enchères en cours</label></li>
-
-					<li><input type="checkbox" id="remportees" name="encheresRemportees" value="true" />
-					<label for="remportees">Mes enchères remportées</label></li>
-				</ul>
-			</div>
-
-			<div class="dropdown">
-				<input type="radio" id="ventes" name="typeFiltre" value="ventes" />
-				<label for="ventes" class="dropdown-link">Mes ventes</label>
-
-				<ul class="dropdown-menu">
-					<li><input type="checkbox" id="ventesCours" name="ventesEnCours" value="true" />
-					<label for="ventesCours">Mes ventes en cours</label></li>
-
-					<li><input type="checkbox" id="nonDebutees" name="ventesNonDebutees" value="true" />
-					<label for="nonDebutees">Ventes non débutées</label></li>
-					
-					<li><input type="checkbox" id="terminees" name="ventesTerminees" value="true" />
-					<label for="terminees">Ventes terminées</label></li>
-				</ul>
-			</div>
-		</div>
-			<div>
-				<button type="submit">Rechercher</button>
-			</div>
-	</form>
-
+	<div sec:authorize="isAuthenticated()" th:replace="~{fragments/fragment-filtres::filtres-connecte}"></div>
+	<div sec:authorize="!isAuthenticated()" th:replace="~{fragments/fragment-filtres::filtres-deconnecte}"></div>
 		<div class="grid">
 			<article th:each="e : ${articles}">
 				<div class="articleCard">

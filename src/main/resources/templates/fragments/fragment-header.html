@@ -2,7 +2,7 @@
 
   	<div class="links">
         <!-- Liens pour les utilisateurs non authentifiés -->
-	        <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
+	        <a sec:authorize="!isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
 	        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
 	        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
         <!-- Liens pour les utilisateurs authentifiés -->

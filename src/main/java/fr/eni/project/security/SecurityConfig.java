@@ -25,7 +25,7 @@ public class SecurityConfig {
 	            new ClearSiteDataHeaderWriter(Directive.ALL));
 	    http.userDetailsService(customUserDetailsService)  // Use custom UserDetailsService
 	        .authorizeHttpRequests((authorize) -> authorize
-	            .requestMatchers("/","/filtrer/**").permitAll()
+	            .requestMatchers("/","/encheres/**","/filtrer/**").permitAll()
 	            .requestMatchers("/uploads/**").permitAll()
 	            .requestMatchers("/signup/**", "/img/**", "/css/**").permitAll()
 	            .requestMatchers("/article-update/**").hasAnyRole("USER", "ADMIN") // Autoriser USER ou ADMIN

@@ -29,7 +29,7 @@ public class IndexController {
 	@Autowired
 	private UtilisateurService utilisateurService;
 
-	@GetMapping({ "/", "/index" })
+	// @GetMapping({ "/", "/index" })
 	public String index(Model model) {
 		System.out.println("get index");
 		List<ArticleVendu> articles = this.articleVenduService.afficherArticles();
@@ -38,46 +38,49 @@ public class IndexController {
 		model.addAttribute("articles", articles);
 		return "index";
 	}
-	
-	@GetMapping("/encheres")
+
+	@GetMapping({"/","/encheres"})
 	public String afficherAccueilConnecte(Model model, Authentication authentication) {
+
 		List<ArticleVendu> articles = this.articleVenduService.afficherArticles();
 		List<Categorie> categories = this.categorieService.afficherCategories();
-		
-		List<ArticleDTO> articlesDTO = articles.stream()
-		        .map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres())))
-		        .toList();
 
-		    model.addAttribute("categories", categories);
-		    model.addAttribute("articles", articlesDTO);
-		    model.addAttribute("utilisateur", utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
+		List<ArticleDTO> articlesDTO = articles.stream()
+				.map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres()))).toList();
+
+		model.addAttribute("categories", categories);
+		model.addAttribute("articles", articlesDTO);
+		if (authentication != null) {
+			model.addAttribute("utilisateur",
+					utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
+		}
+
 		return "encheres";
 	}
 
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
-	    System.out.println("Filtres reçus : " + filtres);
+		System.out.println("Filtres reçus : " + filtres);
 
-	    // Récupérer l'utilisateur connecté
-	    Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    filtres.setUtilisateurId(utilisateurConnecte.getNoUtilisateur());
+		// Récupérer l'utilisateur connecté
+		Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		filtres.setUtilisateurId(utilisateurConnecte.getNoUtilisateur());
 
-	    // Appliquer les filtres
-	    List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
-	    List<Categorie> categories = this.categorieService.afficherCategories();
-	    List<ArticleDTO> articlesDTO = articlesFiltres.stream()
-		        .map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres())))
-		        .toList();
-	    // Ajouter les données au modèle
-	    model.addAttribute("articles", articlesDTO);
-	    model.addAttribute("categories", categories);
+		// Appliquer les filtres
+		List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
+		List<Categorie> categories = this.categorieService.afficherCategories();
+		List<ArticleDTO> articlesDTO = articlesFiltres.stream()
+				.map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres()))).toList();
+		// Ajouter les données au modèle
+		model.addAttribute("articles", articlesDTO);
+		model.addAttribute("categories", categories);
 		model.addAttribute("utilisateur", utilisateurConnecte);
 
 		if (authentication.isAuthenticated()) {
-	        return "encheres";
-	    } else {
-	        return "index";
-	    }
+			return "encheres";
+		} else {
+			return "index";
+		}
 	}
 
 }
