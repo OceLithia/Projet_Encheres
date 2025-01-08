@@ -17,6 +17,20 @@
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
 <main>
 	<div id="main-user-profile">
+		<section class="section-articles">
+			<h2>Mes articles actuellement en vente</h2>
+			<table th:if="${articles != null and articles.size() > 0}">
+				<tr th:each="a : ${articles}">
+					<th th:text="${a.nomArticle}"></th>
+					<td th:text="'Date de fin d\'enchères : '+ ${a.dateFinEncheres}"></td>
+					<th class="plus"><a th:href="@{/article-detail(noArticle=${a.noArticle})}" class="plus">Voir
+						plus</a></th>
+				</tr>
+			</table>
+			<h3 th:if="${articles == null or articles.size() == 0}" >Aucun article trouvé</h3>
+			<a class="button" href="/sell-article">Mettre un article en vente</a>
+			<table></table>
+		</section>
 		<section class="section-profil">
 			<h2>Mon profil</h2>
 			<table>
@@ -41,7 +55,7 @@
 					<td th:text="${utilisateur.telephone}"></td>
 				</tr>
 				<tr>
-					<th>Rue</th>
+					<th>Adresse</th>
 					<td th:text="${utilisateur.rue}"></td>
 				</tr>
 				<tr>
@@ -58,20 +72,6 @@
 				</tr>
 			</table>
 			<a class="button" href="/details" >Modifier mon profil</a>
-		</section>
-		<section class="section-articles">
-			<h2>Mes articles actuellement en vente</h2>
-			<table th:if="${articles != null and articles.size() > 0}">
-				<tr th:each="a : ${articles}">
-					<th th:text="${a.nomArticle}"></th>
-					<td th:text="'Date de fin d\'enchères : '+ ${a.dateFinEncheres}"></td>
-					<th class="plus"><a th:href="@{/article-detail(noArticle=${a.noArticle})}" class="plus">Voir
-						plus</a></th>
-				</tr>
-			</table>
-			<h3 th:if="${articles == null or articles.size() == 0}" >Aucun article trouvé</h3>
-			<a class="button" href="/sell-article">Mettre un article en vente</a>
-			<table></table>
 		</section>
 	</div>
 </main>

@@ -57,11 +57,15 @@ public class IndexController {
 
 		// Appliquer les filtres
 		List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
+		if (articlesFiltres.isEmpty()) {
+			model.addAttribute("message", "Oups ! Aucun article ne correspond à votre recherche. Ajustez vos filtres ou explorez d'autres catégories pour trouver votre bonheur !");
+		}
 		List<Categorie> categories = this.categorieService.afficherCategories();
 		List<ArticleDTO> articlesDTO = articlesFiltres.stream()
 				.map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres()))).toList();
 		// Ajouter les données au modèle
 		model.addAttribute("articles", articlesDTO);
+		
 		model.addAttribute("categories", categories);
 		model.addAttribute("utilisateur", utilisateurConnecte);
 

@@ -25,11 +25,13 @@ h2{
 }
 .section-profil {
 	margin-left:120px;
-	width: 400px;
+	width: 500px;
+	margin-left:200px;
 	z-index: 1;
 }
 .section-articles {
 	width: 850px;
+	margin-top:80px;
 	justify-content:flex-end;
 	z-index: 100;
 }

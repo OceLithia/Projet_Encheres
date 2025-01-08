@@ -16,6 +16,12 @@ main{
 	flex-direction: column;
 	align-items: center;
 }
+h2{
+	font-family: Playfair+Display+SC;
+	font-size: 30px;
+	padding: 5px;
+	color:var(--bleu-fonce);
+}
 /* ---------------------------SELL FORM-------------------------------------- */
 form{
 	background-color:var(--vert-sauge);
@@ -25,7 +31,7 @@ form{
     color: var(--bleu-fonce);
     justify-content:flex-start;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 20px;
     line-height: 10px;
 }

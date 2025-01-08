@@ -33,4 +33,7 @@ public interface ArticleVenduDAO {
 	List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId);
 
 	List<ArticleVendu> findByDateDebutBeforeAndDateFinAfter(LocalDateTime localDateTime);
+
+	List<ArticleVendu> findArticlesRemportes(Long utilisateurId);
+	
 }
