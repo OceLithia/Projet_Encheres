@@ -58,9 +58,8 @@
 	<div sec:authorize="!isAuthenticated()" th:replace="~{fragments/fragment-filtres::filtres-deconnecte}"></div>
 		<div class="grid">
 			<article th:each="e : ${articles}">
-				<div class="articleCard">
-					<img th:src="@{'/uploads/' + ${e.imagePath}}"
-						alt="Image de l'article" />
+				<div class="card">
+					<img th:src="@{'/uploads/' + ${e.imagePath}}" alt="Image de l'article" />
 					<div class="container">
 						<h2 th:text="${e.nomArticle}"></h2>
 						<div>
@@ -79,6 +78,7 @@
 							class="button" id="buttonDetail">Détails</a>
 						</div>
 					</div>
+				</div>
 			</article>
 		</div>
 	</main>

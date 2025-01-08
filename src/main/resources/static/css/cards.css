@@ -23,7 +23,7 @@
 }
 
 /* Style pour chaque carte */
-.articleCard {
+.card {
     background-color: var(--beige-doux);
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -43,13 +43,13 @@
 .container{
 	padding-left: 15px;
 }
-.articleCard:hover {
+.card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Style des images */
-.articleCard img {
+.card img {
     width: 300px;
     height: 320px; /* Taille uniforme pour les images */
     object-fit: cover; /* Ajuste l'image sans déformation */
@@ -57,12 +57,12 @@
 }
 
 /* Style des titres */
-.articleCard h1,
-.articleCard h2,
-.articleCard h3,
-.articleCard h4,
-.articleCard h5,
-.articleCard h6 {
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6 {
     text-align: left;
     margin: 10px 0;
     color: var(--bleu-fonce);
@@ -70,7 +70,7 @@
 }
 
 /* Style des paragraphes */
-.articleCard a {
+.card a {
     flex-grow: 1; /* Permet au texte de remplir l'espace restant */
     margin: 10px 0;
     overflow: hidden; /* Cache le texte qui dépasse */

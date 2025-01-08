@@ -44,7 +44,7 @@ h1{
 	display: flex;
 	justify-content: flex-start;
 	color: var(--bleu-gris);
-	z-index: 2
+	z-index: 1
 }
 .recherche-categorie select{
 	border-radius: 10px;
@@ -76,7 +76,7 @@ h1{
 	display: flex;
 	justify-content: flex-end;
 	margin-top: 15px;
-	z-index: 5;
+	z-index: 100;
 }
 /* Style du conteneur dropdown */
 .dropdown {

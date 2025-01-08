@@ -65,7 +65,7 @@
 				<tr th:each="a : ${articles}">
 					<th th:text="${a.nomArticle}"></th>
 					<td th:text="'Date de fin d\'enchères : '+ ${a.dateFinEncheres}"></td>
-					<th><a th:href="@{/article-detail(noArticle=${a.noArticle})}">Voir
+					<th class="plus"><a th:href="@{/article-detail(noArticle=${a.noArticle})}" class="plus">Voir
 						plus</a></th>
 				</tr>
 			</table>

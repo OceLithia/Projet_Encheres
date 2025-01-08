@@ -91,8 +91,11 @@ footer {
     background-color: var(--dore-mat);
     align-items: center; /* Centre verticalement le contenu */
     text-align:center;
+    justify-content:center;
+    display:flex;
 	position: relative;
-	height: 35px;
+	height: 20px;
+	padding: 10px;
 }
 footer p {
     font-family: Playfair+Display+SC;
