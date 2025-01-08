@@ -10,6 +10,14 @@ import fr.eni.project.exception.BusinessException;
 
 public interface ArticleVenduService {
 
+	void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle, String rue, String codePostal, String ville);
+
+	void verifierEtFinaliserVentes();
+
+	void encherir(Long articleId, int montant, Utilisateur encherisseur) throws BusinessException;
+
+	void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
+
 	List<ArticleVendu> afficherArticles();
 
 	ArticleVendu afficherArticleParNoArticle(long noArticle);
@@ -20,20 +28,12 @@ public interface ArticleVenduService {
 
 	List<ArticleVendu> afficherArticlesParMotCle(String motCle);
 
-	List<ArticleVendu> filtrerArticles(FiltreDTO filtres);
-
-	void encherir(Long articleId, int montant, Utilisateur encherisseur) throws BusinessException;
-
-	void verifierEtFinaliserVentes();
-
-	void mettreAJourEtatVentes();
-
 	void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur);
-	
+
 	void supprimerArticle(ArticleVendu article);
 
-	void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
+	List<ArticleVendu> filtrerArticles(FiltreDTO filtre);
 
-	void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle, String rue, String codePostal, String ville);
+
 	
 }

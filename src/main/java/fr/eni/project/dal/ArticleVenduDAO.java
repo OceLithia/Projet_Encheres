@@ -31,4 +31,6 @@ public interface ArticleVenduDAO {
 	void updateArticle(ArticleVendu updatedArticle, Retrait updatedRetrait);
 	
 	List<ArticleVendu> findArticlesEncheresEnCours(Long utilisateurId);
+
+	List<ArticleVendu> findByDateDebutBeforeAndDateFinAfter(LocalDateTime localDateTime);
 }
