@@ -10,143 +10,82 @@
 	--beige-doux:#e3c9a9;
 	--creme-clair:#f3e7d3;
 }
-
-main {
+h2{
+	font-family: Playfair+Display+SC;
+	font-size: 30px;
+	padding: 10px;
 	display: flex;
-	flex-direction: row;
-	padding:20px;
-	gap: 20px;
+	color:var(--bleu-fonce);
+	justify-content: center;
 }
 
-/* Style pour les tables */
+/* --------------------------------TABLES--------------------------------------- */
 table {
 	width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    background-color: var(--vert-sauge);
+    background-color: var(--beige-doux);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
 }
-
 section {
 	padding: 20px;
 	text-align: center;
 }
-
 .section-profil {
 	width: 30%;
 }
-
 .section-articles {
 	width: 70%;
 }
-
 th, td {
     padding: 10px 15px;
     text-align: left;
 }
-
 th {
     background-color: var(--bleu-gris);
     color:white;
 }
+.voir-plus{
 
+}
 td {
     color:var(--bleu-fonce);
 }
-
 tr:last-child td {
     border-bottom: none;
 }
 
-/* Style pour les liens */
-a {
-    color: var(--rose-poudre);
-    text-decoration: none;
-    margin-right: 10px;
+/*--------------------------------------LINKS---------------------------------------*/
+.button{
+	text-decoration: none;
+	color: var(--chocolat);
+	display:flex;
+	justify-content: center;
+	font-size: 20px;
+	margin-top: 40px;
 }
-
-a:hover {
-    text-decoration: none;
-    color: var(--rose-poudre);
-}
-
-.button {
-	color: var(--green-leaf);
-}
-
 .button:hover {
-	color: var(--earth-brown)
+    background-color:var(--beige-doux);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Style pour les formulaires */
-form {
-    background-color: #fff1ea;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-form table {
-    width: 100%;
+/* --------------------------BUTTONS------------------------------------- */
+button{
+	display:flex;
+	justify-content:center;
+	background-color: var(--bleu-gris);
+    color:white;
+    padding: 5px 10px;
     border: none;
-    box-shadow: none;
-    margin: 0;
-}
-
-form th {
-    text-align: left;
-    width: 40%;
-    background-color: transparent;
-    font-weight: normal;
-    color: #333;
-}
-
-form td {
-    padding: 10px 0;
-}
-
-form input[type="text"],
-form input[type="email"],
-form input[type="tel"],
-form input[type="password"],
-form input[type="number"] {
-    width: 90%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    font-size: 14px;
-    color: #333;
-}
-
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="tel"]:focus,
-form input[type="password"]:focus,
-form input[type="number"]:focus {
-    border-color: var(--sky-blue);
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-}
-
-form button {
-    background-color: var(--sky-blue);
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 3px;
-    font-size: 14px;
+    border-radius: 90px;
+    font-size: 20px;
     cursor: pointer;
-    margin-top: 10px;
-    display: inline-block;
 }
-
-form button:hover {
-    background-color: #0056b3;
-}
-
-li {
-	list-style-type: none;
+button:hover {
+    background-color:var(--dore-mat);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }

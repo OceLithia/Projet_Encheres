@@ -1,4 +1,3 @@
 <div id="logo" th:fragment="logo">
-	<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo-fond.png}" alt="logo"></a>
-	<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo-fond.png}" alt="logo"></a>
+	<a th:href="@{/encheres}"><img th:src="@{/img/logo-fond.png}" alt="logo"></a>
 </div>

@@ -40,38 +40,4 @@ public class SecurityConfig {
 	    return http.build();
 	}
 	
-	/*
-	 * @Bean public SecurityFilterChain securityFilterChain(HttpSecurity http)
-	 * throws Exception {
-	 * 
-	 * HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler( new
-	 * ClearSiteDataHeaderWriter(Directive.ALL));
-	 * 
-	 * http.authorizeHttpRequests((authorize) -> authorize
-	 * .requestMatchers("/","/filtrer/**").permitAll()
-	 * .requestMatchers("/uploads/**").permitAll() .requestMatchers("/signup/**",
-	 * "/img/**", "/css/**").permitAll() .anyRequest().authenticated())
-	 * .httpBasic(Customizer.withDefaults()) // personnalise la connexion
-	 * .formLogin(form -> form.loginPage("/login") .defaultSuccessUrl("/encheres")
-	 * // Redirection après une connexion réussie .failureUrl("/error-page") // URL
-	 * en cas d'erreur .permitAll()) .logout(logout ->
-	 * logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-	 * .addLogoutHandler(clearSiteData) // vide les données de l'utilisateur );
-	 * 
-	 * return http.build(); }
-	 * 
-	 * @Bean public JdbcUserDetailsManager userDetailsService(DataSource dataSource)
-	 * { JdbcUserDetailsManager jdbcUserDetailsManager = new
-	 * JdbcUserDetailsManager(dataSource); // Requête pour récupérer l'utilisateur
-	 * (username = pseudo) jdbcUserDetailsManager.setUsersByUsernameQuery(
-	 * "SELECT pseudo AS username, mot_de_passe AS password, 1 AS enabled FROM UTILISATEURS WHERE pseudo = ?"
-	 * );
-	 * 
-	 * // Requête pour mapper les rôles en fonction du booléen administrateur
-	 * jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-	 * "SELECT pseudo AS username, COALESCE(CASE WHEN administrateur = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END, 'ROLE_USER') AS authority FROM UTILISATEURS WHERE pseudo = ?"
-	 * ); return jdbcUserDetailsManager; }
-	 */
-
-	
 }

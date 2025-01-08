@@ -29,18 +29,8 @@ public class IndexController {
 	@Autowired
 	private UtilisateurService utilisateurService;
 
-	// @GetMapping({ "/", "/index" })
-	public String index(Model model) {
-		System.out.println("get index");
-		List<ArticleVendu> articles = this.articleVenduService.afficherArticles();
-		List<Categorie> categories = this.categorieService.afficherCategories();
-		model.addAttribute("categories", categories);
-		model.addAttribute("articles", articles);
-		return "index";
-	}
-
-	@GetMapping({"/","/encheres"})
-	public String afficherAccueilConnecte(Model model, Authentication authentication) {
+	@GetMapping({ "/", "/encheres" })
+	public String afficherAccueil(Model model, Authentication authentication) {
 
 		List<ArticleVendu> articles = this.articleVenduService.afficherArticles();
 		List<Categorie> categories = this.categorieService.afficherCategories();
@@ -60,7 +50,6 @@ public class IndexController {
 
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
-		System.out.println("Filtres reçus : " + filtres);
 
 		// Récupérer l'utilisateur connecté
 		Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
@@ -76,11 +65,7 @@ public class IndexController {
 		model.addAttribute("categories", categories);
 		model.addAttribute("utilisateur", utilisateurConnecte);
 
-		if (authentication.isAuthenticated()) {
-			return "encheres";
-		} else {
-			return "index";
-		}
+		return "encheres";
 	}
-
+	
 }
