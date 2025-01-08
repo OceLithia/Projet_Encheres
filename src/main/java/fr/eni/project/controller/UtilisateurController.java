@@ -55,8 +55,9 @@ public class UtilisateurController {
 	}
 
 	@PostMapping("/signup")
-	public String inscrireUtilisateur(@Validated(ValidationGroups.Creation.class) @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult,
-			HttpSession session, Model model) {
+	public String inscrireUtilisateur(
+			@Validated(ValidationGroups.Creation.class) @ModelAttribute Utilisateur utilisateur,
+			BindingResult bindingResult, HttpSession session, Model model) {
 
 		// Vérification de la correspondance des mots de passe
 		if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
@@ -100,71 +101,44 @@ public class UtilisateurController {
 
 	@GetMapping("/details")
 	public String afficherModifierProfil(Authentication authentication, Model model) {
-	    Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    if (utilisateur == null) {
-	        throw new RuntimeException("Utilisateur non trouvé ou non authentifié.");
-	    }
-	    
-	    model.addAttribute("utilisateur", utilisateur);
-	    return "user-profile-details";
+		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		if (utilisateur == null) {
+			throw new RuntimeException("Utilisateur non trouvé ou non authentifié.");
+		}
+
+		model.addAttribute("utilisateur", utilisateur);
+		return "user-profile-details";
 	}
 
 	@PostMapping("/update-user")
-	public String modifierProfil(
-	    @Validated(ValidationGroups.Update.class) @ModelAttribute Utilisateur utilisateur,
-	    BindingResult bindingResult,
-	    Model model,
-	    Authentication authentication) {
-	    System.out.println("avant br");
-	    
-	    if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-	    	if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
-				bindingResult.reject("passwordMismatch", "Les mots de passe ne correspondent pas.");
-				return "user-profile-details";
-			}
-		}
-	    
-	    
+	public String modifierProfil(@Validated(ValidationGroups.Update.class) @ModelAttribute Utilisateur utilisateur,
+	        BindingResult bindingResult, Model model, Authentication authentication) {
+
 	    if (bindingResult.hasErrors()) {
-	        model.addAttribute("utilisateur", utilisateur);
+			model.addAttribute("utilisateur", utilisateur);
 	        return "user-profile-details";
 	    }
-	    
-	    
-	    System.out.println("après br");
-	    // Get current user
-	    Utilisateur currentUser = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-	    
-	    utilisateur.setNoUtilisateur(currentUser.getNoUtilisateur());
-	    // If password is empty, keep the current password
-		/*
-		 * if (utilisateur.getMotDePasse() == null ||
-		 * utilisateur.getMotDePasse().isBlank()) {
-		 * utilisateur.setMotDePasse(currentUser.getMotDePasse()); }
-		 */
-	    System.out.println("mise à jour de l'utilisateur : "+currentUser);
+
+	    utilisateur.setNoUtilisateur(utilisateurService.afficherUtilisateurParPseudo(authentication.getName()).getNoUtilisateur());
 	    try {
-			utilisateurService.mettreAJourUtilisateur(utilisateur);
-		} catch (BusinessException e) {
-			e.getListeMessages().forEach(m->{
-				ObjectError error = new ObjectError("globalError", m);
-				bindingResult.addError(error);
-			});
-		}
-	    System.out.println("Profil mis à jour avec succès");
+	        utilisateurService.mettreAJourUtilisateur(utilisateur);
+	        System.out.println("Profil mis à jour avec succès");
+	    } catch (BusinessException e) {
+	        e.getListeMessages().forEach(m -> {
+	            ObjectError error = new ObjectError("globalError", m);
+	            bindingResult.addError(error);
+	        });
+	        model.addAttribute("utilisateur", utilisateur);
+	        return "user-profile-details";  // Retourner à la vue en cas d'erreur
+	    }
+
 	    // Update authentication
-	    Authentication newAuth = new UsernamePasswordAuthenticationToken(
-	        utilisateur,
-	        utilisateur.getMotDePasse(),
-	        authentication.getAuthorities()
-	    );
+	    Authentication newAuth = new UsernamePasswordAuthenticationToken(utilisateur, utilisateur.getMotDePasse(),
+	            authentication.getAuthorities());
 	    SecurityContextHolder.getContext().setAuthentication(newAuth);
-	    
+
 	    return "redirect:/user-profile";
 	}
-
-
-
 
 	@GetMapping("/delete-profile")
 	public String supprimerProfilUtilisateur(Authentication authentication, Model model) {

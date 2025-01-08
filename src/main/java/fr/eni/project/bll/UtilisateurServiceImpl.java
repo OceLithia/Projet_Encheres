@@ -47,51 +47,67 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return utilisateurDAO.readById(idUtilisateur);
 	}
 
+	private boolean validerMotDePassePourModification(Utilisateur utilisateur, BusinessException be) {
+	    // Si les deux champs sont vides, pas de modification du mot de passe
+	    if ((utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isBlank()) && 
+	        (utilisateur.getConfirmPassword() == null || utilisateur.getConfirmPassword().isBlank())) {
+	        return true;
+	    }
+	    
+	    // Si un nouveau mot de passe est fourni, vérifier le format et la correspondance
+	    if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
+	        // Regex pour la validation du format
+	        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+	        if (!utilisateur.getMotDePasse().matches(passwordRegex)) {
+	            be.addMessage("Format incorrect"); 
+	            return false;
+	        }
+	        
+	        if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
+	            be.addMessage("Les mots de passe ne correspondent pas.");
+	            return false;
+	        }
+	        return true;
+	    }
+	    
+	    return false;
+	}
+	
 	@Override
 	public void mettreAJourUtilisateur(Utilisateur utilisateur) throws BusinessException {
-		BusinessException be = new BusinessException();
+	    BusinessException be = new BusinessException();
 
-		// Récupérer l'utilisateur en session
-		Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
-		// Vérifier si le mot de passe est fourni
-		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-			// Uniquement valider la correspondance si un nouveau mot de passe est fourni
-			if (!validerCorrespondanceMotDePassePourModification(utilisateur, be)) {
-				throw be;
-			}
-			utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
-		} else {
-			// Conserver l'ancien mot de passe
-			utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse());
-		}
-		// Vérifier si le pseudo a changé et s'il est unique
-		if (!utilisateur.getPseudo().equals(utilisateurEnSession.getPseudo())) {
-			if (!validerPseudoUnique(utilisateur.getPseudo(), be)) {
-				throw be;
-			}
-		}
+	    // Récupérer l'utilisateur en session
+	    Utilisateur utilisateurEnSession = utilisateurDAO.readById(utilisateur.getNoUtilisateur());
+	    
+	    // Vérifier si le mot de passe est fourni
+	    if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
+	        // Valider le format et la correspondance du mot de passe
+	        if (!validerMotDePassePourModification(utilisateur, be)) {
+	            throw be;
+	        }
+	        utilisateur.setMotDePasse(encodeMotDePasse(utilisateur.getMotDePasse()));
+	    } else {
+	        // Conserver l'ancien mot de passe
+	        utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse());
+	    }
 
-		// Vérifier si l'email a changé et s'il est unique
-		if (!utilisateur.getEmail().equals(utilisateurEnSession.getEmail())) {
-			if (!validerEmailUnique(utilisateur.getEmail(), be)) {
-				throw be;
-			}
-		}
+	    // Vérifier si le pseudo a changé et s'il est unique
+	    if (!utilisateur.getPseudo().equals(utilisateurEnSession.getPseudo())) {
+	        if (!validerPseudoUnique(utilisateur.getPseudo(), be)) {
+	            throw be;
+	        }
+	    }
 
-		// Mise à jour de l'utilisateur
-		utilisateurDAO.update(utilisateur);
-	}
+	    // Vérifier si l'email a changé et s'il est unique
+	    if (!utilisateur.getEmail().equals(utilisateurEnSession.getEmail())) {
+	        if (!validerEmailUnique(utilisateur.getEmail(), be)) {
+	            throw be;
+	        }
+	    }
 
-	// Nouvelle méthode spécifique pour la validation du mot de passe lors de la
-	// modification
-	private boolean validerCorrespondanceMotDePassePourModification(Utilisateur utilisateur, BusinessException be) {
-		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-			// Ne vérifier la correspondance que si un nouveau mot de passe est fourni
-			if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
-				return false;
-			}
-		}
-		return true;
+	    // Mise à jour de l'utilisateur
+	    utilisateurDAO.update(utilisateur);
 	}
 
 	@Override

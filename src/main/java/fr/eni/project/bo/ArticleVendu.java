@@ -55,7 +55,7 @@ public class ArticleVendu {
 		this.dateFinEncheres = dateFinEncheres;
 		this.miseAPrix = miseAPrix;
 		this.prixVente = prixVente;
-		this.setEtatVente(etatVente);
+		this.etatVente = etatVente;
 		this.noUtilisateur = noUtilisateur;
 		this.noCategorie = noCategorie;
 		this.vendeur = vendeur;
