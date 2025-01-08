@@ -56,6 +56,7 @@
 		<h1>Liste des enchères</h1>
 	<div sec:authorize="isAuthenticated()" th:replace="~{fragments/fragment-filtres::filtres-connecte}"></div>
 	<div sec:authorize="!isAuthenticated()" th:replace="~{fragments/fragment-filtres::filtres-deconnecte}"></div>
+	<h3 th:text="${message}"></h3>
 		<div class="grid">
 			<article th:each="e : ${articles}">
 				<div class="articleCard">

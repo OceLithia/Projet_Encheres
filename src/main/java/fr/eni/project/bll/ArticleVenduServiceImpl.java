@@ -144,7 +144,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         }
     }
 
-    // Getters simples
     @Override
     public List<ArticleVendu> afficherArticles() {
         return articleVenduDAO.findAll();
@@ -170,7 +169,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         return articleVenduDAO.readByKeyword(motCle);
     }
 
-    // Délégations simples
     @Override
     public void mettreAJourArticle(ArticleVendu article, Utilisateur vendeur) {
         articleVenduDAO.update(article, vendeur);
@@ -219,11 +217,16 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	            .filter(article -> {
 	                boolean encheresOuvertes = filtre.getEncheresOuvertes() != null && filtre.getEncheresOuvertes() && article.getEtatVente() == 0;
 	                boolean encheresEnCours = false;
-	                boolean encheresRemportees = filtre.getEncheresRemportees() != null && filtre.getEncheresRemportees() && article.getEtatVente() == 2;
+	                boolean encheresRemportees = false;
 
 	                if (filtre.getEncheresEnCours() != null && filtre.getEncheresEnCours()) {
 	                    List<ArticleVendu> articlesEncheris = articleVenduDAO.findArticlesEncheresEnCours(filtre.getUtilisateurId());
 	                    encheresEnCours = articlesEncheris.contains(article);
+	                }
+	                
+	                if (filtre.getEncheresRemportees() != null && filtre.getEncheresRemportees() && article.getEtatVente() == 2) {
+	                    List<ArticleVendu> articlesRemportes = articleVenduDAO.findArticlesRemportes(filtre.getUtilisateurId());
+	                    encheresRemportees = articlesRemportes.contains(article);
 	                }
 
 	                boolean match = encheresOuvertes || encheresEnCours || encheresRemportees || (filtre.getEncheresOuvertes() == null && filtre.getEncheresEnCours() == null && filtre.getEncheresRemportees() == null);

@@ -147,7 +147,7 @@ public class EnchereController {
 		return "article-detail";
 	}
 
-	@GetMapping({ "/article-detail", "/index" })
+	@GetMapping({ "/article-detail", "/encherir" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
@@ -181,7 +181,6 @@ public class EnchereController {
 
 
 		if (article.getEtatVente() == 2) {
-			System.out.println("etat de la vente si 2 : "+article.getEtatVente());
 	        // Finaliser les ventes pour obtenir les informations de l'acheteur
 	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(article.getNoArticle());
 	        model.addAttribute("enchere", meilleureEnchere);
@@ -192,7 +191,7 @@ public class EnchereController {
 		return "article-detail";
 	}
 
-	@PostMapping("/index")
+	@PostMapping("/encherir")
 	public String creerEnchereSurArticle(@Valid @ModelAttribute("enchereDTO") EnchereDTO enchereDTO, BindingResult br,
 			Authentication authentication, Model model) {
 

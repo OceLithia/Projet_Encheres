@@ -3,84 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <title>Details article</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}" />
-	<link rel="stylesheet" th:href="@{/css/article.css}" />
-	<link rel="icon" href="/img/logo.png" />
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/article.css}" />
+<link rel="icon" href="/img/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
 </head>
 
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
-	
-<main>
-<!------------------------------INFOS GENERALES---------------------------------------->
-	<h2 th:text="${articleVendu.nomArticle}"></h2>
-	<div class="infos-generales">
-		<h4 th:text="${articleVendu.categorie.libelle}"></h4>
-		<p th:text="${articleVendu.description}"></p>
-	</div>
-	
-<!------------------------------INFOS PRIX---------------------------------------->
-	<table class="infos-prix">
-		<h6>Meilleure offre :</h6>
-		<p th:if="${enchere != null}"
-			th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></p>
-		<p th:if="${enchere == null}">Aucune enchère n'a été effectuée sur
-			cet article.</p>
-		<h6>Mise à prix :</h6>
-		<p th:text="${articleVendu.miseAPrix}"></p>
-		<h6>Date de début des enchères :</h6>
-		<p th:text="${dateDebutEncheresFormatee}"></p>
-		<h6>Date de fin des enchères :</h6>
-		<p th:text="${dateFinEncheresFormatee}"></p>
-		<h6>Téléphone :</h6>
-		<p th:text="${articleVendu.vendeur.telephone}"></p>
-		<h6>Ville de retrait :</h6>
-		<p th:text="${articleVendu.lieuRetrait.ville}"></p>
-		<h6>Vendeur :</h6>
-		<p th:text="${articleVendu.vendeur.pseudo}"></p>
-	</table>
-<!------------------------------ENCHERIR---------------------------------------->
-	<div class="encherir" th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
-		<form method="post" th:action="@{/encherir}">
-			<input type="hidden" name="articleId"
-				th:value="${articleVendu.noArticle}" />
-			<div th:if="${erreur != null}" th:text="${erreur}"></div>
-			<label for="montant">Montant :</label> <input type="number"
-				id="montant" name="montant" min="1" required />
-			<button type="submit">Enchérir</button>
-		</form>
-	<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas
-		encore débuté</h2>
-	<h2
-		th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-		<a th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
-		<a th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
-	</h2>
-	<h2
-		th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"
-		th:text="${'Enchère remportée par '+acheteur.pseudo}"></h2>
-	<h2
-		th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur == acheteur.noUtilisateur}">
-		<span
-			th:utext="${'Vous avez remporté l''enchère pour un montant de ' + enchere.montantEnchere + '. <br>Veuillez vous rapprocher de '}"></span>
-		<a
-			th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
-			th:text="${articleVendu.vendeur.pseudo}"></a> <span
-			th:utext="${' pour effectuer le retrait.'}"></span>
-	</h2>
-	<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune
-		enchère n'a été effectuée sur cet article.</h2>
-	</div>	
-	
-	<img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}"
-     alt="Image de l'article" />
-     
-</main>
+
+	<main>
+		<!------------------------------INFOS GENERALES---------------------------------------->
+		<h2 th:text="${articleVendu.nomArticle}"></h2>
+		<div class="infos-generales">
+			<h4 th:text="${articleVendu.categorie.libelle}"></h4>
+			<p th:text="${articleVendu.description}"></p>
+		</div>
+
+		<!------------------------------INFOS PRIX---------------------------------------->
+		<table class="infos-prix">
+			<h6>Meilleure offre :</h6>
+			<p th:if="${enchere != null}"
+				th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></p>
+			<p th:if="${enchere == null}">Aucune enchère n'a été effectuée
+				sur cet article.</p>
+			<h6>Mise à prix :</h6>
+			<p th:text="${articleVendu.miseAPrix}"></p>
+			<h6>Date de début des enchères :</h6>
+			<p th:text="${dateDebutEncheresFormatee}"></p>
+			<h6>Date de fin des enchères :</h6>
+			<p th:text="${dateFinEncheresFormatee}"></p>
+			<h6>Téléphone :</h6>
+			<p th:text="${articleVendu.vendeur.telephone}"></p>
+			<h6>Ville de retrait :</h6>
+			<p th:text="${articleVendu.lieuRetrait.ville}"></p>
+			<h6>Vendeur :</h6>
+			<p th:text="${articleVendu.vendeur.pseudo}"></p>
+		</table>
+		<img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}" alt="Image de l'article" />
+		<!------------------------------ENCHERIR---------------------------------------->
+		<div class="encherir" th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
+			<form method="post" th:action="@{/encherir}">
+				<input type="hidden" name="articleId"
+					th:value="${articleVendu.noArticle}" />
+				<div th:if="${erreur != null}" th:text="${erreur}"></div>
+				<label for="montant">Montant :</label> <input type="number"
+					id="montant" name="montant" min="1" required />
+				<button type="submit">Enchérir</button>
+			</form>
+		</div>
+		<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
+		<h2
+			th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
+			<a th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
+			<a
+				th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
+		</h2>
+		<h2
+			th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"
+			th:text="${'Enchère remportée par '+acheteur.pseudo}"></h2>
+		<h2
+			th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur == acheteur.noUtilisateur}">
+			<span
+				th:utext="${'Vous avez remporté l''enchère pour un montant de ' + enchere.montantEnchere + '. <br>Veuillez vous rapprocher de '}"></span>
+			<a
+				th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
+				th:text="${articleVendu.vendeur.pseudo}"></a> <span
+				th:utext="${' pour effectuer le retrait.'}"></span>
+		</h2>
+		<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée -
+			Aucune enchère n'a été effectuée sur cet article.</h2>
+
+
+		
+
+	</main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

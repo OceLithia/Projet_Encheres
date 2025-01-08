@@ -56,7 +56,7 @@
 							<div th:replace="~{fragments/fragment-error :: frag-error('telephone')}"></div>
 						</tr>
 						<tr>
-							<th>Rue :</th>
+							<th>Adresse :</th>
 							<td><input th:field="*{rue}" type="text" /></td>
 							<div th:replace="~{fragments/fragment-error :: frag-error('rue')}"></div>
 						</tr>
@@ -89,13 +89,6 @@
 
 				<a href="/user-profile">Retour</a> <a href="/delete-profile">Supprimer
 					mon profil</a>
-			</section>
-			<section class="section-articles">
-				<h2>Mes articles actuellement en vente</h2>
-				<h3>Aucun article trouvé</h3>
-				<a class="button" href="/sell-article">Mettre un article en
-					vente</a>
-				<table></table>
 			</section>
 		</div>
 	</main>
