@@ -73,7 +73,7 @@ a:hover {
 }
 
 .button {
-	color: var(--green-leaf)
+	color: var(--green-leaf);
 }
 
 .button:hover {

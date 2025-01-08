@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Vendeur</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/profile.css}" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 </head>
-<header>
-	<div th:replace="~{fragments/fragment-entete::entete}"></div>
-</header>
+
 <body>
-	<main id="main-user-profile">
+	<div th:replace="~{fragments/fragment-header::header}"></div>
+	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+<main>
+	<div id="main-user-profile">
 		<section class="section-profil">
 			<article th:each="e : ${articles}">
 				<h2><a th:text="${e.vendeur.pseudo}"></a></h2>
@@ -55,6 +55,8 @@
 				</tr>
 			</table>
 		</section>
-	</main>
+	</div>
+</main>
+	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

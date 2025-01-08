@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+/*-------------------------------PALETTE--------------------------------------*/
 :root {
 	--bleu-fonce:#343b40;
 	--bleu-gris:#576e7d;
@@ -11,107 +12,87 @@
 	--creme-clair:#f3e7d3;
 }
 
-/* STYLE GENERAL */
+/*-------------------------------GENERAL---------------------------------------*/
 body {
-	font-family:Lora;
 	background-color:var(--creme-clair);
-	color: var(--bleu-fonce);
 	line-height: 1.6;
-	margin:0px;
-	padding:0px;
+	margin:0;
+	padding:0;
 }
-h1, h2, h3 {
-	color: var(--bleu-fonce);
-	font-family:Playfair+Display+SC;
-	text-align: center;
-}
-
-.button {
-    background-color: var(--rose-poudre);
-    color:var(--bleu-fonce);
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: inline-block;
-}
-.button:hover {
-    background-color:var(--dore-mat);
+main{
+	margin-left: 40px;
+	margin-right: 40px;
 }
 
-
-
-/* Style mobile - petite taille d'écran */
-@media ( max-width : 768px) {
-	body {
-		padding: 0 10px;
-	}
-	nav {
-		padding: 15px;
-	}
-	.container {
-		padding: 10px;
-	}
-	form {
-		padding: 15px;
-	}
-}
-
-/* NAVBAR */
-
+/*--------------------------------NAVBAR----------------------------------------*/
 /* Conteneur de la navbar */
 .navbar {
-  background-color: var(--bleu-gris);
-  display: flex;
-  padding: 10px 20px;
-  align-items: center;
-  justify-content: space-between; /* Espacer les éléments */
-  position: relative;
-  margin:0px;
-  padding-left:20px;
-  padding-right: 20px;
+	background-color: var(--bleu-gris);
+	display: flex;
+	padding: 30px 20px;
+	align-items: center;
+	justify-content: space-between; /* Espacer les éléments */
+	position: relative;
+	margin:0px;
+	align-content: center;
+	z-index: 1
 }
-
-/* Conteneur du logo et du texte de bienvenue */
-#logo {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#logo img {
-  width: 200px; /* Ajuste la taille du logo */
-  margin-right: 10px; /* Espacement entre l'image et le texte */
-}
-
-/* Style du texte de bienvenue */
-#bienvenu {
-  position: absolute; /* Permet de centrer le texte indépendamment des autres éléments */
-  left: 16%; /* Centre horizontalement */
-  justify-content: flex-end;
-  font-size: 3em;
-  color: var(--dore-mat);
-  font-style: italic;
-}
-
 /* Liens de la navbar */
 .navbar .links {
-  display: flex;
-  align-items: center;
-  margin-left: auto; /* Pousse les liens vers la droite */
+	display: flex;
+	align-items: center;
+	margin-left: auto; /* Pousse les liens vers la droite */
 }
-
 .navbar .links a {
-  color: white;
-  font-size: 20px;
-  transition: color 0.3s;
-  margin-left: 20px; /* Espacement entre les liens */
-  text-decoration: none; /* Retirer le soulignement des liens */
+	color: white;
+	font-size: 20px;
+	transition: color 0.3s;
+	margin-left: 20px; /* Espacement entre les liens */
+	text-decoration: none; /* Retirer le soulignement des liens */
+	font-family:Playfair+Display+SC; 
 }
-
 /* Effet sur le survol */
 .navbar .links a:hover {
-  color: var(--rose-poudre); /* Couleur survol */
+	color: var(--rose-poudre); /* Couleur survol */
 }
+
+/*----------------------------------LOGO-------------------------------------------*/
+#logo {
+	display: flex;
+	justify-content: flex-start;
+	position: absolute;
+	z-index: 5;
+	top: 0;
+	left: 0;
+}
+#logo img {
+	width: 200px; /* Ajuste la taille du logo */
+	margin-top: 0;
+	position: absolute;
+}
+
+/*----------------------------TEXTE DE BIENVENU------------------------------------*/
+#bienvenu {
+	position: absolute; /* Permet de centrer le texte indépendamment des autres éléments */
+	left: 18%; /* Centre horizontalement */
+	justify-content: flex-end;
+	font-size: 3em;
+	color: var(--dore-mat);
+	font-style: italic;
+}
+
+/*---------------------------------FOOTER------------------------------------------*/
+footer {
+	background-color: var(--dore-mat);
+	background-attachment:fixed;
+	display:flex;
+	justify-content: center;
+	text-align: center;
+  	align-items: center; /* Centre verticalement le contenu */
+}	
+footer p {
+	font-family: Playfair+Display+SC;
+	font-style: italic;
+	color: var(--chocolat);
+}
+

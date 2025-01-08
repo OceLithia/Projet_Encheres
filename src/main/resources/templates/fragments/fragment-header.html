@@ -1,8 +1,5 @@
-<nav th:fragment="entete" class="navbar">
-	<div id="logo">
-		<a sec:authorize="isAuthenticated()" th:href="@{/encheres}"><img th:src="@{/img/logo.png}" alt="logo"></a>
-  		<a sec:authorize="!isAuthenticated()" th:href="@{/}"><img th:src="@{/img/logo.png}" width=70%  alt="logo" class="logo"></a>
-  	</div>
+<nav th:fragment="header" class="navbar">
+
   	<div class="links">
         <!-- Liens pour les utilisateurs non authentifiés -->
 	        <a sec:authorize="!isAuthenticated()" th:href="@{/}">Les enchères</a>
@@ -18,4 +15,3 @@
            th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
            th:text="'Bonjour ' + ${utilisateur.prenom} + ' !'"></p>
 </nav>
-

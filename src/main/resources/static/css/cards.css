@@ -18,7 +18,8 @@
     grid-template-columns: repeat(3, 1fr); /* 3 colonnes de tailles égales */
     gap: 30px; /* Espacement entre les cartes */
     width: 100%;
-    margin-top:30px;
+    margin-top:10px;
+    z-index: 1;
 }
 
 /* Style pour chaque carte */
@@ -37,6 +38,7 @@
     flex-direction: raw; /* Organisation verticale */
     justify-content:flex-start; /* Répartit l'espace entre les éléments */
     margin-bottom: 20px; /* Espacement vertical entre les lignes */
+    z-index: 1;
 }
 .container{
 	padding-left: 15px;
@@ -101,12 +103,4 @@
     background-color: var(--dore-mat); /* Couleur au survol */
 }
 
-.link{
-	color: var(--rose-poudre);
-	text-decoration: none;
-}
 
-input[type="checkbox"]:disabled + label {
-    color: gray;
-    cursor: not-allowed;
-}

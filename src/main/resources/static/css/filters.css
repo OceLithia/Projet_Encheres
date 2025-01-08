@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+:root {
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
+}
+
+h1{
+	font-family: Playfair+Display+SC;
+	font-size: 35px;
+	padding: 0px;
+	margin: 0px;
+	display: flex;
+	justify-content: center;
+	color: var(--bleu-fonce);
+}
+/*------------------------------RECHERCHE MOT CLE--------------------------------------*/
+.recherche-mot-cle{
+	font-family: Playfair+Display+SC;
+	font-size: 25px;
+	margin-left: 200px;
+	margin-bottom:20px;
+	display: flex;
+	justify-content: flex-start;
+	color: var(--bleu-gris);
+	z-index: 1
+}
+.recherche-mot-cle input{
+	padding: 8px 15px;
+	border-radius: 10px;
+}
+/*---------------------------RECHERCHE PAR CATEGORIE------------------------------------*/
+.recherche-categorie{
+	font-family: Playfair+Display+SC;
+	font-size: 25px;
+	padding: 0px;
+	margin-left: 200px;
+	display: flex;
+	justify-content: flex-start;
+	color: var(--bleu-gris);
+	z-index: 2
+}
+.recherche-categorie select{
+	border-radius: 10px;
+	background-color: var(--vert-sauge);
+	text-decoration: none;
+  	color: var(--bleu-fonce);
+  	padding: 10px 20px;
+  	cursor: pointer;
+  	display: flex;
+  	justify-content: flex-start;
+}
+.recherche-categorie select li{
+	border-radius: 10px;
+	background-color: var(--vert-sauge);
+	text-decoration: none;
+  	color: var(--bleu-fonce);
+  	padding: 10px 20px;
+  	cursor: pointer;
+  	display: flex;
+  	justify-content: flex-start;
+}
+.recherche-categorie select:hover{
+	background-color: var(--rose-poudre);
+}
+/*-----------------------------OPTION ACHAT VENTE--------------------------------------*/
+/* TITRES */
+.filtrage{
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 15px;
+	z-index: 5;
+}
+/* Style du conteneur dropdown */
+.dropdown {
+  	position: relative; /* Positionner le menu par rapport à ce conteneur */
+  	display: inline-block;
+  	margin-top: 15px;
+  	z-index: 5;
+}
+.dropdown input{
+	display: none; /* Cache complètement le bouton radio */
+}
+
+/* Style du lien principal */
+.dropdown-link {
+  text-decoration: none;
+  color: white;
+  background-color:var(--vert-sauge);
+  padding: 10px 10px;
+  border-radius: 10px;
+  display: flex;
+  cursor: pointer;
+  justify-content: flex-start;
+  margin-left: 200px;
+  position: relative;
+  z-index: 5;
+}
+
+.dropdown-link:hover {
+  background-color:var(--rose-poudre);
+}
+
+/* Masquer le menu déroulant par défaut */
+.dropdown-menu {
+  display: none; /* Caché par défaut */
+  position: relative;
+  left: 0;
+  background-color: var(--vert-sauge);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 5;
+  min-width: 150px;
+}
+
+/* Style des éléments du menu */
+.dropdown-menu li input {
+	display: flex;
+	margin-left: 200px;
+	padding: 10px;
+	text-decoration: none;
+	color: white;
+	position:relative;
+	text-decoration: none;
+	cursor: pointer;
+	justify-content: flex-start;
+	z-index: 5;
+}
+
+.dropdown-menu li input:hover {
+	background-color: var(--rose-poudre);
+}
+
+/* Afficher le menu déroulant si la souris est sur le lien ou sur le menu */
+.dropdown:hover .dropdown-menu,
+.dropdown-menu:hover {
+	display: block;
+}
+
+/*-----------------------------BUTTON--------------------------------------*/
+button{
+	display:flex;
+	margin-left:auto;
+	margin-right: auto;
+	margin-bottom: 0;
+	background-color: var(--bleu-gris);
+    color:white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 90px;
+    font-size: 20px;
+    cursor: pointer;
+}
+button:hover {
+    background-color:var(--dore-mat);
+}
+

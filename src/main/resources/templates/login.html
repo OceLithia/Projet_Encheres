@@ -3,26 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Connexion</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/profile.css}" />
-<link rel="stylesheet" th:href="@{/css/log-form.css}" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-	    <script>
-        window.onload = function () {
-            var message = document.getElementById('successMessage');
-            if (message) {
-                setTimeout(function () {
-                    message.style.display = 'none';
-                }, 3000);
-            }
-        };
-    </script>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/log-form.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<script>
+	window.onload = function () {
+	    var message = document.getElementById('successMessage');
+	    if (message) {
+	        setTimeout(function () {
+	            message.style.display = 'none';
+	        }, 3000);
+	    }
+  };
+</script>
 </head>
-<div th:replace="~{fragments/fragment-entete::entete}"></div>
+
 <body>
+	<div th:replace="~{fragments/fragment-header::header}"></div>
+	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+<main>
+
     <p th:if="${successMessage}" th:text="${successMessage}" id="successMessage"></p>
 <form th:action="@{/login}" method="post" class="login-form">
     
@@ -45,8 +48,7 @@
     </ul>
 </form>
 	<a href="/signup" class="button">Vous n'avez pas de compte ? Inscrivez-vous !</a>
-	
-
-	
+</main>	
+	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

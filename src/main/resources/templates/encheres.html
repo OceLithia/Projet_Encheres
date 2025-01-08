@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Accueil</title>
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/cards.css}" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/filters.css}" />
+	<link rel="stylesheet" th:href="@{/css/cards.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const radioAchats = document.getElementById('achats');
@@ -41,78 +42,71 @@
     });
 </script>
 </head>
-<body>
-	<div th:replace="~{fragments/fragment-entete::entete}"></div>
 
+<body>
+	<div th:replace="~{fragments/fragment-header::header}"></div>
+	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+<main>
 	<h1>Liste des enchères</h1>
 
 	<form th:action="@{/filtrer}" method="GET">
-		<!-- Titre des filtres -->
-		<h3>Filtres :</h3>
 
 		<!-- Champ de recherche -->
-		<div>
-			<label for="motCle"> 
-			</label> <input type="text" id="motCle" name="motCle"
-				placeholder="Le nom de l'article contient..." />
+		<div class="recherche-mot-cle">
+			<input type="text" id="motCle" name="motCle" placeholder="Rechercher par mot clé" />
 		</div>
 
 		<!-- Sélecteur de catégorie -->
-		<div>
-			<label for="category">Catégorie :</label> <select name="idCat"
-				id="category">
-				<option value="" th:selected="${idCat == null}">Toutes</option>
-				<option th:each="cat : ${categories}" th:value="${cat.noCategorie}"
-					th:text="${cat.libelle}"></option>
+		<div class="recherche-categorie">
+			<label for="category">Catégories : </label>
+			<select name="idCat" id="category">
+				<li><option value="" th:selected="${idCat == null}">Toutes</option></li>
+				<li><option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option></li>
 			</select>
-
 		</div>
 
 		<!-- Options d'achat et de vente -->
-		<div>
-			<div>
-				<input type="radio" id="achats" name="typeFiltre" value="achats"
-					checked /> <label for="achats">Achats</label>
+		<div class="filtrage">
+			<div class="dropdown">
+				<input type="radio" id="achats" name="typeFiltre" value="achats" checked/>
+				<label for="achats" class="dropdown-link">Achats</label>
 
-				<div>
-					<input type="checkbox" id="ouvertes" name="encheresOuvertes"
-						value="true" /> <label for="ouvertes">Enchères ouvertes</label><br />
+				<ul class="dropdown-menu">
+					<li><input type="checkbox" id="ouvertes" name="encheresOuvertes"
+						value="true" /><label for="ouvertes">Enchères ouvertes</label></li>
 
-					<input type="checkbox" id="cours" name="encheresEnCours"
-						value="true" /> <label for="cours">Mes enchères en cours</label><br />
+					<li><input type="checkbox" id="cours" name="encheresEnCours"
+						value="true" /> <label for="cours">Mes enchères en cours</label></li>
 
-					<input type="checkbox" id="remportees" name="encheresRemportees"
+					<li><input type="checkbox" id="remportees" name="encheresRemportees"
 						value="true" /> <label for="remportees">Mes enchères
-						remportées</label>
-				</div>
+						remportées</label></li>
+				</ul>
 			</div>
 
-			<div>
+			<div class="dropdown">
 				<input type="radio" id="ventes" name="typeFiltre" value="ventes" />
-				<label for="ventes">Mes ventes</label>
+				<label for="ventes" class="dropdown-link">Mes ventes</label>
 
-				<div>
-					<input type="checkbox" id="ventesCours" name="ventesEnCours"
-						value="true" /> <label for="ventesCours">Mes ventes en
-						cours</label><br /> 
-					<input type="checkbox" id="nonDebutees"
+				<ul class="dropdown-menu">
+					<li><input type="checkbox" id="ventesCours" name="ventesEnCours"
+						value="true" /> <label for="ventesCours">Mes ventes en cours</label></li>
+						
+					<li><input type="checkbox" id="nonDebutees"
 						name="ventesNonDebutees" value="true" /> <label for="nonDebutees">Ventes
-						non débutées</label><br /> 
-					<input type="checkbox" id="terminees"
+						non débutées</label></li>
+					<li><input type="checkbox" id="terminees"
 						name="ventesTerminees" value="true" /> <label for="terminees">Ventes
-						terminées</label>
-				</div>
+						terminées</label></li>
+				</ul>
 			</div>
 		</div>
-
-		<!-- Bouton de recherche -->
 		<div>
 			<button type="submit">Rechercher</button>
 		</div>
 	</form>
 
-
-	<main class="grid">
+	<div class="grid">
 		<article th:each="e : ${articles}">
 			<div class="articleCard">
 				<img th:src="@{'/uploads/' + ${e.imagePath}}"
@@ -137,17 +131,9 @@
 				</div>
 			</div>
 		</article>
-	</main>
-
-	<!-- TO DO
- - lien vers vendeur
- - afficher image de l'article
- -->
-
-
-
-
-	<footer th:replace="~{fragments/fragment-piedpage::piedpage}"></footer>
+	</div>
+</main>
+	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>
 
