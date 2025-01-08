@@ -29,7 +29,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	private EnchereDAO enchereDAO;
 
 	@Override
-	public void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle) {
+	public void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle, String rue, String codePostal, String ville) {
 		articleVenduDAO.createSellArticle(vendeur, nouvelArticle);
 		nouvelArticle.setPrixVente(nouvelArticle.getMiseAPrix());
 		if (nouvelArticle.getDateDebutEncheres().isBefore(LocalDateTime.now())) {
@@ -37,7 +37,15 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 		} else {
 			nouvelArticle.setEtatVente(0);
 		}
-		retraitDAO.insertLieuRetraitParDefaut(nouvelArticle.getNoArticle(), vendeur);
+	    // Vérifier si l'adresse de retrait est différente de l'adresse du vendeur
+	    if (!rue.equals(vendeur.getRue()) || !codePostal.equals(vendeur.getCodePostal()) || !ville.equals(vendeur.getVille())) {
+	        // Si l'adresse est différente, créer un nouveau lieu de retrait
+	        retraitDAO.insertLieuRetrait(nouvelArticle.getNoArticle(), rue, codePostal, ville);
+	    } else {
+	        // Sinon utiliser l'adresse par défaut du vendeur
+	        retraitDAO.insertLieuRetraitParDefaut(nouvelArticle.getNoArticle(), vendeur);
+	    }
+	    
 	}
 
 	@Override

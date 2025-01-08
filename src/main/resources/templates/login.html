@@ -30,9 +30,11 @@
 <form th:action="@{/login}" method="post">
     
     <h2>Se connecter</h2>
-    <ul th:if="${param.error}">
+    
+    <div th:if="${error != null}" style="color: red;">
         <li>Identifiant ou mot de passe incorrect</li>
-    </ul>
+    </div>
+    
     <ul>
         <li>
             <label for="username">Identifiant : </label>

@@ -14,75 +14,82 @@
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
-<main>
-	<h2>Nouvelle vente</h2>
+	<main>
+		<h2>Nouvelle vente</h2>
 
-	<!-- Formulaire de vente d'article -->
-	<form th:action="@{/sell-article}" method="post"
-		enctype="multipart/form-data" th:object="${articleVendu}">
-		<div th:if="${#fields.hasErrors('*')}" class="error-global">
-			<h2 class="error-gen">Veuillez vérifier vos données</h2>
-			<ul th:if="${#fields.hasGlobalErrors()}">
-				<li th:each="e: ${#fields.globalErrors()}" th:text="${e}"></li>
+		<!-- Formulaire de vente d'article -->
+		<form th:action="@{/sell-article}" method="post"
+			enctype="multipart/form-data" th:object="${articleVendu}">
+			<div th:if="${#fields.hasErrors('*')}" class="error-global">
+				<h2 class="error-gen">Veuillez vérifier vos données</h2>
+				<ul th:if="${#fields.hasGlobalErrors()}">
+					<li th:each="e: ${#fields.globalErrors()}" th:text="${e}"></li>
+				</ul>
+			</div>
+			<ul>
+				<li><label for="nomArticle">Article : </label> <input
+					type="text" id="nomArticle" th:field="*{nomArticle}"
+					placeholder="Nom de l'article" />
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('nomArticle')}"></div>
+				</li>
+				<li><label for="description">Description : </label> <textarea
+						id="description" cols="30" rows="10" th:field="*{description}"
+						placeholder="Décrivez en quelques lignes votre article..."></textarea>
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
+				</li>
+				<li><label for="idCategorie">Catégorie : </label> <select
+					id="categorie" th:field="*{noCategorie}">
+						<option th:each="categorie : ${categories}"
+							th:value="${categorie.noCategorie}"
+							th:text="${categorie.libelle}"></option>
+				</select>
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('noCategorie')}"></div>
+				</li>
+				<li><label for="photo">Photo de l'article : </label> <input
+					type="file" accept="image/*" name="image" id="photo" /></li>
+				<li><label for="miseAPrix">Mise à prix : </label> <input
+					type="number" min="0" id="miseAPrix" th:field="*{miseAPrix}" />
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('miseAPrix')}"></div>
+				</li>
+				<li><label for="dateDebutEncheres">Début de l'enchère :</label>
+					<input type="datetime-local" id="dateDebutEncheres"
+					th:field="*{dateDebutEncheres}" min="${currentDateTime}" />
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('dateDebutEncheres')}"></div>
+				</li>
+				<li><label for="dateFinEncheres">Fin de l'enchère :</label> <input
+					type="datetime-local" id="dateFinEncheres"
+					th:field="*{dateFinEncheres}" min="${currentDateTime}" />
+					<div
+						th:replace="~{fragments/fragment-error :: frag-error('dateFinEncheres')}"></div>
+				</li>
 			</ul>
-		</div>
-		<ul>
-			<li><label for="nomArticle">Article : </label> <input
-				type="text" id="nomArticle" th:field="*{nomArticle}" 
-				placeholder="Nom de l'article" />
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('nomArticle')}"></div>
-			</li>
-			<li><label for="description">Description : </label> <textarea
-					id="description" cols="30" rows="10" th:field="*{description}"
-				 placeholder="Décrivez en quelques lignes votre article..."></textarea>
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('description')}"></div>
-			</li>
-			<li><label for="idCategorie">Catégorie : </label> <select
-				id="categorie" th:field="*{noCategorie}">
-					<option th:each="categorie : ${categories}"
-						th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
-			</select>
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('noCategorie')}"></div>
-			</li>
-			<li><label for="photo">Photo de l'article : </label> <input
-				type="file" accept="image/*" name="image" id="photo" /></li>
-			<li><label for="miseAPrix">Mise à prix : </label> <input
-				type="number" min="0" id="miseAPrix" th:field="*{miseAPrix}" />
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('miseAPrix')}"></div>
-			</li>
-			<li><label for="dateDebutEncheres">Début de l'enchère :</label>
-				<input type="datetime-local" id="dateDebutEncheres"
-				th:field="*{dateDebutEncheres}" min="${currentDateTime}"  />
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('dateDebutEncheres')}"></div>
-			</li>
-			<li><label for="dateFinEncheres">Fin de l'enchère :</label> <input
-				type="datetime-local" id="dateFinEncheres"
-				th:field="*{dateFinEncheres}" min="${currentDateTime}"  />
-				<div
-					th:replace="~{fragments/fragment-error :: frag-error('dateFinEncheres')}"></div>
-			</li>
-		</ul>
+			<div class="adresse-retrait">
+				<h3>Lieu de retrait</h3>
+				<div>
+					<label for="rueRetrait">Rue :</label> <input type="text"
+						id="rueRetrait" name="rueRetrait" th:value="${utilisateur.rue}" />
+				</div>
+				<div>
+					<label for="codePostalRetrait">Code postal :</label> <input
+						type="text" id="codePostalRetrait" name="codePostalRetrait"
+						th:value="${utilisateur.codePostal}" />
+				</div>
+				<div>
+					<label for="villeRetrait">Ville :</label> <input type="text"
+						id="villeRetrait" name="villeRetrait"
+						th:value="${utilisateur.ville}" />
+				</div>
+			</div>
 
-		<h3>Retrait</h3>
-		<ul>
-			<li><label for="idRue">Rue : </label> <input type="text"
-				id="idRue" th:field="*{vendeur.rue}" required /></li>
-			<li><label for="idCodePostal">Code Postal : </label> <input
-				type="text" id="idCodePostal" th:field="*{vendeur.codePostal}"
-				required /></li>
-			<li><label for="idVille">Ville : </label> <input type="text"
-				id="idVille" th:field="*{vendeur.ville}" required /></li>
-		</ul>
-
-		<button type="submit">Enregistrer</button>
-		<button type="reset">Annuler</button>
-	</form>
-</main>
+			<button type="submit">Enregistrer</button>
+			<button type="reset">Annuler</button>
+		</form>
+	</main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

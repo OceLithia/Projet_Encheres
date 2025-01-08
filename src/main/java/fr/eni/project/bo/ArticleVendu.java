@@ -38,8 +38,7 @@ public class ArticleVendu {
 
 	public ArticleVendu() {
 	}
-
-	// Constructeur avec paramètres
+	
 	public ArticleVendu(long noArticle, @NotBlank(message = "Le nom de l''article est obligatoire.") String nomArticle,
 			@NotBlank(message = "La description de l''article est obligatoire.") String description,
 			@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.") LocalDateTime dateDebutEncheres,

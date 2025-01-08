@@ -10,8 +10,6 @@ import fr.eni.project.exception.BusinessException;
 
 public interface ArticleVenduService {
 
-	void addNewArticle(Utilisateur utilisateur, ArticleVendu articleVendu);
-
 	List<ArticleVendu> afficherArticles();
 
 	ArticleVendu afficherArticleParNoArticle(long noArticle);
@@ -35,5 +33,7 @@ public interface ArticleVenduService {
 	void supprimerArticle(ArticleVendu article);
 
 	void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
+
+	void addNewArticle(Utilisateur vendeur, ArticleVendu nouvelArticle, String rue, String codePostal, String ville);
 	
 }

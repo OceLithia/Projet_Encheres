@@ -29,7 +29,6 @@ import fr.eni.project.bo.Enchere;
 import fr.eni.project.bo.Retrait;
 import fr.eni.project.bo.Utilisateur;
 import fr.eni.project.dto.EnchereDTO;
-import fr.eni.project.dto.ArticleDTO;
 import fr.eni.project.exception.BusinessException;
 import fr.eni.project.exception.EnchereNotFoundException;
 import jakarta.validation.Valid;
@@ -76,8 +75,14 @@ public class EnchereController {
 	}
 
 	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult,
-			@RequestParam("image") MultipartFile image, Model model, Authentication authentication) {
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, 
+            BindingResult bindingResult,
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("rueRetrait") String rueRetrait,
+            @RequestParam("codePostalRetrait") String codePostalRetrait,
+            @RequestParam("villeRetrait") String villeRetrait,
+            Model model, 
+            Authentication authentication) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
 			return "sell-article";
@@ -102,8 +107,10 @@ public class EnchereController {
 				Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
 				articleVendu.setVendeur(vendeur);
 				// Sauvegarder l'article
-				articleVenduService.addNewArticle(vendeur, articleVendu);
-				return "redirect:/";
+
+				articleVenduService.addNewArticle(vendeur, articleVendu, rueRetrait, codePostalRetrait, villeRetrait);
+				return "redirect:/index";
+
 			} catch (IOException e) {
 				// Gestion des erreurs lors du téléchargement de l'image
 				e.printStackTrace();

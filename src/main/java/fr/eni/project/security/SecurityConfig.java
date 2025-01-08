@@ -32,8 +32,8 @@ public class SecurityConfig {
 	            .anyRequest().authenticated())
 	        .httpBasic(Customizer.withDefaults())
 	        .formLogin(form -> form.loginPage("/login")
-	            .defaultSuccessUrl("/index")
-	            .failureUrl("/error-page")
+	            .defaultSuccessUrl("/index", true)
+	            .failureUrl("/login?error=true")
 	            .permitAll())
 	        .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 	            .addLogoutHandler(clearSiteData));

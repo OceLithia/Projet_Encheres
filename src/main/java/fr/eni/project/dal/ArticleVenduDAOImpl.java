@@ -3,12 +3,10 @@ package fr.eni.project.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -70,6 +68,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
 		map.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
 		map.addValue("prixInitial", newArticle.getMiseAPrix());
+		map.addValue("prixVente", newArticle.getMiseAPrix());
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
 		map.addValue("imagePath", newArticle.getImagePath());
 		map.addValue("etatVente", newArticle.getEtatVente());
