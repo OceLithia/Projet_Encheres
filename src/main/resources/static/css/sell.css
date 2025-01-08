@@ -1,1 +1,50 @@
 @charset "UTF-8";
+
+:root {
+	--bleu-fonce:#343b40;
+	--bleu-gris:#576e7d;
+	--vert-sauge:#a3bfa8;
+	--rose-poudre:#d9b8b5;
+	--chocolat:#653924;
+	--dore-mat:#c8a165;
+	--beige-doux:#e3c9a9;
+	--creme-clair:#f3e7d3;
+}
+
+/* ---------------------------SELL FORM-------------------------------------- */
+form h2{
+	font-family: Playfair+Display+SC;
+	font-size: 30px;
+	padding: 5px;
+	display: flex;
+	color:var(--bleu-fonce);
+	justify-content: center;
+}
+form{
+	background-color:var(--vert-sauge);
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    color: var(--bleu-fonce);
+}
+form input {
+    width: 250px;
+    padding: 4px 4px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    color:white;
+}
+form li{
+	list-style-type: none;
+	padding: 4px;
+	justify-content: center;
+}
+form .button{
+	text-decoration: none;
+	color: var(--chocolat);
+	display:flex;
+	justify-content:flex-end;
+	font-size: 25px;
+	margin-top:0;
+}
