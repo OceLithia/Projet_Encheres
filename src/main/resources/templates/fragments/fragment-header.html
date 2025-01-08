@@ -6,7 +6,7 @@
 	        <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">S'inscrire</a>
 	        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Se connecter</a>
         <!-- Liens pour les utilisateurs authentifiés -->
-	        <a sec:authorize="isAuthenticated()" th:href="@{/encheres}">Les enchères</a>
+	        <a sec:authorize="isAuthenticated()" th:href="@{/index}">Les enchères</a>
 	        <a sec:authorize="isAuthenticated()" th:href="@{/sell-article}">Vendre un article</a>
 	        <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
 	        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>

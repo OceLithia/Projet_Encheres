@@ -32,7 +32,7 @@ public class SecurityConfig {
 	            .anyRequest().authenticated())
 	        .httpBasic(Customizer.withDefaults())
 	        .formLogin(form -> form.loginPage("/login")
-	            .defaultSuccessUrl("/encheres")
+	            .defaultSuccessUrl("/index")
 	            .failureUrl("/error-page")
 	            .permitAll())
 	        .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))

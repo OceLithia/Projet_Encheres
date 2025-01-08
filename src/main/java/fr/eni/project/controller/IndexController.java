@@ -51,7 +51,7 @@ public class IndexController {
 		    model.addAttribute("categories", categories);
 		    model.addAttribute("articles", articlesDTO);
 		    model.addAttribute("utilisateur", utilisateurService.afficherUtilisateurParPseudo(authentication.getName()));
-		return "encheres";
+		return "index";
 	}
 
 	@GetMapping("/filtrer")
@@ -72,7 +72,7 @@ public class IndexController {
 		model.addAttribute("utilisateur", utilisateurConnecte);
 
 		if (authentication.isAuthenticated()) {
-	        return "encheres";
+	        return "index";
 	    } else {
 	        return "index";
 	    }

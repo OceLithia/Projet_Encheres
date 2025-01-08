@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
@@ -105,7 +103,7 @@ public class EnchereController {
 				articleVendu.setVendeur(vendeur);
 				// Sauvegarder l'article
 				articleVenduService.addNewArticle(vendeur, articleVendu);
-				return "redirect:/encheres";
+				return "redirect:/";
 			} catch (IOException e) {
 				// Gestion des erreurs lors du téléchargement de l'image
 				e.printStackTrace();
@@ -142,7 +140,7 @@ public class EnchereController {
 		return "article-detail";
 	}
 
-	@GetMapping({ "/article-detail", "/encherir" })
+	@GetMapping({ "/article-detail", "/index" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(id);
@@ -187,7 +185,7 @@ public class EnchereController {
 		return "article-detail";
 	}
 
-	@PostMapping("/encherir")
+	@PostMapping("/index")
 	public String creerEnchereSurArticle(@Valid @ModelAttribute("enchereDTO") EnchereDTO enchereDTO, BindingResult br,
 			Authentication authentication, Model model) {
 
