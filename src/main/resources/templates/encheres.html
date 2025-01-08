@@ -51,21 +51,18 @@
 
 	<form th:action="@{/filtrer}" method="GET">
 
-		<!-- Champ de recherche -->
+<!------------------------ PAR MOT CLE ----------------------------->
 		<div class="recherche-mot-cle">
 			<input type="text" id="motCle" name="motCle" placeholder="Rechercher par mot clé" />
 		</div>
-
-		<!-- Sélecteur de catégorie -->
+		
+<!------------------------ PAR CATEGORIES ----------------------------->
 		<div class="recherche-categorie">
-			<label for="category">Catégories : </label>
 			<select name="idCat" id="category">
-				<li><option value="" th:selected="${idCat == null}">Toutes</option></li>
+				<li><option value="" th:selected="${idCat == null}">Choisir une catégorie</option></li>
 				<li><option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option></li>
-			</select>
 		</div>
-
-		<!-- Options d'achat et de vente -->
+<!------------------------ PAR OPTIONS VENTES OU ACHATS ----------------------------->
 		<div class="filtrage">
 			<div class="dropdown">
 				<input type="radio" id="achats" name="typeFiltre" value="achats" checked/>

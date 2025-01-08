@@ -11,7 +11,10 @@
 	        <a sec:authorize="isAuthenticated()" th:href="@{/user-profile}">Mon profil</a>
 	        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
 	</div>
-	 <p id="bienvenu" sec:authorize="isAuthenticated()" 
-           th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
-           th:text="'Bonjour ' + ${utilisateur.prenom} + ' !'"></p>
+		 <p class="bienvenu" sec:authorize="isAuthenticated()" 
+	           th:if="${utilisateur != null and !#strings.isEmpty(utilisateur.pseudo)}" 
+	           th:text="'Bonjour ' + ${utilisateur.prenom} + ' !'"></p>
+	     <p class="bienvenu" sec:authorize="!isAuthenticated()" 
+	           th:text="Bienvenue"></p>
+	
 </nav>

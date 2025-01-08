@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Inscription</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -14,7 +15,7 @@
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
 <main>
-	<form th:action="@{/signup}" method="post" th:object="${utilisateur}">
+	<form th:action="@{/signup}" method="post" th:object="${utilisateur}" class="signup">
 		<div th:if="${#fields.hasErrors('*')}" class="error-global">
 			<h2>Veuillez vérifier vos données</h2>
 			<ul th:if="${#fields.hasGlobalErrors()}">
@@ -60,8 +61,8 @@
     			<input type="password" th:field="*{confirmPassword}" placeholder="Confirmez le mot de passe" /></li>
 			<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
 			
-			<li><button type="submit">S'inscrire</button></li>
-			<li><a href="/">Annuler</a></li>
+			<li><button type="submit" >S'inscrire</button></li>
+			<li><a href="/" class="button">Annuler</a></li>
 		</ul>
 	</form>
 </main>
