@@ -33,7 +33,7 @@ input {
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 14px;
-    color:white;
+    color:var(--bleu-gris);
 }
 li{
 	list-style-type: none;
