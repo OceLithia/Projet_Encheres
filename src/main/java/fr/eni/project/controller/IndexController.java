@@ -65,9 +65,11 @@ public class IndexController {
 	    // Appliquer les filtres
 	    List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
 	    List<Categorie> categories = this.categorieService.afficherCategories();
-
+	    List<ArticleDTO> articlesDTO = articlesFiltres.stream()
+		        .map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres())))
+		        .toList();
 	    // Ajouter les données au modèle
-	    model.addAttribute("articles", articlesFiltres);
+	    model.addAttribute("articles", articlesDTO);
 	    model.addAttribute("categories", categories);
 		model.addAttribute("utilisateur", utilisateurConnecte);
 

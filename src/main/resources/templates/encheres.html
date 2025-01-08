@@ -66,6 +66,7 @@
 			<select name="idCat" id="category">
 				<li><option value="" th:selected="${idCat == null}">Choisir une catégorie</option></li>
 				<li><option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option></li>
+			</select>
 		</div>
 <!------------------------ PAR OPTIONS VENTES OU ACHATS ----------------------------->
 		<div class="filtrage">
