@@ -23,5 +23,15 @@ public class RetraitDAOImpl implements RetraitDAO {
 		map.addValue("ville", vendeur.getVille());
 		jdbcTemplate.update(INSERT, map);
 	}
+
+	@Override
+	public void insertLieuRetrait(long noArticle, String rue, String codePostal, String ville) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("no_article", noArticle);
+		map.addValue("rue", rue);
+		map.addValue("code_postal", codePostal);
+		map.addValue("ville", ville);
+		jdbcTemplate.update(INSERT, map);
+	}
 	
 }

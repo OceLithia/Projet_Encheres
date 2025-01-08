@@ -6,4 +6,6 @@ public interface RetraitDAO {
 
 	void insertLieuRetraitParDefaut(long noArticle, Utilisateur vendeur);
 
+	void insertLieuRetrait(long noArticle, String rue, String codePostal, String ville);
+
 }
