@@ -84,13 +84,8 @@
 							placeholder="Laissez vide pour conserver le mot de passe actuel" /></td>
 						<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
 					</tr>
-					<tr>
-						<th>Crédit :</th>
-						<td><input th:field="*{credit}" type="number" readonly /> <input
-							type="hidden" th:field="*{credit}" /></td>
-					</tr>
 				</table>
-					<button type="submit" class="primary-button">Mettre à jour</button>
+					<button type="submit" class="button">Mettre à jour</button>
 			</form>
 
 			<a href="/user-profile">Retour</a> <a href="/delete-profile">Supprimer

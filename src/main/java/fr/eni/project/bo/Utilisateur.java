@@ -69,68 +69,70 @@ public class Utilisateur implements UserDetails {
 			ValidationGroups.Update.class })
 	private String ville;
 
-	/*
-	 * @NotBlank(message = "Le mot de passe est obligatoire.", groups =
-	 * ValidationGroups.Creation.class)
-	 * 
-	 * @Pattern(regexp =
-	 * "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-	 * message =
-	 * "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial."
-	 * ) private String motDePasse;
-	 */
-
 	private int credit;
 	private boolean administrateur;
 
 	private List<Enchere> encheres = new ArrayList<>();
 	private List<ArticleVendu> articlesVendus = new ArrayList<>();
 
-	/*
-	 * @NotBlank(message = "La confirmation du mot de passe est obligatoire.",
-	 * groups = ValidationGroups.Creation.class) private String confirmPassword;
-	 * 
-	 * @AssertTrue(message = "Les mots de passe ne correspondent pas.", groups =
-	 * ValidationGroups.Creation.class) public boolean isPasswordMatching() { return
-	 * motDePasse != null && motDePasse.equals(confirmPassword); }
-	 */
-
-	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.", groups = {
-			ValidationGroups.Creation.class })
-	@NotBlank(message = "Le mot de passe est obligatoire.", groups = ValidationGroups.Creation.class)
+	
 	private String motDePasse;
-
 	private String confirmPassword;
 
-	// Modification de la méthode isPasswordMatching pour prendre en compte la mise
-	// à jour
-	@AssertTrue(message = "Les mots de passe ne correspondent pas.", groups = ValidationGroups.Creation.class )
-	public boolean isPasswordMatchingCreate() {
-		// Pour la création, les deux mots de passe doivent être renseignés et identiques
-			return motDePasse != null && motDePasse.equals(confirmPassword);
-		}
-		
-		
-	@AssertFalse(message = "Les mots de passe ne correspondent pas.", groups = ValidationGroups.Update.class )
-	public boolean isPasswordMatchingUpdate() {
-			// Si les deux champs sont vides, c'est valide (pas de changement de mot de
-			// passe)
-			if ((motDePasse == null || motDePasse.isBlank())
-					&& (confirmPassword == null || confirmPassword.isBlank())) {
-				System.out.println("mot de passe inchangé");
-				return true;
-			} else if (motDePasse.equals(confirmPassword)) { 
-				System.out.println("mots de passe identiques");
-				System.out.println(motDePasse);
-				System.out.println(confirmPassword);
-				return true;
-			} else {
-				System.out.println("mots de passe différents");
-				System.out.println(motDePasse);
-				System.out.println(confirmPassword);
+	// Validation personnalisée pour le mot de passe
+	@AssertTrue(message = "Format du mot de passe invalide ou les mots de passe ne correspondent pas.", 
+	            groups = ValidationGroups.Update.class)
+	public boolean isPasswordValid() {
+	    // Si les deux champs sont vides, pas de modification du mot de passe
+	    if ((motDePasse == null || motDePasse.isBlank()) && 
+	        (confirmPassword == null || confirmPassword.isBlank())) {
+	        return true;
+	    }
+	    
+	    // Si un nouveau mot de passe est fourni, vérifier le format et la correspondance
+	    if (motDePasse != null && !motDePasse.isBlank()) {
+	        // Regex pour la validation du format
+	        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+	        if (!motDePasse.matches(passwordRegex) || !motDePasse.equals(confirmPassword)) {
 				return false;
 			}
-		}
+	        return true;
+	    }
+	    
+	    return false;
+	}
+
+	// Pour la création, conserver les validations existantes
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+	         message = "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.", 
+	         groups = ValidationGroups.Creation.class)
+	@NotBlank(message = "Le mot de passe est obligatoire.", 
+	          groups = ValidationGroups.Creation.class)
+	public String getMotDePasseCreation() {
+	    return motDePasse;
+	}
+
+	@AssertTrue(message = "Les mots de passe ne correspondent pas.", 
+	            groups = ValidationGroups.Creation.class)
+	public boolean isPasswordMatchingCreate() {
+	    return motDePasse != null && motDePasse.equals(confirmPassword);
+	}
+		
+		
+	/*
+	 * @AssertFalse(message = "Les mots de passe ne correspondent pas.", groups =
+	 * ValidationGroups.Update.class ) public boolean isPasswordMatchingUpdate() {
+	 * // Si les deux champs sont vides, c'est valide (pas de changement de mot de
+	 * // passe) if ((motDePasse == null || motDePasse.isBlank()) &&
+	 * (confirmPassword == null || confirmPassword.isBlank())) {
+	 * System.out.println("mot de passe inchangé"); return true; } else if
+	 * (motDePasse.equals(confirmPassword)) {
+	 * System.out.println("mots de passe identiques");
+	 * System.out.println(motDePasse); System.out.println(confirmPassword); return
+	 * true; } else { System.out.println("mots de passe différents");
+	 * System.out.println(motDePasse); System.out.println(confirmPassword); return
+	 * false; } }
+	 */
 
 	public Utilisateur() {
 	}

@@ -63,7 +63,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		} else {
 			// Conserver l'ancien mot de passe
 			utilisateur.setMotDePasse(utilisateurEnSession.getMotDePasse());
-			System.out.println("mot de passe conservé");
 		}
 		// Vérifier si le pseudo a changé et s'il est unique
 		if (!utilisateur.getPseudo().equals(utilisateurEnSession.getPseudo())) {
@@ -87,11 +86,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	// modification
 	private boolean validerCorrespondanceMotDePassePourModification(Utilisateur utilisateur, BusinessException be) {
 		if (utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isBlank()) {
-			System.out.println("Les mots de passe ne correspondent pas.");
 			// Ne vérifier la correspondance que si un nouveau mot de passe est fourni
 			if (!utilisateur.getMotDePasse().equals(utilisateur.getConfirmPassword())) {
-				System.out.println("Les mots de passe ne correspondent pas.");
-				be.addMessage("Les mots de passe ne correspondent pas.");
 				return false;
 			}
 		}

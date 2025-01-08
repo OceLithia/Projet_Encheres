@@ -143,7 +143,14 @@ public class UtilisateurController {
 		 * utilisateur.setMotDePasse(currentUser.getMotDePasse()); }
 		 */
 	    System.out.println("mise à jour de l'utilisateur : "+currentUser);
-	    utilisateurService.mettreAJourUtilisateur(utilisateur);
+	    try {
+			utilisateurService.mettreAJourUtilisateur(utilisateur);
+		} catch (BusinessException e) {
+			e.getListeMessages().forEach(m->{
+				ObjectError error = new ObjectError("globalError", m);
+				bindingResult.addError(error);
+			});
+		}
 	    System.out.println("Profil mis à jour avec succès");
 	    // Update authentication
 	    Authentication newAuth = new UsernamePasswordAuthenticationToken(
