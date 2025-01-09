@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -143,7 +144,7 @@ public class EnchereController {
 
 		return "article-detail";
 	}
-
+	 
 	@GetMapping({ "/article-detail", "/encherir" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
@@ -152,7 +153,7 @@ public class EnchereController {
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
             model.addAttribute("dateFinEncheresFormatee", article.getDateFinEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
-        } else {
+		} else {
             model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
         }
 		if (article.getDateDebutEncheres() != null) {
