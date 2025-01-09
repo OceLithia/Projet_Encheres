@@ -262,6 +262,7 @@ public class EnchereController {
 		try {
 			// Gérer le téléchargement de l'image seulement si une nouvelle image est fournie
 			if (image != null && !image.isEmpty()) {
+				System.out.println("if image");
 				/*
 				 * // Validation du type de fichier String contentType = image.getContentType();
 				 * System.out.println("if image"); if (!contentType.startsWith("image/")) {
@@ -293,11 +294,12 @@ public class EnchereController {
 				Files.write(filePath, image.getBytes());
 				// Stocker le chemin dans l'entité
 				articleVendu.setImagePath(fileName);
+				System.out.println(fileName);
 			}
 			if (articleVendu.getCategorie().getNoCategorie() == 0) {
 			    throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
 			}
-			articleVenduService.savedUpdate(articleVendu, adresseRetrait);
+			articleVenduService.saveUpdate(articleVendu, adresseRetrait);
 			redirectAttributes.addFlashAttribute("successMessage", "L'article a été mis à jour avec succès.");
 	    } catch (IllegalArgumentException e) {
 	        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

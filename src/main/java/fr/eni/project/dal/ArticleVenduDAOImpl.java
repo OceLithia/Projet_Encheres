@@ -36,14 +36,15 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String FIND_BY_DATE_FIN_BEFORE = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
 	private static final String FIND_BY_DATE_FIN_AFTER = FIND_ALL + " WHERE a.date_fin_encheres > :maintenant";
-	private static final String DELETE_ARTICLE_BY_ID ="delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS] where no_article = :no_article";
+	private static final String DELETE_ARTICLE_BY_ID = "delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS] where no_article = :no_article";
 	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, no_categorie = :noCategorie, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = :rue, code_postal = :codePostal, ville = :ville WHERE no_article = :noArticle";
 	private static final String FIND_ARTICLES_ENCHERES_EN_COURS = "SELECT top 1 a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie LEFT JOIN RETRAITS r ON a.no_article = r.no_article inner join ENCHERES e on a.no_article = e.no_article where e.no_utilisateur = :noUtilisateur and a.etat_vente = 0 ORDER BY e.date_enchere DESC";
-	private static final String FIND_ARTICLES_EN_VENTE = FIND_ALL + " WHERE a.date_debut_encheres < :maintenant AND a.date_fin_encheres > :maintenant ";
+	private static final String FIND_ARTICLES_EN_VENTE = FIND_ALL
+			+ " WHERE a.date_debut_encheres < :maintenant AND a.date_fin_encheres > :maintenant ";
 	private static final String FIND_ARTICLES_REMPORTES = "SELECT DISTINCT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.image_path, a.no_utilisateur, v.pseudo, v.telephone, a.no_categorie, c.libelle, r.rue, r.code_postal, r.ville, a.etat_vente FROM ARTICLES_VENDUS a INNER JOIN UTILISATEURS v ON a.no_utilisateur = v.no_utilisateur  INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie  LEFT JOIN RETRAITS r ON a.no_article = r.no_article INNER JOIN ENCHERES e ON a.no_article = e.no_article WHERE a.etat_vente = 2 AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = a.no_article) AND e.no_utilisateur = :noUtilisateur";
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -123,15 +124,14 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN_BEFORE, map, new ArticleRowMapper());
 	}
-	
+
 	@Override
 	public List<ArticleVendu> findByDateFinEncheresAfter(LocalDateTime localDateTime) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("maintenant", localDateTime);
 		return jdbcTemplate.query(FIND_BY_DATE_FIN_AFTER, map, new ArticleRowMapper());
 	}
-	
-	
+
 	@Override
 	public List<ArticleVendu> findByDateDebutBeforeAndDateFinAfter(LocalDateTime localDateTime) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
@@ -146,14 +146,12 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		return jdbcTemplate.query(FIND_ARTICLES_ENCHERES_EN_COURS, map, new ArticleRowMapper());
 	};
 
-
 	@Override
 	public List<ArticleVendu> findArticlesRemportes(Long noUtilisateur) {
-	    MapSqlParameterSource map = new MapSqlParameterSource();
-	    map.addValue("noUtilisateur", noUtilisateur);
-	    return jdbcTemplate.query(FIND_ARTICLES_REMPORTES, map, new ArticleRowMapper());
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("noUtilisateur", noUtilisateur);
+		return jdbcTemplate.query(FIND_ARTICLES_REMPORTES, map, new ArticleRowMapper());
 	}
-
 
 	@Override
 	public void update(ArticleVendu articleVendu, Utilisateur vendeur) {
@@ -229,69 +227,130 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		jdbcTemplate.update(DELETE_ARTICLE_BY_ID, map);
 	}
 
+	/*
+	 * @Override
+	 * 
+	 * @Transactional public void updateArticle(ArticleVendu updatedArticle, Retrait
+	 * updateRetrait) { MapSqlParameterSource map = new MapSqlParameterSource();
+	 * map.addValue("noArticle", updatedArticle.getNoArticle());
+	 * map.addValue("nomArticle", updatedArticle.getNomArticle());
+	 * map.addValue("description", updatedArticle.getDescription());
+	 * map.addValue("noCategorie", updatedArticle.getCategorie().getNoCategorie());
+	 * if (updatedArticle.getCategorie() == null) { throw new
+	 * IllegalArgumentException("La catégorie ne peut pas être nulle."); }
+	 * map.addValue("dateDebutEncheres", updatedArticle.getDateDebutEncheres());
+	 * map.addValue("dateFinEncheres", updatedArticle.getDateFinEncheres());
+	 * map.addValue("prixInitial", updatedArticle.getMiseAPrix()); Integer prixVente
+	 * = updatedArticle.getPrixVente(); if (prixVente != null) {
+	 * map.addValue("prixVente", prixVente); } else { map.addValue("prixVente",
+	 * Types.INTEGER); // ou ne pas ajouter cette valeur si le champ doit rester
+	 * inchangé }
+	 * 
+	 * map.addValue("prixVente", updatedArticle.getMiseAPrix());
+	 * map.addValue("etatVente", updatedArticle.getEtatVente());
+	 * 
+	 * Integer etatVente = updatedArticle.getEtatVente(); if (etatVente != null) {
+	 * map.addValue("etatVente", etatVente); } else { map.addValue("etatVente",
+	 * Types.INTEGER); } System.out.println("etatVente : "+ etatVente);
+	 * 
+	 * // Gestion propre de l'image String imagePath =
+	 * updatedArticle.getImagePath(); if (imagePath == null ||
+	 * imagePath.trim().isEmpty()) { System.out.println("if DAO vide");
+	 * map.addValue("imagePath", null); // Laisser la valeur NULL si l'image est
+	 * vide } else { System.out.println("if DAO non vide");
+	 * System.out.println(imagePath); map.addValue("imagePath", imagePath);
+	 * System.out.println(imagePath); }
+	 * System.out.println(updatedArticle.getImagePath()+ " dans la fonction DAO");
+	 * 
+	 * map.addValue("rue", updateRetrait.getRue()); map.addValue("codePostal",
+	 * updateRetrait.getCodePostal()); map.addValue("ville",
+	 * updateRetrait.getVille()); this.jdbcTemplate.update(UPDATE_RETRAIT, map);
+	 * this.jdbcTemplate.update(UPDATE_ARTICLE, map);
+	 * 
+	 * System.out.println("Article et retrait mis à jour avec succès.");
+	 * 
+	 * try {
+	 * 
+	 * 
+	 * 
+	 * } catch (DataAccessException e) {
+	 * System.out.println("Erreur lors de la mise à jour : " + e.getMessage());
+	 * throw new
+	 * RuntimeException("Erreur lors de la mise à jour de l'article en base : " +
+	 * e.getMessage(), e); }
+	 * 
+	 * }
+	 */
+	
 	@Override
 	@Transactional
 	public void updateArticle(ArticleVendu updatedArticle, Retrait updateRetrait) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("noArticle", updatedArticle.getNoArticle());
-		System.out.println(updatedArticle.getNoArticle());
-		map.addValue("nomArticle", updatedArticle.getNomArticle());
-		System.out.println(updatedArticle.getNomArticle());
-		map.addValue("description", updatedArticle.getDescription());
-		System.out.println(updatedArticle.getDescription());
-	    map.addValue("noCategorie", updatedArticle.getCategorie().getNoCategorie());
+	    MapSqlParameterSource map = new MapSqlParameterSource();
+	    
+	    // Validate inputs
+	    if (updatedArticle.getNoArticle() <= 0) {
+	        throw new IllegalArgumentException("Article ID must be positive");
+	    }
 	    if (updatedArticle.getCategorie() == null) {
 	        throw new IllegalArgumentException("La catégorie ne peut pas être nulle.");
 	    }
+	    
+	    if (updatedArticle.getDateDebutEncheres() == null || updatedArticle.getDateFinEncheres() == null) {
+	        throw new IllegalArgumentException("Les dates de début et de fin d'enchères ne peuvent pas être nulles");
+	    }
 
-	    System.out.println(updatedArticle.getCategorie());
-		map.addValue("dateDebutEncheres", updatedArticle.getDateDebutEncheres());
-		System.out.println(updatedArticle.getDateDebutEncheres());
-		map.addValue("dateFinEncheres", updatedArticle.getDateFinEncheres());
-		System.out.println(updatedArticle.getDateFinEncheres());
-		map.addValue("prixInitial", updatedArticle.getMiseAPrix());
-		System.out.println(updatedArticle.getMiseAPrix());
-		/*Integer prixVente = updatedArticle.getPrixVente();
-		 * if (prixVente != null) { map.addValue("prixVente", prixVente); } else {
-		 * map.addValue("prixVente", Types.INTEGER); // ou ne pas ajouter cette valeur
-		 * si le champ doit rester inchangé }
-		 */
-		map.addValue("prixVente", updatedArticle.getMiseAPrix());
-		System.out.println(updatedArticle.getPrixVente());
-		System.out.println(updatedArticle.getEtatVente());
-		map.addValue("etatVente", updatedArticle.getEtatVente());
-		/*
-		 * Integer etatVente = updatedArticle.getEtatVente(); if (etatVente != null) {
-		 * map.addValue("etatVente", etatVente); } else { map.addValue("etatVente",
-		 * Types.INTEGER); } System.out.println("etatVente : "+ etatVente);
-		 */
-		// Gestion propre de l'image
-		String imagePath = updatedArticle.getImagePath();
-		if (imagePath == null || imagePath.trim().isEmpty()) {
-		    map.addValue("imagePath", null);  // Laisser la valeur NULL si l'image est vide
-		} else {
-		    map.addValue("imagePath", imagePath);
-		}
-		System.out.println(updatedArticle.getImagePath());
-		
-		map.addValue("rue", updateRetrait.getRue());
-		map.addValue("codePostal", updateRetrait.getCodePostal());
-		map.addValue("ville", updateRetrait.getVille());
-		this.jdbcTemplate.update(UPDATE_RETRAIT, map);
-		this.jdbcTemplate.update(UPDATE_ARTICLE, map);
-		
-		System.out.println("Article et retrait mis à jour avec succès.");
-		/*
-		 * try {
-		 * 
-		 * 
-		 * 
-		 * } catch (DataAccessException e) {
-		 * System.out.println("Erreur lors de la mise à jour : " + e.getMessage());
-		 * throw new
-		 * RuntimeException("Erreur lors de la mise à jour de l'article en base : " +
-		 * e.getMessage(), e); }
-		 */
+	    // Prepare article parameters
+	    map.addValue("noArticle", updatedArticle.getNoArticle());
+	    map.addValue("nomArticle", updatedArticle.getNomArticle());
+	    map.addValue("description", updatedArticle.getDescription());
+	    map.addValue("noCategorie", updatedArticle.getCategorie().getNoCategorie());
+	    map.addValue("dateDebutEncheres", updatedArticle.getDateDebutEncheres());
+	    map.addValue("dateFinEncheres", updatedArticle.getDateFinEncheres());
+	    map.addValue("prixInitial", updatedArticle.getMiseAPrix());
+	    map.addValue("prixVente", updatedArticle.getMiseAPrix());
+	    map.addValue("etatVente", updatedArticle.getEtatVente());
+	    map.addValue("imagePath", updatedArticle.getImagePath() != null && !updatedArticle.getImagePath().trim().isEmpty() 
+	        ? updatedArticle.getImagePath().trim() 
+	        : null);
+
+	    // First check if article exists
+	    String checkArticle = "SELECT COUNT(*) FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
+	    int articleExists = jdbcTemplate.queryForObject(checkArticle, map, Integer.class);
+	    if (articleExists == 0) {
+	        throw new RuntimeException("Article with ID " + updatedArticle.getNoArticle() + " not found");
+	    }
+
+	    // Update article
+	    int updatedRows = jdbcTemplate.update(UPDATE_ARTICLE, map);
+	    if (updatedRows != 1) {
+	        throw new RuntimeException("Failed to update article, rows affected: " + updatedRows);
+	    }
+
+	    // Handle retrait update/insert
+	    if (updateRetrait != null) {
+	        map.addValue("rue", updateRetrait.getRue());
+	        map.addValue("codePostal", updateRetrait.getCodePostal());
+	        map.addValue("ville", updateRetrait.getVille());
+
+	        // Check if retrait exists
+	        String checkRetrait = "SELECT COUNT(*) FROM RETRAITS WHERE no_article = :noArticle";
+	        int retraitExists = jdbcTemplate.queryForObject(checkRetrait, map, Integer.class);
+
+	        if (retraitExists > 0) {
+	            // Update existing retrait
+	            int retraitUpdated = jdbcTemplate.update(UPDATE_RETRAIT, map);
+	            if (retraitUpdated != 1) {
+	                throw new RuntimeException("Failed to update retrait, rows affected: " + retraitUpdated);
+	            }
+	        } else {
+	            // Insert new retrait
+	            String insertRetrait = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (:noArticle, :rue, :codePostal, :ville)";
+	            int retraitInserted = jdbcTemplate.update(insertRetrait, map);
+	            if (retraitInserted != 1) {
+	                throw new RuntimeException("Failed to insert retrait, rows affected: " + retraitInserted);
+	            }
+	        }
+	    }
 	}
 
 }

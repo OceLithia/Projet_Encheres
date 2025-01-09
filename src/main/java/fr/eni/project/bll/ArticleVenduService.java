@@ -16,7 +16,7 @@ public interface ArticleVenduService {
 
 	void encherir(Long articleId, int montant, Utilisateur encherisseur) throws BusinessException;
 
-	void savedUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
+	void saveUpdate(ArticleVendu updatedArticle, Retrait updatedRetrait);
 
 	List<ArticleVendu> afficherArticles();
 
