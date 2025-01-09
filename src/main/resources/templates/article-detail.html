@@ -19,17 +19,34 @@
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
-<<<<<<< HEAD
-
+	
 <main>
-<div class="bloc1">
 <!--------------------------------INFOS GENERALES---------------------------------------->
-	<h2 th:text="${articleVendu.nomArticle}" id="titre"></h2>
 	<div class="infos-generales">
+		<h2 th:text="${articleVendu.nomArticle}"></h2>
 		<h4 th:text="${articleVendu.categorie.libelle}"></h4>
 		<p th:text="${articleVendu.description}"></p>
 	</div>
-	
+
+<!------------------------------CARD---------------------------------------->
+	<div class="card">
+		<img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}" alt="Image de l'article" />
+			<table>
+				<tr>
+					<th>Téléphone : </th>
+						<td th:text="${articleVendu.vendeur.telephone}"></td>
+				</tr>
+				<tr>
+					<th>Ville de retrait : </th>
+						<td th:text="${articleVendu.lieuRetrait.ville}"></td>
+				</tr>
+				<tr>
+					<th>Vendeur : </th>
+						<td><a th:text="${articleVendu.vendeur.pseudo}"
+						th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}" id="vendeur"></a></td>
+				</tr>
+			</table>
+	</div>	
 <!-----------------------------------INFOS PRIX------------------------------------------>
 	<table class="infos-prix">
 		<tr>
@@ -50,26 +67,6 @@
 				<td th:text="${dateFinEncheresFormatee}"></td>
 		</tr>
 	</table>
-</div>
-<!------------------------------INFOS VENDEUR---------------------------------------->
-	<div class="card">
-		<img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}" alt="Image de l'article" />
-			<table>
-				<tr>
-					<th>Téléphone : </th>
-						<td th:text="${articleVendu.vendeur.telephone}"></td>
-				</tr>
-				<tr>
-					<th>Ville de retrait : </th>
-						<td th:text="${articleVendu.lieuRetrait.ville}"></td>
-				</tr>
-				<tr>
-					<th>Vendeur : </th>
-						<td><a th:text="${articleVendu.vendeur.pseudo}"
-						th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}" id="vendeur"></a></td>
-				</tr>
-			</table>
-	</div>
 
 <!------------------------------ENCHERIR---------------------------------------->
 	<div class="encherir" >
@@ -101,7 +98,8 @@
 			th:utext="${' pour effectuer le retrait.'}"></span>
 	</h2>
 	<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune enchère n'a été effectuée sur cet article.</h2>
-	</div>	
+	</div>
+</div>
 </main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>

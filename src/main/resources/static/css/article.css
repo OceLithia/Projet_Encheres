@@ -13,53 +13,28 @@
 main{
 	display: flex;
 	flex-direction: row;
-}
-.bloc1 {
-    display: flex;
-    flex-direction: column; /* Aligne les éléments enfants horizontalement */
-    justify-content: space-between; /* Espace entre les sections */
+	flex-wrap: wrap;
+	min-height: calc(100vh - 100px); /* Assure que le contenu occupe l'espace restant sans chevaucher le footer */
+	justify-content: space-between; /* Espace entre les sections */
     margin: 50px 40px; /* Marges pour espacer du bord */
-    position: relative;
-    min-height: calc(100vh - 100px); /* Assure que le contenu occupe l'espace restant sans chevaucher le footer */
 }
-#titre{
-	    margin-left: 200px;
-}
-/*----------------------------CONTENEUR INFOS----------------------------------*/
-.infos {
-    display: flex;
-    flex-direction: column; /* Aligne .infos-generales et .infos-prix en colonne */
-    max-width: 600px; /* Fixe une largeur pour le bloc gauche */
-}
-
+/*---------------------------INFOS GENERALES--------------------------------------------*/
 .infos-generales {
-	margin-top: 50px;
-    margin-bottom: 30px; /* Espace entre les blocs */
     font-family: Lora;
-    z-index: 1;
-	max-width: 600px;
-	max-height: 300px;
+	flex-direction:column;
+	align-items:flex-start;
+	max-width: 700px;
 	font-family: Lora;
+	padding: 20px;
 }
 h2{
 	font-family: Playfair+Display+SC;
 	font-size: 30px;
-	padding: 10px;
 	color:var(--bleu-fonce);
+	margin-left: 150px
 }
 h4{
 	font-style: italic;  
-}
-
-.infos-prix {
-	margin-top: 30px;
-    padding: 20px;
-    line-height: 30px;
-    text-align: left;
-    max-width: 600px;
-}
-.infos-prix th{
-	color: var(--bleu-fonce);
 }
 /*----------------------------CARD--------------------------------------------*/
 .card {
@@ -69,8 +44,6 @@ h4{
     width: 550px;
     height: 650px; /* Hauteur fixe pour toutes les cartes */
     padding: 15px;
-    margin-top: 50px; /* Ajuste la hauteur pour aligner avec .infos-generales */
-    align-self: flex-start; /* Aligne la carte avec le haut du conteneur */
     box-sizing: border-box;
     display:flex;
     flex-direction:column;
@@ -78,6 +51,7 @@ h4{
     position: relative; /* Permet de rester dans le flux de la page */
     z-index: 100; /* S'assure qu'elle ne chevauche pas inutilement */
     align-self: flex-end; /* Aligne uniquement la carte à droite */
+    margin-right: 60px;
  
 }
 .card img {
@@ -101,24 +75,48 @@ h4{
 	font-style: italic;
 	font-size: 20px;
 }
-
-
-/* ------------------------------FORM---------------------------------------- */
-form {
-	background-color:var(--bleu-gris);
-	border-radius: 10px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	max-width: 600px;
-	margin: 0 auto;
+/*----------------------------INFOS PRIX--------------------------------------------*/
+.infos-prix {
+	margin-top: 30px;
+    padding: 20px;
+    line-height: 30px;
+    text-align: left;
+    max-width: 600px;
+}
+.infos-prix th{
 	color: var(--bleu-fonce);
 }
+
+
+/*----------------------------ENCHERIR----------------------------------*/
+form {
+	background-color:var(--rose-poudre);
+	border-radius: 10px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	width: 150px;
+	margin: 0 auto;
+	color: var(--bleu-fonce);
+    text-align: center;
+    line-height: 100px;
+    font-size: 18px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction:row;
+    flex-wrap: wrap;
+}
+/* Effet lumineux au survol */
+.bloc-lumineux:hover {
+    box-shadow: 0 0 20px 10px var(--rose-poudre), 0 0 40px 20px var(--dore-mat);
+    transform: scale(1.05); /* Ajoute un léger agrandissement */
+}
 input {
-	width: 250px;
+	max-width: 50px;
 	padding: 8px 10px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	font-size: 14px;
-	color:white;
+	color: black;
+	flex-direction: column;
 }
 /* --------------------------BUTTONS------------------------------------- */
 button{

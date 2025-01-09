@@ -19,6 +19,13 @@ h1{
 	display: flex;
 	justify-content: center;
 	color: var(--bleu-fonce);
+	margin-top: 15px;
+}
+.filtres{
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap:wrap;
 }
 /*------------------------------RECHERCHE MOT CLE--------------------------------------*/
 .recherche-mot-cle{
@@ -27,8 +34,11 @@ h1{
 	display: flex;
 	margin-left: 170px;
 	justify-content: flex-start;
+	flex-direction:column;
 	color: var(--bleu-gris);
+	margin-right:20px;
 	z-index: 1;
+	margin-top: 60px;
 }
 .recherche-mot-cle input{
 	padding: 8px 15px;
@@ -40,9 +50,11 @@ h1{
 	font-family: Playfair+Display+SC;
 	font-size: 25px;
 	padding: 0px;
-	margin-left: 170px;
 	display: flex;
 	justify-content: flex-start;
+	flex-direction:column;
+	margin-right:100px;
+	margin-top: 60px;
 	color: var(--bleu-gris);
 	z-index: 1
 }
@@ -51,6 +63,7 @@ h1{
 	background-color: var(--vert-sauge);
 	text-decoration: none;
   	color: var(--bleu-fonce);
+  	font-size:medium;
   	padding: 10px 20px;
   	cursor: pointer;
   	display: flex;
@@ -65,6 +78,7 @@ h1{
   	cursor: pointer;
   	display: flex;
   	justify-content: flex-start;
+
 }
 .recherche-categorie select:hover{
 	background-color: var(--rose-poudre);
@@ -73,35 +87,42 @@ h1{
 /*-----------------------------OPTION ACHAT VENTE--------------------------------------*/
 /* TITRES */
 .filtrage{
+	position:relative;
+	font-family: Playfair+Display+SC;
+	font-size: 25px;
+	padding: 0px;
 	display: flex;
-	justify-content: flex-end;
-	margin-top: 15px;
-	z-index: 100;
+	text-align:right;
+	flex-direction:column;
+	color: var(--bleu-gris);
+	z-index: 1
 }
 /* Style du conteneur dropdown */
 .dropdown {
   	position: relative; /* Positionner le menu par rapport à ce conteneur */
-  	display: inline-block;
-  	margin-top: 15px;
-  	z-index: 5;
+  	display:flex;
+  	z-index: 100;
 }
 .dropdown input{
 	display: none; /* Cache complètement le bouton radio */
 }
+.dropdown-menu input{
+	display: inline-block;
+}
 
 /* Style du lien principal */
 .dropdown-link {
-  text-decoration: none;
-  color: white;
-  background-color:var(--vert-sauge);
-  padding: 10px 10px;
-  border-radius: 10px;
-  display: flex;
-  cursor: pointer;
-  justify-content: flex-start;
-  margin-left: 200px;
-  position: relative;
-  z-index: 5;
+	text-decoration: none;
+	background-color:var(--vert-sauge);
+	margin-bottom:30px;
+	color:var(--bleu-fonce);
+	padding:10px;
+	border-radius: 10px;
+	display: flex;
+	font-size:20px;
+	cursor: pointer;
+	justify-content: flex-start;
+	margin-left: 300px;
 }
 
 .dropdown-link:hover {
@@ -114,30 +135,32 @@ h1{
   position: relative;
   left: 0;
   background-color: var(--vert-sauge);
-  list-style: none;
   padding: 0;
+  font-size:medium;
   margin: 0;
   border: 1px solid #ccc;
   border-radius: 10px;
   z-index: 5;
-  min-width: 150px;
+  min-width: 70px;
 }
 
 /* Style des éléments du menu */
-.dropdown-menu li input {
+.dropdown-menu li {
 	display: flex;
-	margin-left: 200px;
+	margin-left: 10px;
 	padding: 10px;
 	text-decoration: none;
-	color: white;
+	color:var(--chocolat);
 	position:relative;
 	text-decoration: none;
 	cursor: pointer;
-	justify-content: flex-start;
+	align-items: center;
 	z-index: 5;
 }
-
-.dropdown-menu li input:hover {
+li input{
+	color: white;
+}
+.dropdown-menu li:hover {
 	background-color: var(--rose-poudre);
 }
 
@@ -146,7 +169,11 @@ h1{
 .dropdown-menu:hover {
 	display: block;
 }
-
+#research{
+	margin-left: 150px;
+	padding-right: 250px;
+	padding-left: 250px;
+}
 /*-----------------------------BUTTON--------------------------------------*/
 button{
 	display:flex;
@@ -155,7 +182,7 @@ button{
 	margin-bottom: 0;
 	background-color: var(--bleu-gris);
     color:white;
-    padding: 10px 20px;
+    padding: 8px 200px;
     border: none;
     border-radius: 90px;
     font-size: 20px;

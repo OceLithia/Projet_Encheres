@@ -1,6 +1,7 @@
 <div th:fragment="filtres-connecte">
 	<form th:action="@{/filtrer}" method="GET">
 
+<div class="filtres">
 <!------------------------ PAR MOT CLE ----------------------------->
 		<div class="recherche-mot-cle">
 			<input type="text" id="motCle" name="motCle" placeholder="Rechercher par mot clé" />
@@ -48,9 +49,11 @@
 			</div>
 		</div>
 			<div>
-				<button type="submit">Rechercher</button>
+				<button type="submit" id="research">Rechercher</button>
 			</div>
+		</div>
 	</form>
+	
 </div>
 
 
