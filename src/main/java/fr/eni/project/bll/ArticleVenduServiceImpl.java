@@ -124,16 +124,21 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         ArticleVendu articleAvantMaj = articleVenduDAO.readById(updatedArticle.getNoArticle());
         mergeArticleUpdate(updatedArticle, articleAvantMaj);
         mergeRetraitUpdate(updatedRetrait, articleAvantMaj.getLieuRetrait());
-        System.out.println(updatedArticle.getImagePath() + "avant DAO");
         articleVenduDAO.updateArticle(updatedArticle, updatedRetrait);
-        System.out.println(updatedArticle.getImagePath() + "après DAO");
     }
 
     private void mergeArticleUpdate(ArticleVendu updatedArticle, ArticleVendu articleAvantMaj) {
         updatedArticle.setPrixVente(updatedArticle.getMiseAPrix());
         updatedArticle.setEtatVente(articleAvantMaj.getEtatVente());
-        updatedArticle.setDateDebutEncheres(articleAvantMaj.getDateDebutEncheres());
-        updatedArticle.setDateFinEncheres(articleAvantMaj.getDateFinEncheres());
+        if (updatedArticle.getDateDebutEncheres() == null) {
+            updatedArticle.setDateDebutEncheres(articleAvantMaj.getDateDebutEncheres());
+        }
+        if (updatedArticle.getDateFinEncheres() == null) {
+            updatedArticle.setDateFinEncheres(articleAvantMaj.getDateFinEncheres());
+        }
+        if (updatedArticle.getImagePath() == null) {
+            updatedArticle.setImagePath(articleAvantMaj.getImagePath());
+        }
     }
 
     private void mergeRetraitUpdate(Retrait updatedRetrait, Retrait retraitAvantMaj) {
