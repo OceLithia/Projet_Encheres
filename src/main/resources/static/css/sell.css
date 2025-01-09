@@ -76,3 +76,15 @@ form .button{
 	font-size: 25px;
 	margin-top:0;
 }
+
+/* Boutons */
+button, .button {
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover, .button:hover {
+    background-color: var(--dore-mat);
+    transform: translateY(-2px);
+}

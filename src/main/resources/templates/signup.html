@@ -59,7 +59,7 @@
 			<div th:replace="~{fragments/fragment-error :: frag-error('motDePasse')}"></div>
 
 			<li><label for="confirmPassword">Confirmez le mot de passe :</label>
-    			<input type="password" th:field="*{confirmPassword}" placeholder="Confirmez le mot de passe" /></li>
+    			<input type="password" th:field="*{confirmPassword}"/></li>
 			<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
 			
 			<li><button type="submit" >S'inscrire</button></li>
