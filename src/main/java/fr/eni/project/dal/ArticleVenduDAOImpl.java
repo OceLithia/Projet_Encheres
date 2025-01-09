@@ -75,9 +75,9 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		map.addValue("noUtilisateur", vendeur.getNoUtilisateur());
 		map.addValue("imagePath", newArticle.getImagePath());
 		if (newArticle.getDateDebutEncheres().isBefore(LocalDateTime.now())) {
-			map.addValue("etatVente", -1);
-		} else {
 			map.addValue("etatVente", 0);
+		} else {
+			map.addValue("etatVente", -1);
 		}
 		jdbcTemplate.update(INSERT, map, keyHolder);
 		if (keyHolder.getKey() != null) {
@@ -172,115 +172,6 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		}
 		jdbcTemplate.update(UPDATE, map);
 	}
-
-	class ArticleRowMapper implements RowMapper<ArticleVendu> {
-
-		@Override
-		public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
-			// Création de l'article
-			ArticleVendu articleVendu = new ArticleVendu();
-			articleVendu.setNoArticle(rs.getLong("no_article"));
-			articleVendu.setNomArticle(rs.getString("nom_article"));
-			articleVendu.setDescription(rs.getString("description"));
-			// Conversion des dates en LocalDateTime
-			Timestamp debutEncheresTimestamp = rs.getTimestamp("date_debut_encheres");
-			if (debutEncheresTimestamp != null) {
-				articleVendu.setDateDebutEncheres(debutEncheresTimestamp.toLocalDateTime());
-			}
-			Timestamp finEncheresTimestamp = rs.getTimestamp("date_fin_encheres");
-			if (finEncheresTimestamp != null) {
-				articleVendu.setDateFinEncheres(finEncheresTimestamp.toLocalDateTime());
-			}
-			articleVendu.setMiseAPrix(rs.getInt("prix_initial"));
-			articleVendu.setPrixVente(rs.getInt("prix_vente"));
-			articleVendu.setImagePath(rs.getString("image_path"));
-			articleVendu.setEtatVente(rs.getInt("etat_vente"));
-
-			Categorie categorie = new Categorie();
-			categorie.setNoCategorie(rs.getLong("no_categorie"));
-			categorie.setLibelle(rs.getString("libelle"));
-			articleVendu.setCategorie(categorie);
-
-			Utilisateur vendeur = new Utilisateur();
-			vendeur.setNoUtilisateur(rs.getLong("no_utilisateur"));
-			vendeur.setPseudo(rs.getString("pseudo"));
-			vendeur.setTelephone(rs.getString("telephone"));
-			articleVendu.setVendeur(vendeur);
-
-			Retrait lieuRetrait = new Retrait();
-			lieuRetrait.setRue(rs.getString("rue"));
-			lieuRetrait.setCodePostal(rs.getString("code_postal"));
-			lieuRetrait.setVille(rs.getString("ville"));
-			articleVendu.setLieuRetrait(lieuRetrait);
-
-			// Retourne l'objet ArticleVendu complet
-			return articleVendu;
-		}
-
-	}
-
-	@Override
-	public void deleteArticle(ArticleVendu article) {
-		MapSqlParameterSource map = new MapSqlParameterSource();
-		map.addValue("no_article", article.getNoArticle());
-		jdbcTemplate.update(DELETE_RETRAIT_BY_ARTICLE, map);
-		jdbcTemplate.update(DELETE_ARTICLE_BY_ID, map);
-	}
-
-	/*
-	 * @Override
-	 * 
-	 * @Transactional public void updateArticle(ArticleVendu updatedArticle, Retrait
-	 * updateRetrait) { MapSqlParameterSource map = new MapSqlParameterSource();
-	 * map.addValue("noArticle", updatedArticle.getNoArticle());
-	 * map.addValue("nomArticle", updatedArticle.getNomArticle());
-	 * map.addValue("description", updatedArticle.getDescription());
-	 * map.addValue("noCategorie", updatedArticle.getCategorie().getNoCategorie());
-	 * if (updatedArticle.getCategorie() == null) { throw new
-	 * IllegalArgumentException("La catégorie ne peut pas être nulle."); }
-	 * map.addValue("dateDebutEncheres", updatedArticle.getDateDebutEncheres());
-	 * map.addValue("dateFinEncheres", updatedArticle.getDateFinEncheres());
-	 * map.addValue("prixInitial", updatedArticle.getMiseAPrix()); Integer prixVente
-	 * = updatedArticle.getPrixVente(); if (prixVente != null) {
-	 * map.addValue("prixVente", prixVente); } else { map.addValue("prixVente",
-	 * Types.INTEGER); // ou ne pas ajouter cette valeur si le champ doit rester
-	 * inchangé }
-	 * 
-	 * map.addValue("prixVente", updatedArticle.getMiseAPrix());
-	 * map.addValue("etatVente", updatedArticle.getEtatVente());
-	 * 
-	 * Integer etatVente = updatedArticle.getEtatVente(); if (etatVente != null) {
-	 * map.addValue("etatVente", etatVente); } else { map.addValue("etatVente",
-	 * Types.INTEGER); } System.out.println("etatVente : "+ etatVente);
-	 * 
-	 * // Gestion propre de l'image String imagePath =
-	 * updatedArticle.getImagePath(); if (imagePath == null ||
-	 * imagePath.trim().isEmpty()) { System.out.println("if DAO vide");
-	 * map.addValue("imagePath", null); // Laisser la valeur NULL si l'image est
-	 * vide } else { System.out.println("if DAO non vide");
-	 * System.out.println(imagePath); map.addValue("imagePath", imagePath);
-	 * System.out.println(imagePath); }
-	 * System.out.println(updatedArticle.getImagePath()+ " dans la fonction DAO");
-	 * 
-	 * map.addValue("rue", updateRetrait.getRue()); map.addValue("codePostal",
-	 * updateRetrait.getCodePostal()); map.addValue("ville",
-	 * updateRetrait.getVille()); this.jdbcTemplate.update(UPDATE_RETRAIT, map);
-	 * this.jdbcTemplate.update(UPDATE_ARTICLE, map);
-	 * 
-	 * System.out.println("Article et retrait mis à jour avec succès.");
-	 * 
-	 * try {
-	 * 
-	 * 
-	 * 
-	 * } catch (DataAccessException e) {
-	 * System.out.println("Erreur lors de la mise à jour : " + e.getMessage());
-	 * throw new
-	 * RuntimeException("Erreur lors de la mise à jour de l'article en base : " +
-	 * e.getMessage(), e); }
-	 * 
-	 * }
-	 */
 	
 	@Override
 	@Transactional
@@ -351,6 +242,60 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	            }
 	        }
 	    }
+	}
+	
+	@Override
+	public void deleteArticle(ArticleVendu article) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("no_article", article.getNoArticle());
+		jdbcTemplate.update(DELETE_RETRAIT_BY_ARTICLE, map);
+		jdbcTemplate.update(DELETE_ARTICLE_BY_ID, map);
+	}
+
+	class ArticleRowMapper implements RowMapper<ArticleVendu> {
+
+		@Override
+		public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
+			// Création de l'article
+			ArticleVendu articleVendu = new ArticleVendu();
+			articleVendu.setNoArticle(rs.getLong("no_article"));
+			articleVendu.setNomArticle(rs.getString("nom_article"));
+			articleVendu.setDescription(rs.getString("description"));
+			// Conversion des dates en LocalDateTime
+			Timestamp debutEncheresTimestamp = rs.getTimestamp("date_debut_encheres");
+			if (debutEncheresTimestamp != null) {
+				articleVendu.setDateDebutEncheres(debutEncheresTimestamp.toLocalDateTime());
+			}
+			Timestamp finEncheresTimestamp = rs.getTimestamp("date_fin_encheres");
+			if (finEncheresTimestamp != null) {
+				articleVendu.setDateFinEncheres(finEncheresTimestamp.toLocalDateTime());
+			}
+			articleVendu.setMiseAPrix(rs.getInt("prix_initial"));
+			articleVendu.setPrixVente(rs.getInt("prix_vente"));
+			articleVendu.setImagePath(rs.getString("image_path"));
+			articleVendu.setEtatVente(rs.getInt("etat_vente"));
+
+			Categorie categorie = new Categorie();
+			categorie.setNoCategorie(rs.getLong("no_categorie"));
+			categorie.setLibelle(rs.getString("libelle"));
+			articleVendu.setCategorie(categorie);
+
+			Utilisateur vendeur = new Utilisateur();
+			vendeur.setNoUtilisateur(rs.getLong("no_utilisateur"));
+			vendeur.setPseudo(rs.getString("pseudo"));
+			vendeur.setTelephone(rs.getString("telephone"));
+			articleVendu.setVendeur(vendeur);
+
+			Retrait lieuRetrait = new Retrait();
+			lieuRetrait.setRue(rs.getString("rue"));
+			lieuRetrait.setCodePostal(rs.getString("code_postal"));
+			lieuRetrait.setVille(rs.getString("ville"));
+			articleVendu.setLieuRetrait(lieuRetrait);
+
+			// Retourne l'objet ArticleVendu complet
+			return articleVendu;
+		}
+
 	}
 
 }

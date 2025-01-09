@@ -1,13 +1,19 @@
 package fr.eni.project.bo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class Retrait {
 
-	private String rue;
-	private String oldRue;
-	private String codePostal;
-	private String oldCodePostal;
-	private String ville;
-	private String oldVille;
+    @NotBlank(message = "L'adresse de retrait est obligatoire")
+    private String rue;
+    
+    @NotBlank(message = "Le code postal est obligatoire")
+    @Pattern(regexp = "\\d{5}", message = "Le code postal doit contenir 5 chiffres")
+    private String codePostal;
+    
+    @NotBlank(message = "La ville est obligatoire")
+    private String ville;
 	
 	//relation 
 	private ArticleVendu article;
@@ -15,7 +21,10 @@ public class Retrait {
 	public Retrait() {
 	}
 
-	public Retrait(String rue, String codePostal, String ville, ArticleVendu article) {
+	public Retrait(@NotBlank(message = "L'adresse de retrait est obligatoire") String rue,
+			@NotBlank(message = "Le code postal est obligatoire") @Pattern(regexp = "\\d{5}", message = "Le code postal doit contenir 5 chiffres") String codePostal,
+			@NotBlank(message = "La ville est obligatoire") String ville, ArticleVendu article) {
+		super();
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
@@ -54,34 +63,9 @@ public class Retrait {
 		this.article = article;
 	}
 
-	public String getOldRue() {
-		return oldRue;
-	}
-
-	public void setOldRue(String oldRue) {
-		this.oldRue = oldRue;
-	}
-
-	public String getOldCodePostal() {
-		return oldCodePostal;
-	}
-
-	public void setOldCodePostal(String oldCodePostal) {
-		this.oldCodePostal = oldCodePostal;
-	}
-
-	public String getOldVille() {
-		return oldVille;
-	}
-
-	public void setOldVille(String oldVille) {
-		this.oldVille = oldVille;
-	}
-
 	@Override
 	public String toString() {
-		return "Retrait [rue=" + rue + ", oldRue=" + oldRue + ", codePostal=" + codePostal + ", oldCodePostal="
-				+ oldCodePostal + ", ville=" + ville + ", oldVille=" + oldVille + ", article=" + article + "]";
+		return "Retrait [rue=" + rue + ", codePostal=" + codePostal + ", ville=" + ville + ", article=" + article + "]";
 	}
 
 }

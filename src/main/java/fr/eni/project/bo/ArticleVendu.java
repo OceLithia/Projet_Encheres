@@ -1,6 +1,5 @@
 package fr.eni.project.bo;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,26 +7,40 @@ import java.util.Objects;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ArticleVendu {
 
 	private long noArticle;
-	@NotBlank(message = "Le nom de l''article est obligatoire.")
+
+	@NotBlank(message = "Le nom de l'article est obligatoire")
+	@Size(min = 3, max = 50, message = "Le nom doit contenir entre 3 et 150 caractères")
 	private String nomArticle;
-	@NotBlank(message = "La description de l''article est obligatoire.")
+
+	@NotBlank(message = "La description est obligatoire")
+	@Size(min = 10, max = 1000, message = "La description doit contenir entre 10 et 1000 caractères")
 	private String description;
-	@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+	@NotNull(message = "La date de début des enchères est obligatoire")
+	@Future(message = "La date de début doit être future")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime dateDebutEncheres;
-	@NotNull(message = "La date et l''heure de fin de l''enchère sont obligatoires.")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+	@NotNull(message = "La date de fin des enchères est obligatoire")
+	@Future(message = "La date de fin doit être future")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime dateFinEncheres;
-	@NotNull(message = "Le prix de départ de l''enchère est obligatoire.")
-	@Min(0)
+
+	@NotNull(message = "Le prix initial est obligatoire")
+	@Min(value = 1, message = "Le prix initial doit être supérieur à 0")
+	@Max(value = 100000, message = "Le prix initial ne peut pas dépasser 100 000")
 	private Integer miseAPrix;
+
 	private Integer prixVente;
 	private Integer etatVente;
 	private long noUtilisateur;
@@ -43,14 +56,16 @@ public class ArticleVendu {
 
 	public ArticleVendu() {
 	}
-	
-	public ArticleVendu(long noArticle, @NotBlank(message = "Le nom de l''article est obligatoire.") String nomArticle,
-			@NotBlank(message = "La description de l''article est obligatoire.") String description,
-			@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.") LocalDateTime dateDebutEncheres,
-			@NotNull(message = "La date et l''heure de fin de l''enchère sont obligatoires.") LocalDateTime dateFinEncheres,
-			@NotNull(message = "Le prix de départ de l''enchère est obligatoire.") @Min(0) int miseAPrix, int prixVente,
-			int etatVente, long noUtilisateur, long noCategorie, Utilisateur vendeur, List<Enchere> encheres,
-			Categorie categorie, Retrait lieuRetrait, String imagePath) {
+
+	public ArticleVendu(long noArticle,
+			@NotBlank(message = "Le nom de l'article est obligatoire") @Size(min = 3, max = 50, message = "Le nom doit contenir entre 3 et 150 caractères") String nomArticle,
+			@NotBlank(message = "La description est obligatoire") @Size(min = 10, max = 1000, message = "La description doit contenir entre 10 et 1000 caractères") String description,
+			@NotNull(message = "La date de début des enchères est obligatoire") @Future(message = "La date de début doit être future") LocalDateTime dateDebutEncheres,
+			@NotNull(message = "La date de fin des enchères est obligatoire") @Future(message = "La date de fin doit être future") LocalDateTime dateFinEncheres,
+			@NotNull(message = "Le prix initial est obligatoire") @Min(value = 1, message = "Le prix initial doit être supérieur à 0") @Max(value = 100000, message = "Le prix initial ne peut pas dépasser 100 000") Integer miseAPrix,
+			Integer prixVente, Integer etatVente, long noUtilisateur, Long noCategorie, Utilisateur vendeur,
+			List<Enchere> encheres, Categorie categorie, Retrait lieuRetrait, String imagePath) {
+		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;

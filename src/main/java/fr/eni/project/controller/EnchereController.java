@@ -51,9 +51,6 @@ public class EnchereController {
 		// Création d'un nouvel article à vendre
 		ArticleVendu articleVendu = new ArticleVendu();
 		// récupérer date et heure actuelle
-		Date now = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-		String currentDateTime = dateFormat.format(now);
 		// Récupération de l'utilisateur authentifié via Spring Security
 		Utilisateur vendeur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		// Vérification que l'utilisateur existe et est co
@@ -68,8 +65,10 @@ public class EnchereController {
 		model.addAttribute("categories", categories);
 		model.addAttribute("articleVendu", articleVendu);
 		model.addAttribute("utilisateur", vendeur);
-		// ajouter la date l'heure
-		model.addAttribute("currentDateTime", currentDateTime);
+		/*
+		 * // ajouter la date l'heure model.addAttribute("currentDateTime",
+		 * currentDateTime);
+		 */
 
 		return "sell-article";
 	}
@@ -84,7 +83,6 @@ public class EnchereController {
             Model model, 
             Authentication authentication) {
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("currentDateTime", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(new Date()));
 			return "sell-article";
 		} else {
 			try {
@@ -107,7 +105,6 @@ public class EnchereController {
 				Utilisateur vendeur = utilisateurService.afficherUtilisateurParPseudo(pseudoUtilisateur);
 				articleVendu.setVendeur(vendeur);
 				// Sauvegarder l'article
-
 				articleVenduService.addNewArticle(vendeur, articleVendu, rueRetrait, codePostalRetrait, villeRetrait);
 				return "redirect:/article-detail?noArticle=" + articleVendu.getNoArticle();
 
@@ -167,7 +164,6 @@ public class EnchereController {
 		model.addAttribute("utilisateur", utilisateur);
 
 		// Afficher le chemin de l'image de l'article
-		System.out.println("Chemin sauvegardé : " + article.getImagePath());
 		model.addAttribute("imagePath", article.getImagePath());
 
 		Enchere enchere;
@@ -249,9 +245,8 @@ public class EnchereController {
 			return "redirect:/article-detail?noArticle=" + noArticle;
 		}
 		// Ajouter l'article et les catégories au modèle
-		model.addAttribute("articleVendu", article); // Changé de "article" à "articleVendu" pour correspondre au
-														// th:object
-		model.addAttribute("categories", categorieService.getAllCategories()); // Ajout des catégories nécessaires pour le select
+		model.addAttribute("articleVendu", article); 
+		model.addAttribute("categories", categorieService.getAllCategories()); 
 		return "article-update";
 	}
 
@@ -262,27 +257,6 @@ public class EnchereController {
 		try {
 			// Gérer le téléchargement de l'image seulement si une nouvelle image est fournie
 			if (image != null && !image.isEmpty()) {
-				System.out.println("if image");
-				/*
-				 * // Validation du type de fichier String contentType = image.getContentType();
-				 * System.out.println("if image"); if (!contentType.startsWith("image/")) {
-				 * throw new
-				 * IllegalArgumentException("Le fichier téléchargé doit être une image."); } //
-				 * Générer un nom unique pour l'image String fileName =
-				 * System.currentTimeMillis() + "_" +
-				 * URLEncoder.encode(image.getOriginalFilename(), StandardCharsets.UTF_8); //
-				 * Définir le chemin de sauvegarde String uploadDir =
-				 * "src/main/resources/static/uploads/"; Path uploadPath = Paths.get(uploadDir);
-				 * //chemin complet Path filePath = uploadPath.resolve(fileName); // Créer le
-				 * répertoire s'il n'existe pas if (!Files.exists(uploadPath)) {
-				 * Files.createDirectories(uploadPath); // Donner les permissions de
-				 * lecture/écriture uploadPath.toFile().setWritable(true, false);
-				 * uploadPath.toFile().setReadable(true, false); } // Sauvegarder l'image
-				 * Files.copy(image.getInputStream(), filePath,
-				 * StandardCopyOption.REPLACE_EXISTING); // Mettre à jour le chemin de l'image
-				 * dans l'entité articleVendu.setImagePath(fileName); // Assurer que le chemin
-				 * relatif est bien enregistré System.out.println(fileName);
-				 */
 				// Nom unique pour l'image
 				String fileName = System.currentTimeMillis() + "_"
 						+ URLEncoder.encode(image.getOriginalFilename(), "UTF-8");
@@ -294,7 +268,6 @@ public class EnchereController {
 				Files.write(filePath, image.getBytes());
 				// Stocker le chemin dans l'entité
 				articleVendu.setImagePath(fileName);
-				System.out.println(fileName);
 			}
 			if (articleVendu.getCategorie().getNoCategorie() == 0) {
 			    throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
