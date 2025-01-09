@@ -19,6 +19,8 @@ public class SecurityConfig {
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
+	private static final String REMEMBER_ME_KEY = "uniqueAndSecretKey123";
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    HeaderWriterLogoutHandler clearSiteData = new HeaderWriterLogoutHandler(
@@ -35,8 +37,22 @@ public class SecurityConfig {
 	            .defaultSuccessUrl("/encheres", true)
 	            .failureUrl("/login?error=true")
 	            .permitAll())
+	        .sessionManagement(session -> session
+	                .maximumSessions(1) // Limite à une session active par utilisateur
+	                .and()
+	                .invalidSessionUrl("/login?expired") // Redirige en cas de session invalide/expirée
+	            )
+	        .rememberMe(remember -> remember
+	                .key(REMEMBER_ME_KEY)
+	                .rememberMeParameter("remember-me") // nom du paramètre dans le formulaire
+	                .rememberMeCookieName("remember-me-cookie") // nom du cookie
+	                .useSecureCookie(true) // force HTTPS
+	                .alwaysRemember(false) // désactive le remember-me automatique
+	                .tokenValiditySeconds(7 * 24 * 60 * 60) // durée de validité : 7 jours
+	                .userDetailsService(customUserDetailsService))
 	        .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-	            .addLogoutHandler(clearSiteData));
+	            .addLogoutHandler(clearSiteData)
+	    		.deleteCookies("remember-me-cookie")); // supprime le cookie lors de la déconnexion
 	    return http.build();
 	}
 	

@@ -44,6 +44,12 @@ public class UtilisateurController {
 		}
 		return "login";
 	}
+	
+    @GetMapping("/login?expired")
+    public String sessionExpired(Model model) {
+    	model.addAttribute("sessionExpired", "Votre session a expiré, veuillez vous reconnecter");
+        return "login"; 
+    }
 
 	@GetMapping("/signup")
 	public String afficherSinscrire(Model model) {

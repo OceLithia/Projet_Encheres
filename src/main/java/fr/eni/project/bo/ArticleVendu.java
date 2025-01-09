@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,8 +20,10 @@ public class ArticleVendu {
 	@NotBlank(message = "La description de l''article est obligatoire.")
 	private String description;
 	@NotNull(message = "La date et l''heure du début de l''enchère sont obligatoires.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateDebutEncheres;
 	@NotNull(message = "La date et l''heure de fin de l''enchère sont obligatoires.")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateFinEncheres;
 	@NotNull(message = "Le prix de départ de l''enchère est obligatoire.")
 	@Min(0)

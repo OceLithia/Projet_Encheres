@@ -35,7 +35,9 @@
     <div th:if="${error != null}" style="color: rgb(128, 0, 0);">
         <li>Identifiant ou mot de passe incorrect</li>
     </div>
-    
+    <div th:if="${sessionExpired != null}">
+    <li th:text="${sessionExpired}"></li>
+    </div>
     <ul>
         <li>
             <label for="username">Identifiant : </label>
@@ -45,6 +47,10 @@
             <label for="password">Mot de passe : </label>
             <input type="password" name="password" placeholder="Mot de passe" required />
         </li>
+           <div class="form-group form-check">
+        <input type="checkbox" id="remember-me" name="remember-me" class="form-check-input">
+        <label class="form-check-label" for="remember-me">Se souvenir de moi</label>
+    </div>
         <li>
             <button type="submit" >Connexion</button>
         </li>
