@@ -109,7 +109,7 @@ public class EnchereController {
 				// Sauvegarder l'article
 
 				articleVenduService.addNewArticle(vendeur, articleVendu, rueRetrait, codePostalRetrait, villeRetrait);
-				return "redirect:/index";
+				return "redirect:/article-detail?noArticle=" + articleVendu.getNoArticle();
 
 			} catch (IOException e) {
 				// Gestion des erreurs lors du téléchargement de l'image
