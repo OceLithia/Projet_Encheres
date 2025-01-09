@@ -60,8 +60,8 @@ input {
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 14px;
-    color:white;
     line-height: 10px;
+    color: black;
 }
 form li{
 	list-style-type: none;
