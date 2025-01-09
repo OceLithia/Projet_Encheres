@@ -72,8 +72,8 @@
 	</div>
 
 <!------------------------------ENCHERIR---------------------------------------->
-	<div class="encherir" th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
-		<form method="post" th:action="@{/encherir}">
+	<div class="encherir" >
+		<form method="post" th:action="@{/encherir}" th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
 			<input type="hidden" name="articleId"
 				th:value="${articleVendu.noArticle}" />
 			<div th:if="${erreur != null}" th:text="${erreur}"></div>
@@ -81,8 +81,8 @@
 				id="montant" name="montant" min="1" required />
 			<button type="submit">Enchérir</button>
 		</form>
-	<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas
-		encore débuté</h2>
+		
+	<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
 	<h2
 		th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
 		<a th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
@@ -100,8 +100,7 @@
 			th:text="${articleVendu.vendeur.pseudo}"></a> <span
 			th:utext="${' pour effectuer le retrait.'}"></span>
 	</h2>
-	<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune
-		enchère n'a été effectuée sur cet article.</h2>
+	<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune enchère n'a été effectuée sur cet article.</h2>
 	</div>	
 </main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>

@@ -61,8 +61,8 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
     @Override
     @Transactional
     public void verifierEtFinaliserVentes() {
-    	List<ArticleVendu> articlesEnVente = articleVenduDAO.findByDateDebutBeforeAndDateFinAfter(LocalDateTime.now());
-    	for (ArticleVendu article : articlesEnVente) {
+    	List<ArticleVendu> articlesNonTermines = articleVenduDAO.findByDateFinEncheresAfter(LocalDateTime.now());
+    	for (ArticleVendu article : articlesNonTermines) {
     		article.setEtatVente(determinerEtatInitial(article));
     		articleVenduDAO.update(article, article.getVendeur());
 		}

@@ -34,7 +34,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	private static final String FIND_BY_CAT = FIND_ALL + " WHERE a.no_categorie = :no_categorie";
 	private static final String FIND_BY_MOTCLE = FIND_ALL + " WHERE a.nom_article LIKE :saisie";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, no_utilisateur = :noUtilisateur, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
-	private static final String FIND_BY_DATE_FIN = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
+	private static final String FIND_BY_DATE_FIN_BEFORE = FIND_ALL + " WHERE a.date_fin_encheres < :maintenant";
+	private static final String FIND_BY_DATE_FIN_AFTER = FIND_ALL + " WHERE a.date_fin_encheres > :maintenant";
 	private static final String DELETE_ARTICLE_BY_ID ="delete from [PROJECT_ENCHERES].[dbo].[ARTICLES_VENDUS] where no_article = :no_article";
 	private static final String DELETE_RETRAIT_BY_ARTICLE = "DELETE FROM [PROJECT_ENCHERES].[dbo].[RETRAITS] WHERE [no_article] = :no_article";
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = :nomArticle, description = :description, no_categorie = :noCategorie, date_debut_encheres = :dateDebutEncheres, date_fin_encheres = :dateFinEncheres, prix_initial = :prixInitial, prix_vente = :prixVente, etat_vente = :etatVente, image_path = :imagePath WHERE no_article = :noArticle";
@@ -120,8 +121,16 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	public List<ArticleVendu> findByDateFinEncheresBefore(LocalDateTime localDateTime) {
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("maintenant", localDateTime);
-		return jdbcTemplate.query(FIND_BY_DATE_FIN, map, new ArticleRowMapper());
+		return jdbcTemplate.query(FIND_BY_DATE_FIN_BEFORE, map, new ArticleRowMapper());
 	}
+	
+	@Override
+	public List<ArticleVendu> findByDateFinEncheresAfter(LocalDateTime localDateTime) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("maintenant", localDateTime);
+		return jdbcTemplate.query(FIND_BY_DATE_FIN_AFTER, map, new ArticleRowMapper());
+	}
+	
 	
 	@Override
 	public List<ArticleVendu> findByDateDebutBeforeAndDateFinAfter(LocalDateTime localDateTime) {
