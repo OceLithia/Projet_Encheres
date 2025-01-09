@@ -72,11 +72,11 @@
 							</h5>
 							<h6>
 								Vendeur : <a th:text="${e.vendeur.pseudo}"
-								th:href="@{/view-seller(noVendeur=${e.vendeur.noUtilisateur})}" class="link"></a>
+								th:href="@{/view-seller(noVendeur=${e.vendeur.noUtilisateur})}" id="link-vendeur"></a>
 							</h6>
 							
-							<a th:href="@{/article-detail(noArticle=${e.noArticle})}"
-							class="button" id="buttonDetail">Détails</a>
+							<a th:href="@{/article-detail(noArticle=${e.noArticle})}">
+							<button id="details">Détails</button></a>
 						</div>
 					</div>
 				</div>

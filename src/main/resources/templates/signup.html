@@ -61,10 +61,9 @@
 			<li><label for="confirmPassword">Confirmez le mot de passe :</label>
     			<input type="password" th:field="*{confirmPassword}" placeholder="Confirmez le mot de passe" /></li>
 			<div th:replace="~{fragments/fragment-error :: frag-error('confirmPassword')}"></div>
-			
-			<li><button type="submit" >S'inscrire</button></li>
-			<li><a href="/" class="button">Annuler</a></li>
 		</ul>
+			<button type="submit" >S'inscrire</button>
+			<a href="/" class="reset">Annuler</a>
 	</form>
 </main>
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>

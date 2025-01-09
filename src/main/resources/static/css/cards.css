@@ -40,9 +40,10 @@
     margin-bottom: 20px; /* Espacement vertical entre les lignes */
     z-index: 1;
 }
-.container{
+.container {
 	padding-left: 15px;
 }
+
 .card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
@@ -66,11 +67,12 @@
     text-align: left;
     margin: 10px 0;
     color: var(--bleu-fonce);
-    font-family: Playfair+Display+SC;
+    font-family: 'Playfair Display';
 }
 
 /* Style des paragraphes */
 .card a {
+	text-decoration:none;
     flex-grow: 1; /* Permet au texte de remplir l'espace restant */
     margin: 10px 0;
     overflow: hidden; /* Cache le texte qui dépasse */
@@ -78,29 +80,13 @@
     line-height: 1.5;
     color:var(--bleu-fonce);
     font-size: 17px;
-    font-family: Lora;
 }
 
-/* Style des boutons */
-.button {
-    align-content: flex-end; /* Positionne le bouton en bas de la carte */
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--bleu-gris); /* Couleur de fond */
-    color: var(--creme-clair); /* Couleur du texte */
-    text-decoration: none; /* Supprime le soulignement du lien */
-    border-radius: 5px; /* Coins arrondis */
-    border:medium;
-    cursor: pointer;
-    font-size: 16px;
-    transition: color 0.3s ease;
-    font-family: Playfair+Display+SC;
+button{
+	margin-top: 50px;
+	padding: 20px;
+	font-size: 20px;
 }
-#buttonDetail{
-	    color: var(--creme-clair); /* Couleur du texte */
+button:hover{
+	background-color: var(--dore-mat)
 }
-.button:hover {
-    background-color: var(--dore-mat); /* Couleur au survol */
-}
-
-

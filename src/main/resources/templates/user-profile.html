@@ -28,7 +28,7 @@
 				</tr>
 			</table>
 			<h3 th:if="${articles == null or articles.size() == 0}" >Aucun article trouvé</h3>
-			<a class="button" href="/sell-article">Mettre un article en vente</a>
+			<a class="link" href="/sell-article">Mettre un article en vente</a>
 			<table></table>
 		</section>
 		<section class="section-profil">
@@ -71,7 +71,7 @@
 					<td th:text="${utilisateur.credit}"></td>
 				</tr>
 			</table>
-			<a class="button" href="/details" >Modifier mon profil</a>
+			<a class="link" href="/details" >Modifier mon profil</a>
 		</section>
 	</div>
 </main>

@@ -1,111 +1,57 @@
 @charset "UTF-8";
 
-:root {
-	--bleu-fonce:#343b40;
-	--bleu-gris:#576e7d;
-	--vert-sauge:#a3bfa8;
-	--rose-poudre:#d9b8b5;
-	--chocolat:#653924;
-	--dore-mat:#c8a165;
-	--beige-doux:#e3c9a9;
-	--creme-clair:#f3e7d3;
-}
 h2{
-	font-family: Playfair+Display+SC;
+	font-family: 'Playfair Display SC';
 	font-size: 30px;
-	padding: 10px;
 	display: flex;
 	color:var(--bleu-fonce);
 	justify-content: center;
 }
-/* ------------------------------LOGIN FORM---------------------------------------- */
 form {
 	background-color:var(--vert-sauge);
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 600px;
-    margin: 0 auto;
+    width: 400px;
+    margin: 20px auto; /* Ajout de marges verticales */
+    padding: 5px 20px; /* Ajout d'un padding interne */
     color: var(--bleu-fonce);
+    display: flex;
+    flex-direction: column; /* Organisation verticale des éléments */
+    gap: 15px; /* Espacement entre les éléments */
 }
 input {
-    width: 250px;
-    padding: 8px 10px;
+    width: 320px; /* Les champs prennent toute la largeur disponible */
+    padding: 10px; /* Augmente légèrement le padding */
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 5px; /* Réduction du border-radius pour un look plus moderne */
     font-size: 14px;
-    color:var(--bleu-gris);
+    color: var(--bleu-gris);
+    box-sizing: border-box; /* Inclut les bordures et le padding dans la largeur totale */
 }
 li{
 	list-style-type: none;
-	padding: 10px;
+	font-size:10px;
+	padding: 0;
+	margin: 0;
 }
-/* ---------------------------INSCRIPTION FORM-------------------------------------- */
-.signup h2{
-	font-family: Playfair+Display+SC;
-	font-size: 30px;
+
+label {
+    font-size: 14px;
+    color: var(--bleu-fonce);
+    margin-bottom: 5px; /* Espacement entre le label et l'input */
+    display: block;
+}
+
+.signup input{
 	padding: 5px;
-	display: flex;
-	color:var(--bleu-fonce);
-	justify-content: center;
 }
 .signup{
-	background-color:var(--beige-doux);
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 700px;
-    color: var(--bleu-fonce);
+	width: 700px;
 }
-.signup input {
-    width: 250px;
-    padding: 4px 4px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    font-size: 14px;
-    color:black;
-}
-.signup li{
-	list-style-type: none;
-	padding: 4px;
-	justify-content: center;
-}
-.signup .button{
-	text-decoration: none;
-	color: var(--chocolat);
-	display:flex;
-	justify-content:flex-end;
-	font-size: 25px;
-	margin-top:0;
+.signup ul{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 15px;
 }
 
-/* --------------------------BUTTONS------------------------------------- */
-button{
-	display:flex;
-	justify-content:center;
-	background-color: var(--bleu-gris);
-    color:white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 90px;
-    font-size: 20px;
-    cursor: pointer;
-}
-button:hover {
-    background-color:var(--dore-mat);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/*--------------------------------------LINKS---------------------------------------*/
-.button{
-	text-decoration: none;
-	color: var(--chocolat);
-	display:flex;
-	justify-content: center;
-	font-size: 20px;
-	margin-top: 40px;
-}
-.button:hover {
-    background-color:var(--beige-doux);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}

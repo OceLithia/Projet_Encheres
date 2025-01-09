@@ -28,7 +28,7 @@
 <main>
 
     <p th:if="${successMessage}" th:text="${successMessage}" id="successMessage"></p>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/login}" method="post" class="login">
     
     <h2>Se connecter</h2>
     
@@ -47,16 +47,14 @@
             <label for="password">Mot de passe : </label>
             <input type="password" name="password" placeholder="Mot de passe" required />
         </li>
-           <div class="form-group form-check">
-        <input type="checkbox" id="remember-me" name="remember-me" class="form-check-input">
-        <label class="form-check-label" for="remember-me">Se souvenir de moi</label>
-    </div>
-        <li>
-            <button type="submit" >Connexion</button>
-        </li>
-    </ul>
+         	<label class="form-check-label" for="remember-me">Se souvenir de moi</label>
+        	<input type="checkbox" id="remember-me" name="remember-me" class="form-check-input">
+    	 </ul>
+            <button type="submit">Connexion</button>
+
+   
 </form>
-	<a href="/signup" class="button">Vous n'avez pas de compte ? Inscrivez-vous !</a>
+	<a href="/signup" class="link">Vous n'avez pas de compte ? Inscrivez-vous !</a>
 </main>	
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>

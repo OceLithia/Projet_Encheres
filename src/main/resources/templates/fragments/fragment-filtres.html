@@ -57,23 +57,24 @@
 </div>
 
 
-<div th:fragment="filtres-deconnecte">
+<div th:fragment="filtres-deconnecte" class="filtres-deconnectes">
 	<form th:action="@{/filtrer}" method="GET">
 
 <!------------------------ PAR MOT CLE ----------------------------->
-		<div class="recherche-mot-cle">
+		<div class="filtres-deconnectes">
 			<input type="text" id="motCle" name="motCle" placeholder="Rechercher par mot clé" />
 		</div>
 		
 <!------------------------ PAR CATEGORIES ----------------------------->
-		<div class="recherche-categorie">
+		<div class="filtres-deconnectes">
 			<select name="idCat" id="category">
-				<li><option value="" th:selected="${idCat == null}">Choisir une catégorie</option></li>
+				<li><option value="" th:selected="${idCat == null}">Rechercher par catégorie</option></li>
 				<li><option th:each="cat : ${categories}" th:value="${cat.noCategorie}" th:text="${cat.libelle}"></option></li>
 			</select>
 		</div>
-			<div>
-				<button type="submit">Rechercher</button>
-			</div>
-	</form>
+		<div><button type="submit">Rechercher</button></div>
+	</form>	
+
+
 </div>
+	

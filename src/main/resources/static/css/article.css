@@ -1,14 +1,3 @@
-/* Updated CSS */
-:root {
-    --bleu-fonce: #343b40;
-    --bleu-gris: #576e7d;
-    --vert-sauge: #a3bfa8;
-    --rose-poudre: #d9b8b5;
-    --chocolat: #653924;
-    --dore-mat: #c8a165;
-    --beige-doux: #e3c9a9;
-    --creme-clair: #f3e7d3;
-}
 
 /* Base styles */
 body {
@@ -48,7 +37,7 @@ main {
 }
 
 .infos-generales h2 {
-    font-family: "Playfair Display SC";
+    font-family: 'Playfair Display SC';
     font-size: clamp(24px, 3vw, 30px);
     color: var(--bleu-fonce);
     margin-bottom: 1rem;
@@ -69,7 +58,7 @@ main {
 .infos-prix h3 {
     color: var(--bleu-fonce);
     margin-bottom: 1rem;
-    font-family: "Playfair Display SC";
+    font-family: 'Playfair Display SC';
 }
 
 .infos-prix table {
@@ -102,7 +91,7 @@ main {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background-color: #F9F3E9;
+    background-color:var(--vert-sauge);
 }
 
 .seller-info table {
@@ -112,14 +101,6 @@ main {
 .seller-info th,
 .seller-info td {
     padding: 0.5rem;
-    font-family: Lora;
-}
-
-#vendeur {
-    color: var(--chocolat);
-    text-decoration: none;
-    font-style: italic;
-    font-size: 1.2rem;
 }
 
 /* Auction Section */
@@ -128,7 +109,7 @@ main {
 }
 
 .encherir form {
-    background-color: var(--rose-poudre);
+    background-color: var(--dore-mat);
     padding: 1.5rem;
     border-radius: 10px;
     max-width: 400px;
@@ -149,21 +130,25 @@ main {
     width: 120px;
 }
 
-button {
-    background-color: var(--bleu-gris);
-    color: white;
-    border: none;
-    border-radius: 100px;
-    padding: 0.8rem 1.5rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+button{
+	display:flex;
+	justify-content:center;
+	background-color: var(--bleu-gris);
+	color:white;
+	padding: 10px 10px;
+	border: none;
+	border-radius: 5px;
+	font-size: 20px;
+	cursor: pointer;
+	margin: auto;
+	font-family: 'Playfair Display SC';
 }
-
 button:hover {
-    background-color: var(--dore-mat);
+	background-color:var(--bleu-fonce);
+	color:white;
+	box-shadow: 0 0 10px 5px yellow, 0 0 30px 20px yellow;
+    transform: scale(1.05); /* Ajoute un léger agrandissement */
 }
-
 /* Status Messages */
 .status-messages {
     text-align: center;
@@ -173,7 +158,6 @@ button:hover {
 .status-messages h2,
 .status-messages h3 {
     color: var(--bleu-fonce);
-    font-family: Lora;
     margin-bottom: 1rem;
 }
 

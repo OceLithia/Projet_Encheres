@@ -12,7 +12,7 @@
 }
 
 h1{
-	font-family: Playfair+Display+SC;
+	font-family: 'Playfair Display SC';
 	font-size: 35px;
 	padding: 0px;
 	margin: 0px;
@@ -21,6 +21,56 @@ h1{
 	color: var(--bleu-fonce);
 	margin-top: 15px;
 }
+/*------------------------------FILTRES DECONNECTES--------------------------------------*/
+.filtres-deconnectes{
+	font-size: 30px;
+	border-radius: 10px;
+	display: flex;
+	margin-left: 500px;
+	justify-content: flex-end;
+	flex-direction:column;
+	color: var(--bleu-gris);
+	margin-right: 20px;
+	padding-bottom: 10px;
+}
+.filtres-deconnectes select{
+	background-color:white;
+	text-decoration: none;
+  	color: var(--bleu-fonce);
+  	font-size:15px;
+  	cursor: pointer;
+  	display: flex;
+  	justify-content: flex-start;
+  	padding: 2px;
+}
+.filtres-deconnectes select li{
+	border-radius: 10px;
+	background-color: var(--rose-poudre);
+	text-decoration: none;
+  	color: var(--bleu-fonce);
+  	padding: 10px 20px;
+  	cursor: pointer;
+  	display: flex;
+  	justify-content: flex-start;
+}
+.filtres-deconnectes select:hover{
+	background-color: var(--vert-sauge);
+	color:var(--bleu-fonce);
+}
+.filtres-deconnectes input{
+	height:20px;
+}
+.filtres-deconnectes button{
+		margin-left: 750px;
+		align-self: flex-end;
+}
+
+
+
+
+
+
+
 .filtres{
 	display: flex;
 	justify-content: flex-start;
@@ -29,7 +79,6 @@ h1{
 }
 /*------------------------------RECHERCHE MOT CLE--------------------------------------*/
 .recherche-mot-cle{
-	font-family: Playfair+Display+SC;
 	font-size: 30px;
 	display: flex;
 	margin-left: 170px;
@@ -47,8 +96,7 @@ h1{
 }
 /*---------------------------RECHERCHE PAR CATEGORIE------------------------------------*/
 .recherche-categorie{
-	font-family: Playfair+Display+SC;
-	font-size: 25px;
+	font-size: 30px;
 	padding: 0px;
 	display: flex;
 	justify-content: flex-start;
@@ -88,7 +136,7 @@ h1{
 /* TITRES */
 .filtrage{
 	position:relative;
-	font-family: Playfair+Display+SC;
+	font-family: 'Playfair Display SC';
 	font-size: 25px;
 	padding: 0px;
 	display: flex;
@@ -174,24 +222,10 @@ li input{
 	padding-right: 250px;
 	padding-left: 250px;
 }
-/*-----------------------------BUTTON--------------------------------------*/
-button{
+
+.filtre-encheres{
 	display:flex;
-	margin-left:auto;
-	margin-right: auto;
-	margin-bottom: 0;
-	background-color: var(--bleu-gris);
-    color:white;
-    padding: 8px 200px;
-    border: none;
-    border-radius: 90px;
-    font-size: 20px;
-    cursor: pointer;
-    border: 2px solid #ddd;
+	flex-direction: row;
 }
-button:hover {
-    background-color:var(--dore-mat);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
+
 

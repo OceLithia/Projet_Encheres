@@ -17,7 +17,7 @@ main{
 	align-items: center;
 }
 h2{
-	font-family: Playfair+Display+SC;
+	font-family: 'Playfair Display SC';
 	font-size: 30px;
 	padding: 5px;
 	color:var(--bleu-fonce);
@@ -36,7 +36,7 @@ form{
     line-height: 10px;
 }
 form h2{
-	font-family: Playfair+Display+SC;
+	font-family: 'Playfair Display SC';
 	font-size: 30px;
 	padding: 5px;
 	display: flex;

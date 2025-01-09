@@ -75,9 +75,9 @@
                             <tr>
                                 <th>Vendeur :</th>
                                 <td>
-                                    <a th:text="${articleVendu.vendeur.pseudo}"
+                                    <a class="link-vendeur" th:text="${articleVendu.vendeur.pseudo}"
                                        th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
-                                       id="vendeur"></a>
+                                       id="vendeur" ></a>
                                 </td>
                             </tr>
                         </table>
@@ -105,8 +105,8 @@
                 <h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
                 
                 <div class="seller-actions" th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-                    <a class="action-button" th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
-                    <a class="action-button" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
+                    <a class="link" th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
+                    <a class="link" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
                 </div>
 
                 <h2 th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"
