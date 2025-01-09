@@ -24,8 +24,9 @@ main{
 	flex-direction:column;
 	align-items:flex-start;
 	max-width: 700px;
-	font-family: Lora;
 	padding: 20px;
+	z-index: 1;
+	position: relative;
 }
 h2{
 	font-family: Playfair+Display+SC;
@@ -77,56 +78,60 @@ h4{
 }
 /*----------------------------INFOS PRIX--------------------------------------------*/
 .infos-prix {
-	margin-top: 30px;
     padding: 20px;
     line-height: 30px;
     text-align: left;
-    max-width: 600px;
+    max-width: 700px;
+    font-family: Lora;
+	flex-direction:column;
+	align-items:flex-start;
+	z-index: 100;
+	position: absolute;
+	margin-top: 400px;
 }
 .infos-prix th{
 	color: var(--bleu-fonce);
 }
 
-
 /*----------------------------ENCHERIR----------------------------------*/
+.encherir{
+	margin-left: 600px;
+	padding: 20px;
+    font-family: Lora;
+	position: absolute;
+	z-index: 100;
+	margin-top: 410px;
+}
 form {
 	background-color:var(--rose-poudre);
 	border-radius: 10px;
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	width: 150px;
-	margin: 0 auto;
 	color: var(--bleu-fonce);
-    text-align: center;
-    line-height: 100px;
     font-size: 18px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     display: flex;
-    flex-direction:row;
-    flex-wrap: wrap;
+    padding: 20px;
+    flex-direction: column;
 }
 /* Effet lumineux au survol */
-.bloc-lumineux:hover {
-    box-shadow: 0 0 20px 10px var(--rose-poudre), 0 0 40px 20px var(--dore-mat);
+form:hover {
+    box-shadow: 0 0 20px 10px var(--dore-mat), 0 0 40px 20px var(--dore-mat);
     transform: scale(1.05); /* Ajoute un léger agrandissement */
 }
 input {
-	max-width: 50px;
-	padding: 8px 10px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	font-size: 14px;
 	color: black;
-	flex-direction: column;
+	width:80px;
+	height: 20px;
 }
 /* --------------------------BUTTONS------------------------------------- */
 button{
 display:flex;
-justify-content:center;
 background-color: var(--bleu-gris);
 color:white;
-padding: 10px 20px;
-border: none;
-border-radius: 90px;
+border-radius: 100px;
 font-size: 20px;
 cursor: pointer;
 }

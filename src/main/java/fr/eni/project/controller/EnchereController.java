@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -146,7 +147,20 @@ public class EnchereController {
 
 		return "article-detail";
 	}
+	 @GetMapping("/encheres")
+	    public String showEncherePage(Model model) {
+	        // Exemple : une date de fin d'enchère
+	        LocalDateTime dateFinEncheres = LocalDateTime.now();
+	        
+	        // Formater la date en ISO 8601
+	        String dateFinEncheresFormatee = dateFinEncheres.format(DateTimeFormatter.ISO_DATE_TIME);
 
+	        // Ajouter la variable au modèle
+	        model.addAttribute("dateFinEncheresFormatee", dateFinEncheresFormatee);
+
+	        return "encheres";  // Nom du template Thymeleaf
+	    }
+	 
 	@GetMapping({ "/article-detail", "/encherir" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
@@ -155,7 +169,7 @@ public class EnchereController {
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
             model.addAttribute("dateFinEncheresFormatee", article.getDateFinEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
-        } else {
+		} else {
             model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
         }
 		if (article.getDateDebutEncheres() != null) {
