@@ -18,111 +18,121 @@
 </head>
 
 <body>
-	<div th:replace="~{fragments/fragment-header::header}"></div>
-	<div th:replace="~{fragments/fragment-logo::logo}"></div>
+    <div th:replace="~{fragments/fragment-header::header}"></div>
+    <div th:replace="~{fragments/fragment-logo::logo}"></div>
 
-	<main>
-		<!--------------------------------INFOS GENERALES---------------------------------------->
-		<div class="infos-generales">
-			<h2 th:text="${articleVendu.nomArticle}"></h2>
-			<h4 th:text="${articleVendu.categorie.libelle}"></h4>
-			<p th:text="${articleVendu.description}"></p>
-		</div>
+    <main th:data-etat-vente="${articleVendu.etatVente}">
+        <div class="article-container">
+            <!-- Left Column -->
+            <div class="article-info">
+                <div class="infos-generales">
+                    <h2 th:text="${articleVendu.nomArticle}"></h2>
+                    <h4 th:text="${articleVendu.categorie.libelle}"></h4>
+                    <p th:text="${articleVendu.description}"></p>
+                </div>
 
-		<!------------------------------CARD---------------------------------------->
-		<div class="card">
-			<img
-				th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}"
-				alt="Image de l'article" />
-			<table>
-				<tr>
-					<th>Téléphone :</th>
-					<td th:text="${articleVendu.vendeur.telephone}"></td>
-				</tr>
-				<tr>
-					<th>Ville de retrait :</th>
-					<td th:text="${articleVendu.lieuRetrait.ville}"></td>
-				</tr>
-				<tr>
-					<th>Vendeur :</th>
-					<td><a th:text="${articleVendu.vendeur.pseudo}"
-						th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
-						id="vendeur"></a></td>
-				</tr>
-			</table>
-		</div>
-		<!-----------------------------------INFOS PRIX------------------------------------------>
-		<table class="infos-prix">
-			<tr>
-				<th>Meilleure offre :</th>
-				<td th:if="${enchere != null}"
-					th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></td>
-				<td th:if="${enchere == null}">Aucune enchère n'a été effectuée
-					sur cet article.</td>
-			</tr>
-			<tr>
-				<th>Mise à prix :</th>
-				<td th:text="${articleVendu.miseAPrix}"></td>
-			</tr>
-			<tr>
-				<th>Date de début des enchères :</th>
-				<td th:text="${dateDebutEncheresFormatee}"></td>
-			</tr>
-			<tr>
-				<th>Date de fin des enchères :</th>
-				<td th:text="${dateFinEncheresFormatee}"></td>
-			</tr>
-		</table>
+                <div class="infos-prix">
+                    <h3>Détails de la vente</h3>
+                    <table>
+                        <tr>
+                            <th>Meilleure offre :</th>
+                            <td th:if="${enchere != null}" th:text="${enchere.montantEnchere +' par ' +enchere.encherisseur.pseudo}"></td>
+                            <td th:if="${enchere == null}">Aucune enchère n'a été effectuée sur cet article.</td>
+                        </tr>
+                        <tr>
+                            <th>Mise à prix :</th>
+                            <td th:text="${articleVendu.miseAPrix}"></td>
+                        </tr>
+                        <tr>
+                            <th>Date de début :</th>
+                            <td th:text="${dateDebutEncheresFormatee}"></td>
+                        </tr>
+                        <tr>
+                            <th>Date de fin :</th>
+                            <td th:text="${dateFinEncheresFormatee}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-		<!------------------------------ENCHERIR---------------------------------------->
-		<div class="encherir">
-			<form method="post" th:action="@{/encherir}"
-				th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
-				<input type="hidden" name="articleId"
-					th:value="${articleVendu.noArticle}" />
-				<div th:if="${erreur != null}" th:text="${erreur}"></div>
-				<label for="montant">Montant :</label> <input type="number"
-					id="montant" name="montant" min="1" required />
-				<button type="submit">Enchérir</button>
-			</form>
+            <!-- Right Column -->
+            <div class="article-visual">
+                <div class="card">
+                    <div class="image-container">
+                        <img th:src="${articleVendu.imagePath != null ? '/uploads/' + articleVendu.imagePath : '/img/default.jpg'}" 
+                             alt="Image de l'article" />
+                    </div>
+                    <div class="seller-info">
+                        <table>
+                            <tr>
+                                <th>Téléphone :</th>
+                                <td th:text="${articleVendu.vendeur.telephone}"></td>
+                            </tr>
+                            <tr>
+                                <th>Ville de retrait :</th>
+                                <td th:text="${articleVendu.lieuRetrait.ville}"></td>
+                            </tr>
+                            <tr>
+                                <th>Vendeur :</th>
+                                <td>
+                                    <a th:text="${articleVendu.vendeur.pseudo}"
+                                       th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
+                                       id="vendeur"></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
-			<h2
-				th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-				<a th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
-				<a
-					th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer
-					l'article</a>
-			</h2>
+        <!-- Bottom Section -->
+        <div class="auction-section">
+            <div class="encherir" th:if="${articleVendu.etatVente == 0 && articleVendu.vendeur.noUtilisateur != utilisateur.noUtilisateur}">
+                <form method="post" th:action="@{/encherir}">
+                    <input type="hidden" name="articleId" th:value="${articleVendu.noArticle}" />
+                    <div class="error-message" th:if="${erreur != null}" th:text="${erreur}"></div>
+                    <div class="bid-input">
+                        <label for="montant">Montant de l'enchère :</label>
+                        <input type="number" id="montant" name="montant" min="1" required />
+                    </div>
+                    <button type="submit">Enchérir</button>
+                </form>
+            </div>
 
-			<h2
-				th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"
-				th:text="${'Enchère remportée par '+acheteur.pseudo}"></h2>
-			<h2
-				th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur == acheteur.noUtilisateur}">
-				<span
-					th:utext="${'Vous avez remporté l''enchère pour un montant de ' + enchere.montantEnchere + '. <br>Veuillez vous rapprocher de '}"></span>
-				<a
-					th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}"
-					th:text="${articleVendu.vendeur.pseudo}"></a> <span
-					th:utext="${' pour effectuer le retrait.'}"></span>
-			</h2>
-			<h2 th:if="${articleVendu.etatVente == 1}">Vente terminée -
-				Aucune enchère n'a été effectuée sur cet article.</h2>
-			<h2
-				th:if="${articleVendu.etatVente == 2 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-				<h3>Le retrait de l'article a été effectué ?</h3>
-				<a
-					th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Nous vous invitons à supprimer l'article</a>
-			</h2>
-			<h2
-				th:if="${articleVendu.etatVente == 1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
-				<a
-					th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Nous
-					vous invitons à supprimer l'article</a>
-			</h2>
-		</div>
-	</main>
-	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
+            <!-- Status Messages -->
+            <div class="status-messages">
+                <h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
+                
+                <div class="seller-actions" th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
+                    <a class="action-button" th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
+                    <a class="action-button" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
+                </div>
+
+                <h2 th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"
+                    th:text="${'Enchère remportée par '+acheteur.pseudo}"></h2>
+
+                <div class="winner-message" th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur == acheteur.noUtilisateur}">
+                    <h2>
+                        <span th:utext="${'Vous avez remporté l''enchère pour un montant de ' + enchere.montantEnchere + '. <br>Veuillez vous rapprocher de '}"></span>
+                        <a th:href="@{/view-seller(noVendeur=${articleVendu.vendeur.noUtilisateur})}" 
+                           th:text="${articleVendu.vendeur.pseudo}"></a>
+                        <span th:utext="${' pour effectuer le retrait.'}"></span>
+                    </h2>
+                </div>
+
+                <h2 th:if="${articleVendu.etatVente == 1}">Vente terminée - Aucune enchère n'a été effectuée sur cet article.</h2>
+
+                <div class="seller-complete" th:if="${articleVendu.etatVente == 2 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
+                    <h3>Le retrait de l'article a été effectué ?</h3>
+                    <a class="action-button" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">
+                        Nous vous invitons à supprimer l'article
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

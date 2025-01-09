@@ -1,149 +1,250 @@
-@charset "UTF-8";
-
+/* Updated CSS */
 :root {
-	--bleu-fonce:#343b40;
-	--bleu-gris:#576e7d;
-	--vert-sauge:#a3bfa8;
-	--rose-poudre:#d9b8b5;
-	--chocolat:#653924;
-	--dore-mat:#c8a165;
-	--beige-doux:#e3c9a9;
-	--creme-clair:#f3e7d3;
-}
-main{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	min-height: calc(100vh - 100px); /* Assure que le contenu occupe l'espace restant sans chevaucher le footer */
-	justify-content: space-between; /* Espace entre les sections */
-    margin: 50px 40px; /* Marges pour espacer du bord */
-}
-/*---------------------------INFOS GENERALES--------------------------------------------*/
-.infos-generales {
-    font-family: Lora;
-	flex-direction:column;
-	align-items:flex-start;
-	max-width: 700px;
-	padding: 20px;
-	z-index: 1;
-	position: relative;
-}
-h2{
-	font-family: Playfair+Display+SC;
-	font-size: 30px;
-	color:var(--bleu-fonce);
-	margin-left: 150px
-}
-h4{
-	font-style: italic;  
-}
-/*----------------------------CARD--------------------------------------------*/
-.card {
-    background-color: var(--vert-sauge);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 550px;
-    height: 650px; /* Hauteur fixe pour toutes les cartes */
-    padding: 15px;
-    box-sizing: border-box;
-    display:flex;
-    flex-direction:column;
-    margin-left: auto; /* Pousse la carte tout à droite */
-    position: relative; /* Permet de rester dans le flux de la page */
-    z-index: 100; /* S'assure qu'elle ne chevauche pas inutilement */
-    align-self: flex-end; /* Aligne uniquement la carte à droite */
-    margin-right: 60px;
- 
-}
-.card img {
-    object-fit: cover; /* Ajuste l'image sans déformation */
- 	justify-content: center;
- 	max-height: 460px;
- 	max-width: 540px;
-}
-.card th, .card td {
-    text-align: left;
-    margin-left:15px;
-    padding:5px;
-    padding-top:15px;
-    color: black;
-    font-family: Lora;
-    font-size: 15px;
-}
-#vendeur{
-	color:var(--chocolat);
-	text-decoration: none;
-	font-style: italic;
-	font-size: 20px;
-}
-/*----------------------------INFOS PRIX--------------------------------------------*/
-.infos-prix {
-    padding: 20px;
-    line-height: 30px;
-    text-align: left;
-    max-width: 700px;
-    font-family: Lora;
-	flex-direction:column;
-	align-items:flex-start;
-	z-index: 100;
-	position: absolute;
-	margin-top: 400px;
-}
-.infos-prix th{
-	color: var(--bleu-fonce);
+    --bleu-fonce: #343b40;
+    --bleu-gris: #576e7d;
+    --vert-sauge: #a3bfa8;
+    --rose-poudre: #d9b8b5;
+    --chocolat: #653924;
+    --dore-mat: #c8a165;
+    --beige-doux: #e3c9a9;
+    --creme-clair: #f3e7d3;
 }
 
-/*----------------------------ENCHERIR----------------------------------*/
-.encherir{
-	margin-left: 600px;
-	padding: 20px;
-    font-family: Lora;
-	position: absolute;
-	z-index: 100;
-	margin-top: 410px;
-}
-form {
-	background-color:var(--rose-poudre);
-	border-radius: 10px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	color: var(--bleu-fonce);
-    font-size: 18px;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+/* Base styles */
+body {
+    background-color: var(--creme-clair);
+    margin: 0;
+    min-height: 100vh;
     display: flex;
-    padding: 20px;
     flex-direction: column;
 }
-/* Effet lumineux au survol */
-form:hover {
-    box-shadow: 0 0 20px 10px var(--dore-mat), 0 0 40px 20px var(--dore-mat);
-    transform: scale(1.05); /* Ajoute un léger agrandissement */
+
+main {
+    flex: 1;
+    padding: 2rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1400px;
+    box-sizing: border-box;
 }
-input {
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	font-size: 14px;
-	color: black;
-	width:80px;
-	height: 20px;
+
+/* Article Container */
+.article-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
-/* --------------------------BUTTONS------------------------------------- */
-button{
-display:flex;
-background-color: var(--bleu-gris);
-color:white;
-border-radius: 100px;
-font-size: 20px;
-cursor: pointer;
+
+/* Left Column - Article Info */
+.article-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
+
+.infos-generales {
+    font-family: Lora;
+}
+
+.infos-generales h2 {
+    font-family: "Playfair Display SC";
+    font-size: clamp(24px, 3vw, 30px);
+    color: var(--bleu-fonce);
+    margin-bottom: 1rem;
+}
+
+.infos-generales h4 {
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.infos-prix {
+    font-family: Lora;
+    background-color: var(--beige-doux);
+    padding: 1.5rem;
+    border-radius: 10px;
+}
+
+.infos-prix h3 {
+    color: var(--bleu-fonce);
+    margin-bottom: 1rem;
+    font-family: "Playfair Display SC";
+}
+
+.infos-prix table {
+    width: 100%;
+}
+
+.infos-prix th {
+    color: var(--bleu-fonce);
+    text-align: left;
+    padding: 0.5rem 1rem 0.5rem 0;
+    width: 40%;
+}
+
+/* Right Column - Article Visual */
+.article-visual .card {
+    background-color: var(--vert-sauge);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.image-container {
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #F9F3E9;
+}
+
+.seller-info table {
+    width: 100%;
+}
+
+.seller-info th,
+.seller-info td {
+    padding: 0.5rem;
+    font-family: Lora;
+}
+
+#vendeur {
+    color: var(--chocolat);
+    text-decoration: none;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+/* Auction Section */
+.auction-section {
+    margin-top: 2rem;
+}
+
+.encherir form {
+    background-color: var(--rose-poudre);
+    padding: 1.5rem;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.bid-input {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.bid-input input {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 120px;
+}
+
+button {
+    background-color: var(--bleu-gris);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 button:hover {
-background-color:var(--dore-mat);
-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--dore-mat);
 }
 
+/* Status Messages */
+.status-messages {
+    text-align: center;
+    margin-top: 2rem;
+}
 
+.status-messages h2,
+.status-messages h3 {
+    color: var(--bleu-fonce);
+    font-family: Lora;
+    margin-bottom: 1rem;
+}
 
+.action-button {
+    display: inline-block;
+    background-color: var(--bleu-gris);
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 100px;
+    margin: 0.5rem;
+    transition: background-color 0.3s ease;
+}
 
+.action-button:hover {
+    background-color: var(--dore-mat);
+}
 
+.error-message {
+    color: red;
+    margin-bottom: 1rem;
+}
 
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+    .article-container {
+        grid-template-columns: 1fr;
+    }
 
+    .image-container {
+        height: 350px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+
+    .infos-prix th {
+        width: 50%;
+    }
+
+    .bid-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .bid-input input {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .image-container {
+        height: 250px;
+    }
+
+    .seller-info th,
+    .seller-info td {
+        display: block;
+        width: 100%;
+    }
+
+    .seller-info th {
+        padding-bottom: 0;
+    }
+
+    .action-button {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0.5rem 0;
+    }
+}
