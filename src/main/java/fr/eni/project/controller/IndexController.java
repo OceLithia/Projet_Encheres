@@ -51,9 +51,11 @@ public class IndexController {
 	@GetMapping("/filtrer")
 	public String rechercheParFiltre(@ModelAttribute FiltreDTO filtres, Model model, Authentication authentication) {
 
-		// Récupérer l'utilisateur connecté
-		Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
-		filtres.setUtilisateurId(utilisateurConnecte.getNoUtilisateur());
+		if (authentication != null) {
+			Utilisateur utilisateurConnecte = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+			filtres.setUtilisateurId(utilisateurConnecte.getNoUtilisateur());
+			model.addAttribute("utilisateur", utilisateurConnecte);
+		}
 
 		// Appliquer les filtres
 		List<ArticleVendu> articlesFiltres = this.articleVenduService.filtrerArticles(filtres);
@@ -65,9 +67,7 @@ public class IndexController {
 				.map(article -> new ArticleDTO(article, FormatDTO.formatDate(article.getDateFinEncheres()))).toList();
 		// Ajouter les données au modèle
 		model.addAttribute("articles", articlesDTO);
-		
 		model.addAttribute("categories", categories);
-		model.addAttribute("utilisateur", utilisateurConnecte);
 
 		return "encheres";
 	}
