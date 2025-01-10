@@ -1,0 +1,212 @@
+/* Variables globales */
+:root {
+    --bleu-fonce: #343b40;
+    --bleu-gris: #576e7d;
+    --vert-sauge: #a3bfa8;
+    --rose-poudre: #d9b8b5;
+    --chocolat: #653924;
+    --dore-mat: #c8a165;
+    --beige-doux: #e3c9a9;
+    --creme-clair: #f3e7d3;
+}
+
+/* Layout principal */
+main {
+    min-height: calc(100vh - 120px); /* Hauteur minimale moins header et footer */
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Formulaires */
+form {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--vert-sauge);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form ul {
+    list-style: none;
+}
+
+form li {
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--bleu-fonce);
+}
+
+form input, form textarea, form select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Grille d'articles */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.card {
+    background-color: var(--beige-doux);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card .container {
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+/* Boutons */
+button, .button {
+    background-color: var(--bleu-gris);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+button:hover, .button:hover {
+    background-color: var(--dore-mat);
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dore-mat);
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    form {
+        padding: 1rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card {
+        margin: 0.5rem;
+    }
+    
+    form input, form textarea, form select {
+        font-size: 16px; /* Évite le zoom sur mobile */
+    }
+    
+    .links a {
+        font-size: 1rem;
+        padding: 0.3rem;
+    }
+}
+
+/* Styles spécifiques pour les messages d'erreur */
+.error-message {
+    color: #dc3545;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Styles pour les tableaux */
+table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 0.75rem;
+    text-align: left;
+}
+
+/* Styles pour les sections de profil */
+.section-profil {
+    background-color: var(--beige-doux);
+    padding: 2rem;
+    border-radius: 10px;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+/* Styles pour les filtres */
+.filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.recherche-mot-cle, .recherche-categorie {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Dropdown styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    background-color: white;
+    border-radius: 5px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Accessibilité */
+:focus {
+    outline: 3px solid var(--dore-mat);
+    outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.card {
+    animation: fadeIn 0.3s ease-in;
+}

@@ -3,52 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <title>Modifier article</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}" />
-	<link rel="stylesheet" th:href="@{/css/form.css}" />
-	<link rel="stylesheet" th:href="@{/css/sell.css}" />
-	<link rel="icon" href="/img/logo.png" />
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<!-- 	<link rel="stylesheet" th:href="@{/css/form.css}" /> -->
+<!-- 	<link rel="stylesheet" th:href="@{/css/sell.css}" /> -->
+<link rel="stylesheet" th:href="@{/css/form.css}" />
+<link rel="stylesheet" th:href="@{/css/claude.css}" />
+
+<link rel="icon" href="/img/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+	rel="stylesheet">
 </head>
 
 <body>
 	<div th:replace="~{fragments/fragment-header::header}"></div>
 	<div th:replace="~{fragments/fragment-logo::logo}"></div>
-<main>
-    <div class="container">
-        <h2>Modifier l'article</h2>
+	<main>
+		<div class="container">
+			<h2>Modifier l'article</h2>
 
-        <form action="/article/update" method="post" th:object="${articleVendu}" enctype="multipart/form-data">
-            <img th:src="@{'/uploads/' + ${articleVendu.imagePath}}" alt="Image de l'article" />
-            <input type="hidden" th:field="*{noArticle}" />
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			<form action="/article/update" method="post"
+				th:object="${articleVendu}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{noArticle}" /> <input
+					type="hidden" th:name="${_csrf.parameterName}"
+					th:value="${_csrf.token}" /> <label for="nomArticle">Nom
+					de l'article :</label> <input type="text" id="nomArticle"
+					th:field="*{nomArticle}" /> <label for="categorie">Catégorie
+					:</label> <select id="categorie" th:field="*{categorie.noCategorie}">
+					<option th:each="categorie : ${categories}"
+						th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"
+						th:selected="${categorie.noCategorie == articleVendu.categorie.noCategorie}">
+					</option>
+				</select> <label for="description">Description :</label>
+				<textarea id="description" th:field="*{description}"></textarea>
 
-            <label for="nomArticle">Nom de l'article :</label>
-            <input type="text" id="nomArticle" th:field="*{nomArticle}" />
+				<label for="miseAPrix">Mise à prix :</label> <input type="number"
+					id="miseAPrix" th:field="*{miseAPrix}" /> <label
+					for="dateDebutEncheres">Date de début des enchères :</label> <input
+					type="datetime-local" id="dateDebutEncheres"
+					th:field="*{dateDebutEncheres}" />
+				<!-- th:value="*{dateDebutEncheres}" -->
 
-            <label for="categorie">Catégorie :</label>
-            <select id="categorie" th:field="*{categorie.noCategorie}">
-                <option th:each="categorie : ${categories}"
-                        th:value="${categorie.noCategorie}" 
-                        th:text="${categorie.libelle}"
-                        th:selected="${categorie.noCategorie == articleVendu.categorie.noCategorie}">
-                </option>
-            </select>
+				<label for="dateFinEncheres">Date de fin des enchères :</label> <input
+					type="datetime-local" id="dateFinEncheres"
+					th:field="*{dateFinEncheres}" />
+				<!-- th:value="*{dateFinEncheres}" -->
 
-            <label for="description">Description :</label>
-            <textarea id="description" th:field="*{description}"></textarea>
+				<label for="telephone">Téléphone :</label> <input type="text"
+					id="telephone" th:field="*{vendeur.telephone}" /> <label
+					for="rueRetrait">Rue de retrait :</label> <input type="text"
+					id="rueRetrait" th:field="*{lieuRetrait.rue}" /> <label
+					for="villeRetrait">Ville de retrait :</label> <input type="text"
+					id="villeRetrait" th:field="*{lieuRetrait.ville}" /> <label
+					for="codePostal">Code postal de retrait :</label> <input
+					type="text" id="codePostal" th:field="*{lieuRetrait.codePostal}" />
 
-            <label for="miseAPrix">Mise à prix :</label>
-            <input type="number" id="miseAPrix" th:field="*{miseAPrix}"/>
+				<label for="image">Modifier l'image :</label> <input type="file"
+					id="image" name="image" accept="image/*" />
 
-			<label for="dateDebutEncheres">Date de début des enchères :</label>
-            <input type="datetime-local" id="dateDebutEncheres" th:field="*{dateDebutEncheres}"/> <!-- th:value="*{dateDebutEncheres}" --> 
-            
-            <label for="dateFinEncheres">Date de fin des enchères :</label>
-            <input type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}"/> <!-- th:value="*{dateFinEncheres}" -->
+				<button type="submit" class="button">Mettre à jour</button>
+			</form>
 
+<<<<<<< HEAD
             <label for="telephone">Téléphone :</label>
             <input type="text" id="telephone" th:field="*{vendeur.telephone}" />
 
@@ -71,6 +92,13 @@
         <a th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}" class="link">Supprimer l'article</a>
     </div>
 </main>
+=======
+			<a th:href="@{/article-detail(noArticle=${articleVendu.noArticle})}" class="button">Retour</a> <a
+				th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}"
+				class="button">Supprimer l'article</a>
+		</div>
+	</main>
+>>>>>>> 3a5f45e6389ffa04f1de8ece26de7bf2ea65452a
 	<footer th:replace="~{fragments/fragment-footer::footer}"></footer>
 </body>
 </html>

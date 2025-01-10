@@ -10,7 +10,7 @@ public class VerificationVentesScheduler {
     @Autowired
     private ArticleVenduService articleVenduService;
 
-    //@Scheduled(fixedRate = 60000) // Toutes les 60 secondes
+    @Scheduled(fixedRate = 60000)
     public void verifierVentes() {
         articleVenduService.verifierEtFinaliserVentes();
     }

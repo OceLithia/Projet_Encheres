@@ -96,7 +96,7 @@
                         <label for="montant">Montant de l'enchère :</label>
                         <input type="number" id="montant" name="montant" min="1" required />
                     </div>
-                    <button type="submit">Enchérir</button>
+                    <button class="button" type="submit">Enchérir</button>
                 </form>
             </div>
 
@@ -105,8 +105,13 @@
                 <h2 th:if="${articleVendu.etatVente == -1}">Les enchères n'ont pas encore débuté</h2>
                 
                 <div class="seller-actions" th:if="${articleVendu.etatVente == -1 && articleVendu.vendeur.noUtilisateur == utilisateur.noUtilisateur}">
+<<<<<<< HEAD
                     <a class="link" th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
                     <a class="link" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
+=======
+                    <a class="button" th:href="@{/article/update(noArticle=${articleVendu.noArticle})}">Modifier</a>
+                    <a class="button" th:href="@{/delete-article-detail(noArticle=${articleVendu.noArticle})}">Supprimer l'article</a>
+>>>>>>> 3a5f45e6389ffa04f1de8ece26de7bf2ea65452a
                 </div>
 
                 <h2 th:if="${articleVendu.etatVente == 2 && utilisateur.noUtilisateur != acheteur.noUtilisateur}"

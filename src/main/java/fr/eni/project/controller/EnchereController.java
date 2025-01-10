@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import fr.eni.project.bll.ArticleVenduService;
 import fr.eni.project.bll.CategorieService;
 import fr.eni.project.bll.EnchereService;
@@ -75,14 +74,10 @@ public class EnchereController {
 	}
 
 	@PostMapping("/sell-article")
-	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, 
-            BindingResult bindingResult,
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("rueRetrait") String rueRetrait,
-            @RequestParam("codePostalRetrait") String codePostalRetrait,
-            @RequestParam("villeRetrait") String villeRetrait,
-            Model model, 
-            Authentication authentication) {
+	public String createSellArticle(@Valid @ModelAttribute ArticleVendu articleVendu, BindingResult bindingResult,
+			@RequestParam("image") MultipartFile image, @RequestParam("rueRetrait") String rueRetrait,
+			@RequestParam("codePostalRetrait") String codePostalRetrait,
+			@RequestParam("villeRetrait") String villeRetrait, Model model, Authentication authentication) {
 		if (bindingResult.hasErrors()) {
 			return "sell-article";
 		} else {
@@ -124,27 +119,27 @@ public class EnchereController {
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
-	    Enchere enchere = null;
-	    try {
-	        enchere = enchereService.consulterDerniereEnchereParArticle(articleId);
-	    } catch (EnchereNotFoundException e) {
-	        // Pas d'enchère, rien à ajouter
-	    }
-	    
-	    if (article.getEtatVente() == 2) {
-	        // Finaliser la vente si nécessaire
-	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(articleId);
-	        if (meilleureEnchere != null) {
-	        	model.addAttribute("enchere", meilleureEnchere);
-		        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+		Enchere enchere = null;
+		try {
+			enchere = enchereService.consulterDerniereEnchereParArticle(articleId);
+		} catch (EnchereNotFoundException e) {
+			// Pas d'enchère, rien à ajouter
+		}
+
+		if (article.getEtatVente() == 2) {
+			// Finaliser la vente si nécessaire
+			Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(articleId);
+			if (meilleureEnchere != null) {
+				model.addAttribute("enchere", meilleureEnchere);
+				model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
 			}
-	    } else {
-	        model.addAttribute("enchere", enchere);
-	    }
+		} else {
+			model.addAttribute("enchere", enchere);
+		}
 
 		return "article-detail";
 	}
-	 
+
 	@GetMapping({ "/article-detail", "/encherir" })
 	public String afficherDetailsArticle(@RequestParam("noArticle") long id, Model model,
 			Authentication authentication) {
@@ -152,15 +147,17 @@ public class EnchereController {
 		System.out.println(article.getEtatVente());
 		Utilisateur utilisateur = utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
 		if (article.getDateFinEncheres() != null) {
-            model.addAttribute("dateFinEncheresFormatee", article.getDateFinEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
+			model.addAttribute("dateFinEncheresFormatee",
+					article.getDateFinEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
 		} else {
-            model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
-        }
+			model.addAttribute("dateFinEncheresFormatee", "Date non disponible");
+		}
 		if (article.getDateDebutEncheres() != null) {
-            model.addAttribute("dateDebutEncheresFormatee", article.getDateDebutEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
-        } else {
-            model.addAttribute("dateDebutEncheresFormatee", "Date non disponible");
-        }
+			model.addAttribute("dateDebutEncheresFormatee",
+					article.getDateDebutEncheres().format(DateTimeFormatter.ofPattern("dd/MM/yyyy à HH:mm")));
+		} else {
+			model.addAttribute("dateDebutEncheresFormatee", "Date non disponible");
+		}
 		model.addAttribute("articleVendu", article);
 		model.addAttribute("utilisateur", utilisateur);
 
@@ -169,20 +166,19 @@ public class EnchereController {
 
 		Enchere enchere;
 		try {
-		    enchere = enchereService.consulterDerniereEnchereParArticle(id);
-		    model.addAttribute("enchere", enchere);
+			enchere = enchereService.consulterDerniereEnchereParArticle(id);
+			model.addAttribute("enchere", enchere);
 		} catch (EnchereNotFoundException e) {
-		    System.out.println("Aucune enchère trouvée pour l'article ID : " + id);
-		    model.addAttribute("enchere", null); // Aucun enchère à afficher
+			System.out.println("Aucune enchère trouvée pour l'article ID : " + id);
+			model.addAttribute("enchere", null); // Aucun enchère à afficher
 		}
 
-
 		if (article.getEtatVente() == 2) {
-	        // Finaliser les ventes pour obtenir les informations de l'acheteur
-	        Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(article.getNoArticle());
-	        model.addAttribute("enchere", meilleureEnchere);
-	        model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
-	    }
+			// Finaliser les ventes pour obtenir les informations de l'acheteur
+			Enchere meilleureEnchere = enchereService.consulterDerniereEnchereParArticle(article.getNoArticle());
+			model.addAttribute("enchere", meilleureEnchere);
+			model.addAttribute("acheteur", meilleureEnchere.getEncherisseur());
+		}
 
 		model.addAttribute("enchereDTO", new EnchereDTO()); // Ajouter un DTO vide pour le formulaire
 		return "article-detail";
@@ -236,27 +232,37 @@ public class EnchereController {
 
 	@GetMapping("/article/update")
 	public String viewArticleUpdate(@RequestParam("noArticle") Long noArticle, RedirectAttributes redirectAttributes,
-			Model model) {
+			Model model, Authentication authentication) {
 		// Récupérer l'article depuis le service
 		ArticleVendu article = this.articleVenduService.afficherArticleParNoArticle(noArticle);
-
+		// Récupération de l'utilisateur authentifié via Spring Security
+		Utilisateur vendeur = this.utilisateurService.afficherUtilisateurParPseudo(authentication.getName());
+		// Vérification que l'utilisateur existe et est co
+		if (vendeur == null) {
+			model.addAttribute("erreur", "Aucun utilisateur trouvé avec le pseudo : " + authentication.getName());
+			return "error-page"; // Une page d'erreur Thymeleaf personnalisée
+		}
 		// Vérifier si l'article existe
 		if (article == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "L'article avec l'ID " + noArticle + " n'existe pas.");
 			return "redirect:/article-detail?noArticle=" + noArticle;
 		}
 		// Ajouter l'article et les catégories au modèle
-		model.addAttribute("articleVendu", article); 
-		model.addAttribute("categories", categorieService.getAllCategories()); 
+		model.addAttribute("articleVendu", article);
+		model.addAttribute("categories", categorieService.getAllCategories());
+		model.addAttribute("utilisateur", vendeur);
 		return "article-update";
 	}
 
 	@PostMapping("/article/update")
-	public String updateArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu, @ModelAttribute Retrait adresseRetrait, @RequestParam(value = "image", required = false) MultipartFile image,
+	public String updateArticle(@ModelAttribute("articleVendu") ArticleVendu articleVendu,
+			@ModelAttribute Retrait adresseRetrait,
+			@RequestParam(value = "image", required = false) MultipartFile image,
 			RedirectAttributes redirectAttributes) {
-	
+
 		try {
-			// Gérer le téléchargement de l'image seulement si une nouvelle image est fournie
+			// Gérer le téléchargement de l'image seulement si une nouvelle image est
+			// fournie
 			if (image != null && !image.isEmpty()) {
 				// Nom unique pour l'image
 				String fileName = System.currentTimeMillis() + "_"
@@ -271,18 +277,19 @@ public class EnchereController {
 				articleVendu.setImagePath(fileName);
 			}
 			if (articleVendu.getCategorie().getNoCategorie() == 0) {
-			    throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
+				throw new IllegalArgumentException("La catégorie de l'article ne peut pas être nulle");
 			}
 			articleVenduService.saveUpdate(articleVendu, adresseRetrait);
 			redirectAttributes.addFlashAttribute("successMessage", "L'article a été mis à jour avec succès.");
-	    } catch (IllegalArgumentException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-	    } catch (IOException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de la sauvegarde de l'image : " + e.getMessage());
-	    } catch (Exception e) {
-	        redirectAttributes.addFlashAttribute("errorMessage",
-	                "Une erreur est survenue lors de la mise à jour de l'article : " + e.getMessage());
-	    }
+		} catch (IllegalArgumentException e) {
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+		} catch (IOException e) {
+			redirectAttributes.addFlashAttribute("errorMessage",
+					"Erreur lors de la sauvegarde de l'image : " + e.getMessage());
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage",
+					"Une erreur est survenue lors de la mise à jour de l'article : " + e.getMessage());
+		}
 		return "redirect:/article-detail?noArticle=" + articleVendu.getNoArticle();
 	}
 }
